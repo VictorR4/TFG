@@ -1,0 +1,62 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: TFG.aux
+The style file: apalike.bst
+Database file #1: bib/ref.bib
+"{" immediately follows a field name---line 4 of file bib/ref.bib
+ :   \url
+ :       {https://omnetpp.org/intro/}}
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 50 of file bib/ref.bib
+ :   
+ :   \url{http://www.rdmamojo.com/2014/03/31/remote-direct-memory-access-rdma}}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "RUSSELL"
+Warning--I didn't find a database entry for "AlphaZero"
+Warning--to sort, need author or key in Omnet
+Warning--to sort, need author or key in Interconnection
+Warning--to sort, need author or key in shareNetworks
+Warning--empty year in shareNetworks
+You've used 3 entries,
+            1935 wiz_defined-function locations,
+            488 strings with 3934 characters,
+and the built_in function-call counts, 605 in all, are:
+= -- 62
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 43
+:= -- 99
+add.period$ -- 7
+call.type$ -- 3
+change.case$ -- 15
+chr.to.int$ -- 3
+cite$ -- 10
+duplicate$ -- 30
+empty$ -- 55
+format.name$ -- 0
+if$ -- 117
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 16
+num.names$ -- 0
+pop$ -- 15
+preamble$ -- 1
+purify$ -- 15
+quote$ -- 0
+skip$ -- 21
+stack$ -- 0
+substring$ -- 39
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 18
+warning$ -- 4
+while$ -- 0
+width$ -- 0
+write$ -- 31
+(There were 2 error messages)
