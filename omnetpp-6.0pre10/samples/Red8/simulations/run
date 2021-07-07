@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $0`
+../src/red8 -n .:../src $*
+# for shared lib, use: opp_run -l ../src/red8 -n .:../src $*

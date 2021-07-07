@@ -1,0 +1,17 @@
+# VLAN ID   MAC Address     Interface
+	0			host17			eth0
+	0			host18			eth1
+	0			host19			eth2
+	0			host20			eth3
+	0			host21			eth4
+	0			host22			eth5
+	0			host23			eth6
+	0			host24			eth7
+	0         	switch17        eth8
+	  0         switch18        eth9
+	  0         switch19        eth10
+	  0         switch20        eth11
+	  0         switch21        eth12
+	  0         switch22        eth13
+	  0         switch23        eth14
+	  0         switch24        eth15

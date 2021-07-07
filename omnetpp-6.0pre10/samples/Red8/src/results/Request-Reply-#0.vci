@@ -1,0 +1,674 @@
+file 28115 1624532173                                           
+version 3
+run Request-Reply-0-20210624-12:55:34-17613
+attr configname Request-Reply
+attr datetime 20210624-12:55:34
+attr datetimef 20210624-125534
+attr experiment Request-Reply
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Red
+attr processid 17613
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+itervar iterationvarsd ""
+config image-path ../../../../inet-4.3.2-src/inet4.3/images
+config **.switch1.**.address "\"AAAAAA000001\""
+config **.switch2.**.address "\"AAAAAA000002\""
+config **.switch3.**.address "\"AAAAAA000003\""
+config **.switch4.**.address "\"AAAAAA000004\""
+config **.switch5.**.address "\"AAAAAA000005\""
+config **.host1.cli.destAddress "\"host8\""
+config **.host8.cli.destAddress "\"host5\""
+config **.host4.cli.destAddress "\"host5\""
+config network Red
+config sim-time-limit 2s
+
+vector 0 Red.host1.cli packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 1 Red.host1.llc encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 2 Red.host1.eth.mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 3 Red.host1.eth.mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 4 Red.host1.eth.mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 5 Red.host1.eth.mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 6 Red.host1.eth.mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 7 Red.host1.eth.mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 8 Red.switch1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 9 Red.switch1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 10 Red.switch1.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 11 Red.switch1.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 12 Red.switch1.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 13 Red.switch1.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 14 Red.switch1.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 15 Red.switch1.eth[2].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 16 Red.switch1.eth[2].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 17 Red.switch1.eth[2].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 18 Red.switch1.eth[2].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 19 Red.switch1.eth[2].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 20 Red.switch1.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 21 Red.switch1.eth[2].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 22 Red.switch5.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 23 Red.switch5.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 24 Red.host2.eth.mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 25 Red.switch5.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 26 Red.switch5.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 27 Red.switch5.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 28 Red.switch5.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 29 Red.switch5.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 30 Red.switch5.eth[2].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 31 Red.switch5.eth[2].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 32 Red.switch5.eth[2].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 33 Red.switch5.eth[2].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 34 Red.switch5.eth[2].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 35 Red.switch5.eth[3].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 36 Red.switch5.eth[3].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 37 Red.switch5.eth[3].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 38 Red.switch5.eth[3].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 39 Red.switch5.eth[3].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 40 Red.switch5.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 41 Red.switch5.eth[2].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 42 Red.switch5.eth[3].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 43 Red.switch2.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 44 Red.switch2.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 45 Red.switch3.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 46 Red.switch3.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 47 Red.switch4.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 48 Red.switch4.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 49 Red.switch2.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 50 Red.switch2.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 51 Red.switch2.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 52 Red.switch2.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 53 Red.switch2.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 54 Red.switch2.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 55 Red.switch2.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 56 Red.switch2.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 57 Red.switch2.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 58 Red.switch2.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 59 Red.switch3.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 60 Red.switch3.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 61 Red.switch3.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 62 Red.switch3.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 63 Red.switch3.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 64 Red.switch3.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 65 Red.switch3.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 66 Red.switch3.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 67 Red.switch3.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 68 Red.switch3.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 69 Red.switch4.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 70 Red.switch4.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 71 Red.switch4.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 72 Red.switch4.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 73 Red.switch4.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 74 Red.switch4.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 75 Red.switch4.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 76 Red.switch4.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 77 Red.switch4.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 78 Red.switch4.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 79 Red.switch2.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 80 Red.switch2.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 81 Red.switch3.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 82 Red.switch3.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 83 Red.switch4.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 84 Red.switch4.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 85 Red.host3.eth.mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 86 Red.host4.eth.mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 87 Red.host5.eth.mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 88 Red.host6.eth.mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 89 Red.host7.eth.mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 90 Red.host8.eth.mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 91 Red.host8.eth.mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 92 Red.host8.srv packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 93 Red.host8.srv endToEndDelay:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "end-to-end delay, vector"
+attr unit s
+vector 94 Red.host8.srv packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 95 Red.host8.llc encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 96 Red.host8.eth.mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 97 Red.host8.eth.mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 98 Red.host8.eth.mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 99 Red.host8.eth.mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 100 Red.host8.eth.mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 101 Red.host8.eth.mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 102 Red.switch4.eth[1].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 103 Red.switch4.eth[1].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 104 Red.switch4.eth[2].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 105 Red.switch4.eth[2].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 106 Red.switch4.eth[2].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 107 Red.switch4.eth[2].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 108 Red.switch4.eth[2].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 109 Red.switch4.eth[2].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 110 Red.switch5.eth[3].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 111 Red.switch5.eth[3].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 112 Red.switch5.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 113 Red.switch5.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 114 Red.switch5.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 115 Red.switch5.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 116 Red.switch5.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 117 Red.switch5.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+0	23302 23 9 9 0.548813502304 0.548813502304 1 100 100 100 10000
+1	23325 24 11 11 0.548813502304 0.548813502304 1 100 100 100 10000
+2	23349 24 12 12 0.548813502304 0.548813502304 1 121 121 121 14641
+3	23373 24 12 12 0.548813502304 0.548813502304 1 121 121 121 14641
+4	23397 44 12 12 0.548813502304 0.548813502304 2 0 1 1 1
+5	23441 24 12 12 0.548813502304 0.548813502304 1 121 121 121 14641
+6	23465 22 12 12 0.548813502304 0.548813502304 1 0 0 0 0
+7	23487 24 13 13 0.548916702304 0.548916702304 1 121 121 121 14641
+8	23511 24 14 14 0.548916802304 0.548916802304 1 121 121 121 14641
+9	23535 24 14 14 0.548916802304 0.548916802304 1 121 121 121 14641
+10	23559 25 16 16 0.548916802304 0.548916802304 1 121 121 121 14641
+11	23584 25 16 16 0.548916802304 0.548916802304 1 121 121 121 14641
+12	23609 46 16 16 0.548916802304 0.548916802304 2 0 1 1 1
+13	23655 25 16 16 0.548916802304 0.548916802304 1 121 121 121 14641
+14	23680 23 16 16 0.548916802304 0.548916802304 1 0 0 0 0
+15	23703 25 17 17 0.548916802304 0.548916802304 1 121 121 121 14641
+16	23728 25 17 17 0.548916802304 0.548916802304 1 121 121 121 14641
+17	23753 46 17 17 0.548916802304 0.548916802304 2 0 1 1 1
+18	23799 25 17 17 0.548916802304 0.548916802304 1 121 121 121 14641
+19	23824 23 17 17 0.548916802304 0.548916802304 1 0 0 0 0
+20	23847 25 20 20 0.549020002304 0.549020002304 1 121 121 121 14641
+21	23872 25 21 21 0.549020002304 0.549020002304 1 121 121 121 14641
+22	23897 25 22 22 0.549020102304 0.549020102304 1 121 121 121 14641
+23	23922 25 22 22 0.549020102304 0.549020102304 1 121 121 121 14641
+24	23947 25 23 23 0.549020102304 0.549020102304 1 121 121 121 14641
+25	23972 25 25 25 0.549020102304 0.549020102304 1 121 121 121 14641
+26	23997 25 25 25 0.549020102304 0.549020102304 1 121 121 121 14641
+27	24022 46 25 25 0.549020102304 0.549020102304 2 0 1 1 1
+28	24068 25 25 25 0.549020102304 0.549020102304 1 121 121 121 14641
+29	24093 23 25 25 0.549020102304 0.549020102304 1 0 0 0 0
+30	24116 25 26 26 0.549020102304 0.549020102304 1 121 121 121 14641
+31	24141 25 26 26 0.549020102304 0.549020102304 1 121 121 121 14641
+32	24166 46 26 26 0.549020102304 0.549020102304 2 0 1 1 1
+33	24212 25 26 26 0.549020102304 0.549020102304 1 121 121 121 14641
+34	24237 23 26 26 0.549020102304 0.549020102304 1 0 0 0 0
+35	24260 25 27 27 0.549020102304 0.549020102304 1 121 121 121 14641
+36	24285 25 27 27 0.549020102304 0.549020102304 1 121 121 121 14641
+37	24310 46 27 27 0.549020102304 0.549020102304 2 0 1 1 1
+38	24356 25 27 27 0.549020102304 0.549020102304 1 121 121 121 14641
+39	24381 23 27 27 0.549020102304 0.549020102304 1 0 0 0 0
+40	24404 25 30 30 0.549123302304 0.549123302304 1 121 121 121 14641
+41	24429 25 31 31 0.549123302304 0.549123302304 1 121 121 121 14641
+42	24454 25 32 32 0.549123302304 0.549123302304 1 121 121 121 14641
+43	24479 25 33 33 0.549123402304 0.549123402304 1 121 121 121 14641
+44	24504 25 33 33 0.549123402304 0.549123402304 1 121 121 121 14641
+45	24529 25 34 34 0.549123402304 0.549123402304 1 121 121 121 14641
+46	24554 25 34 34 0.549123402304 0.549123402304 1 121 121 121 14641
+47	24579 25 35 35 0.549123402304 0.549123402304 1 121 121 121 14641
+48	24604 25 35 35 0.549123402304 0.549123402304 1 121 121 121 14641
+49	24629 25 39 39 0.549123402304 0.549123402304 1 121 121 121 14641
+50	24654 25 39 39 0.549123402304 0.549123402304 1 121 121 121 14641
+51	24679 46 39 39 0.549123402304 0.549123402304 2 0 1 1 1
+52	24725 25 39 39 0.549123402304 0.549123402304 1 121 121 121 14641
+53	24750 23 39 39 0.549123402304 0.549123402304 1 0 0 0 0
+54	24773 25 40 40 0.549123402304 0.549123402304 1 121 121 121 14641
+55	24798 25 40 40 0.549123402304 0.549123402304 1 121 121 121 14641
+56	24823 46 40 40 0.549123402304 0.549123402304 2 0 1 1 1
+57	24869 25 40 40 0.549123402304 0.549123402304 1 121 121 121 14641
+58	24894 23 40 40 0.549123402304 0.549123402304 1 0 0 0 0
+59	24917 25 41 41 0.549123402304 0.549123402304 1 121 121 121 14641
+60	24942 25 41 41 0.549123402304 0.549123402304 1 121 121 121 14641
+61	24967 46 41 41 0.549123402304 0.549123402304 2 0 1 1 1
+62	25013 25 41 41 0.549123402304 0.549123402304 1 121 121 121 14641
+63	25038 23 41 41 0.549123402304 0.549123402304 1 0 0 0 0
+64	25061 25 42 42 0.549123402304 0.549123402304 1 121 121 121 14641
+65	25086 25 42 42 0.549123402304 0.549123402304 1 121 121 121 14641
+66	25111 46 42 42 0.549123402304 0.549123402304 2 0 1 1 1
+67	25157 25 42 42 0.549123402304 0.549123402304 1 121 121 121 14641
+68	25182 23 42 42 0.549123402304 0.549123402304 1 0 0 0 0
+69	25205 25 43 43 0.549123402304 0.549123402304 1 121 121 121 14641
+70	25230 25 43 43 0.549123402304 0.549123402304 1 121 121 121 14641
+71	25255 46 43 43 0.549123402304 0.549123402304 2 0 1 1 1
+72	25301 25 43 43 0.549123402304 0.549123402304 1 121 121 121 14641
+73	25326 23 43 43 0.549123402304 0.549123402304 1 0 0 0 0
+74	25349 25 44 44 0.549123402304 0.549123402304 1 121 121 121 14641
+75	25374 25 44 44 0.549123402304 0.549123402304 1 121 121 121 14641
+76	25399 46 44 44 0.549123402304 0.549123402304 2 0 1 1 1
+77	25445 25 44 44 0.549123402304 0.549123402304 1 121 121 121 14641
+78	25470 23 44 44 0.549123402304 0.549123402304 1 0 0 0 0
+79	25493 25 54 54 0.549226602304 0.549226602304 1 121 121 121 14641
+80	25518 25 55 55 0.549226602304 0.549226602304 1 121 121 121 14641
+81	25543 25 56 56 0.549226602304 0.549226602304 1 121 121 121 14641
+82	25568 25 57 57 0.549226602304 0.549226602304 1 121 121 121 14641
+83	25593 25 58 58 0.549226602304 0.549226602304 1 121 121 121 14641
+84	25618 25 59 59 0.549226602304 0.549226602304 1 121 121 121 14641
+85	25643 25 60 60 0.549226702304 0.549226702304 1 121 121 121 14641
+86	25668 25 61 61 0.549226702304 0.549226702304 1 121 121 121 14641
+87	25693 25 62 62 0.549226702304 0.549226702304 1 121 121 121 14641
+88	25718 25 63 63 0.549226702304 0.549226702304 1 121 121 121 14641
+89	25743 25 64 64 0.549226702304 0.549226702304 1 121 121 121 14641
+90	25768 25 65 65 0.549226702304 0.549226702304 1 121 121 121 14641
+91	25793 25 65 65 0.549226702304 0.549226702304 1 121 121 121 14641
+92	25818 25 67 67 0.549226702304 0.549226702304 1 100 100 100 10000
+93	25843 31 67 67 0.549226702304 0.549226702304 1 0.0004132 0.0004132 0.0004132 1.7073424e-07
+94	25874 26 67 67 0.549226702304 0.549226702304 1 1024 1024 1024 1048576
+95	25900 26 68 68 0.549226702304 0.549226702304 1 1024 1024 1024 1048576
+96	25926 26 69 69 0.549226702304 0.549226702304 1 1045 1045 1045 1092025
+97	25952 26 69 69 0.549226702304 0.549226702304 1 1045 1045 1045 1092025
+98	25978 46 69 69 0.549226702304 0.549226702304 2 0 1 1 1
+99	26024 26 69 69 0.549226702304 0.549226702304 1 1045 1045 1045 1092025
+100	26050 24 69 69 0.549226702304 0.549226702304 1 0 0 0 0
+101	26074 27 76 76 0.550069102304 0.550069102304 1 1045 1045 1045 1092025
+102	26101 27 77 77 0.550069202304 0.550069202304 1 1045 1045 1045 1092025
+103	26128 27 77 77 0.550069202304 0.550069202304 1 1045 1045 1045 1092025
+104	26155 27 79 79 0.550069202304 0.550069202304 1 1045 1045 1045 1092025
+105	26182 27 79 79 0.550069202304 0.550069202304 1 1045 1045 1045 1092025
+106	26209 48 79 79 0.550069202304 0.550069202304 2 0 1 1 1
+107	26257 27 79 79 0.550069202304 0.550069202304 1 1045 1045 1045 1092025
+108	26284 24 79 79 0.550069202304 0.550069202304 1 0 0 0 0
+109	26308 27 81 81 0.550911602304 0.550911602304 1 1045 1045 1045 1092025
+110	26335 27 82 82 0.550911702304 0.550911702304 1 1045 1045 1045 1092025
+111	26362 27 82 82 0.550911702304 0.550911702304 1 1045 1045 1045 1092025
+112	26389 27 84 84 0.550911702304 0.550911702304 1 1045 1045 1045 1092025
+113	26416 27 84 84 0.550911702304 0.550911702304 1 1045 1045 1045 1092025
+114	26443 48 84 84 0.550911702304 0.550911702304 2 0 1 1 1
+115	26491 27 84 84 0.550911702304 0.550911702304 1 1045 1045 1045 1092025
+116	26518 24 84 84 0.550911702304 0.550911702304 1 0 0 0 0
+117	26542 27 86 86 0.551754102304 0.551754102304 1 1045 1045 1045 1092025
+vector 118 Red.switch1.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 119 Red.switch1.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 120 Red.switch1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 121 Red.switch1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 122 Red.switch1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 123 Red.switch1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 124 Red.switch1.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+118	27907 27 87 87 0.551754202304 0.551754202304 1 1045 1045 1045 1092025
+119	27934 27 87 87 0.551754202304 0.551754202304 1 1045 1045 1045 1092025
+120	27961 27 89 89 0.551754202304 0.551754202304 1 1045 1045 1045 1092025
+121	27988 27 89 89 0.551754202304 0.551754202304 1 1045 1045 1045 1092025
+122	28015 48 89 89 0.551754202304 0.551754202304 2 0 1 1 1
+123	28063 27 89 89 0.551754202304 0.551754202304 1 1045 1045 1045 1092025
+124	28090 24 89 89 0.551754202304 0.551754202304 1 0 0 0 0
+
