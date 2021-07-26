@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-package src.node;
+package src.inet.node;
 
 import inet.applications.contract.IApp;
 import inet.common.MessageDispatcher;

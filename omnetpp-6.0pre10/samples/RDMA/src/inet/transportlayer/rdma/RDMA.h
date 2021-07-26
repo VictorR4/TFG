@@ -46,7 +46,7 @@ const bool DEFAULT_MULTICAST_LOOP = true;
 const uint16_t RDMA_MAX_MESSAGE_SIZE = 65535; // bytes
 
 /**
- * Implements the Udp protocol: encapsulates/decapsulates user data into/from Udp.
+ * Implements the Rdma protocol: encapsulates/decapsulates user data into/from Rdma.
  *
  * More info in the NED file.
  */
@@ -67,63 +67,15 @@ class INET_API Rdma: public TransportProtocolBase
         EPHEMERAL_PORTRANGE_END   = 5000
     };
 
-    struct MulticastMembership {
-        L3Address multicastAddress;
-        int interfaceId = -1; // -1 = all
-        UdpSourceFilterMode filterMode = static_cast<UdpSourceFilterMode>(0);
-        std::vector<L3Address> sourceList;
 
-        bool isSourceAllowed(L3Address sourceAddr);
-    };
-
-    // For a given multicastAddress and interfaceId there is at most one membership record.
-    // Records are ordered first by multicastAddress, then by interfaceId (-1 interfaceId is the last)
-    typedef std::vector<MulticastMembership *> MulticastMembershipTable;
-
-    struct SockDesc {
-        SockDesc(int sockId);
-        ~SockDesc();
-        int sockId = -1;
-        bool isBound = false;
-        bool onlyLocalPortIsSet = false;
-        bool reuseAddr = false;
-        L3Address localAddr;
-        L3Address remoteAddr;
-        int localPort = -1;
-        int remotePort = -1;
-        bool isBroadcast = false;
-        int multicastOutputInterfaceId = -1;
-        bool multicastLoop = DEFAULT_MULTICAST_LOOP;
-        int ttl = -1;
-        short dscp = -1;
-        short tos = -1;
-        MulticastMembershipTable multicastMembershipTable;
-
-        MulticastMembershipTable::iterator findFirstMulticastMembership(const L3Address& multicastAddress);
-        MulticastMembership *findMulticastMembership(const L3Address& multicastAddress, int interfaceId);
-        void addMulticastMembership(MulticastMembership *membership);
-        void deleteMulticastMembership(MulticastMembership *membership);
-    };
-
-    friend std::ostream& operator<<(std::ostream& os, const Rdma::SockDesc& sd);
-
-    typedef std::list<SockDesc *> SockDescList; // might contain duplicated local addresses if their reuseAddr flag is set
-    typedef std::map<int, SockDesc *> SocketsByIdMap;
-    typedef std::map<int, SockDescList> SocketsByPortMap;
 
   protected:
     CrcMode crcMode = CRC_MODE_UNDEFINED;
     CrcInsertion crcInsertion;
 
-    // sockets
-    SocketsByIdMap socketsByIdMap;
-    SocketsByPortMap socketsByPortMap;
-
     // other state vars
     ushort lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
     IInterfaceTable *ift = nullptr;
-    Icmp *icmp = nullptr;
-    Icmpv6 *icmpv6 = nullptr;
 
     // statistics
     int numSent = 0;
@@ -135,60 +87,29 @@ class INET_API Rdma: public TransportProtocolBase
     // utility: show current statistics above the icon
     virtual void refreshDisplay() const override;
 
-    // socket handling
-    virtual SockDesc *getSocketById(int sockId);
-    virtual SockDesc *getOrCreateSocket(int sockId);
-    virtual SockDesc *createSocket(int sockId, const L3Address& localAddr, int localPort);
-    virtual void bind(int sockId, int gateIndex, const L3Address& localAddr, int localPort);
-    virtual void connect(int sockId, int gateIndex, const L3Address& remoteAddr, int remotePort);
-    virtual void close(int sockId);
-    virtual void destroySocket(int sockId);
-    void destroySocket(SocketsByIdMap::iterator it);
-    virtual void clearAllSockets();
-    virtual void setTimeToLive(SockDesc *sd, int ttl);
-    virtual void setDscp(SockDesc *sd, short dscp);
-    virtual void setTos(SockDesc *sd, short tos);
-    virtual void setBroadcast(SockDesc *sd, bool broadcast);
-    virtual void setMulticastOutputInterface(SockDesc *sd, int interfaceId);
-    virtual void setMulticastLoop(SockDesc *sd, bool loop);
-    virtual void setReuseAddress(SockDesc *sd, bool reuseAddr);
-    virtual void joinMulticastGroups(SockDesc *sd, const std::vector<L3Address>& multicastAddresses, const std::vector<int> interfaceIds);
-    virtual void leaveMulticastGroups(SockDesc *sd, const std::vector<L3Address>& multicastAddresses);
-    virtual void blockMulticastSources(SockDesc *sd, NetworkInterface *ie, L3Address multicastAddress, const std::vector<L3Address>& sourceList);
-    virtual void unblockMulticastSources(SockDesc *sd, NetworkInterface *ie, L3Address multicastAddress, const std::vector<L3Address>& sourceList);
-    virtual void joinMulticastSources(SockDesc *sd, NetworkInterface *ie, L3Address multicastAddress, const std::vector<L3Address>& sourceList);
-    virtual void leaveMulticastSources(SockDesc *sd, NetworkInterface *ie, L3Address multicastAddress, const std::vector<L3Address>& sourceList);
-    virtual void setMulticastSourceFilter(SockDesc *sd, NetworkInterface *ie, L3Address multicastAddress, UdpSourceFilterMode filterMode, const std::vector<L3Address>& sourceList);
-
-    virtual void addMulticastAddressToInterface(NetworkInterface *ie, const L3Address& multicastAddr);
 
     // ephemeral port
     virtual ushort getEphemeralPort();
 
-    virtual SockDesc *findSocketForUnicastPacket(const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
-    virtual std::vector<SockDesc *> findSocketsForMcastBcastPacket(const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort, bool isMulticast, bool isBroadcast);
-    virtual SockDesc *findFirstSocketByLocalAddress(const L3Address& localAddr, ushort localPort);
+
     virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort);//Cambiado
     virtual void processUndeliverablePacket(Packet *rdmaPacket);//Cambiado
     virtual void sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
 
-    // process an ICMP error packet
-    virtual void processICMPv4Error(Packet *icmpPacket);
-    virtual void processICMPv6Error(Packet *icmpPacket);
 
-    // process Udp packets coming from IP
+    // process Rdma packets coming from Ethernet
     virtual void processRdmaPacket(Packet *rdmaPacket);//Cambiado
 
     // process packets from application
     virtual void handleUpperPacket(Packet *appData) override;
 
-    // process packets from network layr
+    // process packets from link layer
     virtual void handleLowerPacket(Packet *appData) override;
 
     // process commands from application
     virtual void handleUpperCommand(cMessage *msg) override;
 
-    // create a blank Udp packet; override to subclass UdpHeader
+    // create a blank Rdma packet; override to subclass RdmaHeader
     virtual RdmaHeader *createRdmaPacket();//Cambiado
 
     // ILifeCycle:

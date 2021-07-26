@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-package src.node;
+package src.inet.node;
 
 import inet.common.MessageDispatcher;
 import inet.transportlayer.contract.ISctp;
@@ -56,8 +56,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         }
 		
     connections allowunconnected:
-        rdma.lowerLayerOut --> li.in++;
-        rdma.lowerLayerIn <-- li.out++;
+        rdma.lowerLayerOut --> nl.in++;
+        rdma.lowerLayerIn <-- nl.out++;
         
         udp.ipOut --> tn.in++ if hasUdp;
         udp.ipIn <-- tn.out++ if hasUdp;

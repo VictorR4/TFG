@@ -77,8 +77,8 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase //Cambiado
     unsigned short destPort = 0;
     B totalLengthField = B(-1);
     //Duda: no se sabe si es necesario
-    //uint16_t crc = 0;
-    //inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
+    uint16_t crc = 0;
+    inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
 
   private:
     void copy(const RdmaHeader& other);//Cambiado
@@ -102,12 +102,13 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase //Cambiado
     virtual void setDestPort(unsigned short destPort);
     virtual B getTotalLengthField() const;
     virtual void setTotalLengthField(B totalLengthField);
-    /* Duda: creo que no es necesario
+
+    //Duda: creo que no es necesario
     virtual uint16_t getCrc() const;
     virtual void setCrc(uint16_t crc);
     virtual inet::CrcMode getCrcMode() const;
     virtual void setCrcMode(inet::CrcMode crcMode);
-    */
+
   public:
     virtual unsigned int getSourcePort() const override { return getSrcPort(); }
     virtual void setSourcePort(unsigned int port) override { setSrcPort(port); }
