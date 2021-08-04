@@ -124,6 +124,4 @@ class INET_API Rdma: public TransportProtocolBase
 
 } // namespace inet
 
-
-
 #endif /* INET_TRANSPORTLAYER_RDMA_RDMA_H_ */

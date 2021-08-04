@@ -96,14 +96,14 @@ void Rdma::handleUpperCommand(cMessage *msg)//Cambiado
 
 }
 
-/*
+
 ushort Rdma::getEphemeralPort()//Cambiado
 {
     // start at the last allocated port number + 1, and search for an unused one
     ushort searchUntil = lastEphemeralPort++;
     if (lastEphemeralPort == EPHEMERAL_PORTRANGE_END) // wrap
         lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
-
+/*
     while (socketsByPortMap.find(lastEphemeralPort) != socketsByPortMap.end()) {
         if (lastEphemeralPort == searchUntil) // got back to starting point?
             throw cRuntimeError("Ephemeral port range %d..%d exhausted, all ports occupied", EPHEMERAL_PORTRANGE_START, EPHEMERAL_PORTRANGE_END);
@@ -111,11 +111,11 @@ ushort Rdma::getEphemeralPort()//Cambiado
         if (lastEphemeralPort == EPHEMERAL_PORTRANGE_END) // wrap
             lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
     }
-
+*/
     // found a free one, return it
     return lastEphemeralPort;
 }
-*/
+
 
 // ###############################################################
 // ####################### set options end #######################
@@ -466,6 +466,19 @@ void Rdma::sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushor
 // #############################
 // other UDP methods
 // #############################
+void Rdma::handleStartOperation(LifecycleOperation *operation)
+{
+}
+
+void Rdma::handleStopOperation(LifecycleOperation *operation)
+{
+
+}
+
+void Rdma::handleCrashOperation(LifecycleOperation *operation)
+{
+
+}
 
 void Rdma::refreshDisplay() const//Cambiado
 {
@@ -542,4 +555,3 @@ RdmaHeader *Rdma::createRdmaPacket()//Cambiado
 
 
 } // namespace inet
-

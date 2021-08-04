@@ -1,11 +1,8 @@
-/*
- * RdmaHeader_m.cc
- *
- *  Created on: Aug 2, 2021
- *      Author: usuario
- */
+//
+// Generated file, do not edit! Created by nedtool 6.0 from inet/transportlayer/rdma/RdmaHeader.msg.
+//
 
-
+// Disable warnings about unused variables, empty switch stmts, etc:
 #ifdef _MSC_VER
 #  pragma warning(disable:4101)
 #  pragma warning(disable:4065)
@@ -31,7 +28,7 @@
 #include <sstream>
 #include <memory>
 #include <type_traits>
-#include "inet/transportlayer/rdma/RdmaHeader_m.h"
+#include "RdmaHeader_m.h"
 
 namespace omnetpp {
 
@@ -190,7 +187,7 @@ inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) {
 // Template rule which fires if a struct or class doesn't have operator<<
 template<typename T>
 inline typename std::enable_if<!std::is_base_of<omnetpp::cObject, T>::value, std::ostream&>::type
-operator<<(std::ostream& out,const T&) {return out.operator<<(omnetpp::opp_typename(typeid(T)));}
+operator<<(std::ostream& out,const T&) {const char *s = omnetpp::opp_typename(typeid(T)); out.put('<'); out.write(s, strlen(s)); out.put('>'); return out;}
 
 // operator<< for std::vector<T>
 template<typename T, typename A>
@@ -212,24 +209,24 @@ inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
     return out;
 }
 
-Register_Class(RdmaHeader)//Cambiado
+Register_Class(RdmaHeader)
 
-RdmaHeader::RdmaHeader() : ::inet::TransportHeaderBase()//Cambiado
+RdmaHeader::RdmaHeader() : ::inet::TransportHeaderBase()
 {
-    this->setChunkLength(UDP_HEADER_LENGTH);
+    this->setChunkLength(RDMA_HEADER_LENGTH);
 
 }
 
-RdmaHeader::RdmaHeader(const RdmaHeader& other) : ::inet::TransportHeaderBase(other)//Cambiado
+RdmaHeader::RdmaHeader(const RdmaHeader& other) : ::inet::TransportHeaderBase(other)
 {
     copy(other);
 }
 
-RdmaHeader::~RdmaHeader()//Cambiado
+RdmaHeader::~RdmaHeader()
 {
 }
 
-RdmaHeader& RdmaHeader::operator=(const RdmaHeader& other)//Cambiado
+RdmaHeader& RdmaHeader::operator=(const RdmaHeader& other)
 {
     if (this == &other) return *this;
     ::inet::TransportHeaderBase::operator=(other);
@@ -237,7 +234,7 @@ RdmaHeader& RdmaHeader::operator=(const RdmaHeader& other)//Cambiado
     return *this;
 }
 
-void RdmaHeader::copy(const RdmaHeader& other)//Cambiado
+void RdmaHeader::copy(const RdmaHeader& other)
 {
     this->srcPort = other.srcPort;
     this->destPort = other.destPort;
@@ -246,7 +243,7 @@ void RdmaHeader::copy(const RdmaHeader& other)//Cambiado
     this->crcMode = other.crcMode;
 }
 
-void RdmaHeader::parsimPack(omnetpp::cCommBuffer *b) const//Cambiado
+void RdmaHeader::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::inet::TransportHeaderBase::parsimPack(b);
     doParsimPacking(b,this->srcPort);
@@ -256,7 +253,7 @@ void RdmaHeader::parsimPack(omnetpp::cCommBuffer *b) const//Cambiado
     doParsimPacking(b,this->crcMode);
 }
 
-void RdmaHeader::parsimUnpack(omnetpp::cCommBuffer *b)//Cambiado
+void RdmaHeader::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::inet::TransportHeaderBase::parsimUnpack(b);
     doParsimUnpacking(b,this->srcPort);
@@ -266,63 +263,62 @@ void RdmaHeader::parsimUnpack(omnetpp::cCommBuffer *b)//Cambiado
     doParsimUnpacking(b,this->crcMode);
 }
 
-unsigned short RdmaHeader::getSrcPort() const//Cambiado
+unsigned short RdmaHeader::getSrcPort() const
 {
     return this->srcPort;
 }
 
-void RdmaHeader::setSrcPort(unsigned short srcPort)//Cambiado
+void RdmaHeader::setSrcPort(unsigned short srcPort)
 {
     handleChange();
     this->srcPort = srcPort;
 }
 
-unsigned short RdmaHeader::getDestPort() const//Cambiado
+unsigned short RdmaHeader::getDestPort() const
 {
     return this->destPort;
 }
 
-void RdmaHeader::setDestPort(unsigned short destPort)//Cambiado
+void RdmaHeader::setDestPort(unsigned short destPort)
 {
     handleChange();
     this->destPort = destPort;
 }
 
-B RdmaHeader::getTotalLengthField() const//Cambiado
+B RdmaHeader::getTotalLengthField() const
 {
     return this->totalLengthField;
 }
 
-void RdmaHeader::setTotalLengthField(B totalLengthField)//Cambiado
+void RdmaHeader::setTotalLengthField(B totalLengthField)
 {
     handleChange();
     this->totalLengthField = totalLengthField;
 }
 
-//Duda: no creo que sea necesario
-uint16_t RdmaHeader::getCrc() const//Cambiado
+uint16_t RdmaHeader::getCrc() const
 {
     return this->crc;
 }
-//Duda: no creo que sea necesario
-void RdmaHeader::setCrc(uint16_t crc)//Cambiado
+
+void RdmaHeader::setCrc(uint16_t crc)
 {
     handleChange();
     this->crc = crc;
 }
-//Duda: no creo que sea necesario
-inet::CrcMode RdmaHeader::getCrcMode() const//Cambiado
+
+inet::CrcMode RdmaHeader::getCrcMode() const
 {
     return this->crcMode;
 }
-//Duda: no creo que sea necesario
-void RdmaHeader::setCrcMode(inet::CrcMode crcMode)//Cambiado
+
+void RdmaHeader::setCrcMode(inet::CrcMode crcMode)
 {
     handleChange();
     this->crcMode = crcMode;
 }
 
-class RdmaHeaderDescriptor : public omnetpp::cClassDescriptor //Cambiado
+class RdmaHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
     mutable const char **propertynames;
@@ -334,8 +330,8 @@ class RdmaHeaderDescriptor : public omnetpp::cClassDescriptor //Cambiado
         FIELD_crcMode,
     };
   public:
-    RdmaHeaderDescriptor();//Cambiado
-    virtual ~RdmaHeaderDescriptor();//Cambiado
+    RdmaHeaderDescriptor();
+    virtual ~RdmaHeaderDescriptor();
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
@@ -359,24 +355,24 @@ class RdmaHeaderDescriptor : public omnetpp::cClassDescriptor //Cambiado
     virtual void setFieldStructValuePointer(void *object, int field, int i, void *ptr) const override;
 };
 
-Register_ClassDescriptor(RdmaHeaderDescriptor)//Cambiado
+Register_ClassDescriptor(RdmaHeaderDescriptor)
 
-RdmaHeaderDescriptor::RdmaHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::RdmaHeader)), "inet::TransportHeaderBase")//Cambiado
+RdmaHeaderDescriptor::RdmaHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::RdmaHeader)), "inet::TransportHeaderBase")
 {
     propertynames = nullptr;
 }
 
-RdmaHeaderDescriptor::~RdmaHeaderDescriptor()//Cambiado
+RdmaHeaderDescriptor::~RdmaHeaderDescriptor()
 {
     delete[] propertynames;
 }
 
-bool RdmaHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const//Cambiado
+bool RdmaHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 {
-    return dynamic_cast<RdmaHeader *>(obj)!=nullptr;//Cambiado
+    return dynamic_cast<RdmaHeader *>(obj)!=nullptr;
 }
 
-const char **RdmaHeaderDescriptor::getPropertyNames() const//Cambiado
+const char **RdmaHeaderDescriptor::getPropertyNames() const
 {
     if (!propertynames) {
         static const char *names[] = {  nullptr };
@@ -387,19 +383,19 @@ const char **RdmaHeaderDescriptor::getPropertyNames() const//Cambiado
     return propertynames;
 }
 
-const char *RdmaHeaderDescriptor::getProperty(const char *propertyname) const//Cambiado
+const char *RdmaHeaderDescriptor::getProperty(const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : nullptr;
 }
 
-int RdmaHeaderDescriptor::getFieldCount() const//Cambiado
+int RdmaHeaderDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 5+basedesc->getFieldCount() : 5;
 }
 
-unsigned int RdmaHeaderDescriptor::getFieldTypeFlags(int field) const//Cambiado
+unsigned int RdmaHeaderDescriptor::getFieldTypeFlags(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -417,7 +413,7 @@ unsigned int RdmaHeaderDescriptor::getFieldTypeFlags(int field) const//Cambiado
     return (field >= 0 && field < 5) ? fieldTypeFlags[field] : 0;
 }
 
-const char *RdmaHeaderDescriptor::getFieldName(int field) const//Cambiado
+const char *RdmaHeaderDescriptor::getFieldName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -435,7 +431,7 @@ const char *RdmaHeaderDescriptor::getFieldName(int field) const//Cambiado
     return (field >= 0 && field < 5) ? fieldNames[field] : nullptr;
 }
 
-int RdmaHeaderDescriptor::findField(const char *fieldName) const//Cambiado
+int RdmaHeaderDescriptor::findField(const char *fieldName) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount() : 0;
@@ -447,7 +443,7 @@ int RdmaHeaderDescriptor::findField(const char *fieldName) const//Cambiado
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
-const char *RdmaHeaderDescriptor::getFieldTypeString(int field) const//Cambiado
+const char *RdmaHeaderDescriptor::getFieldTypeString(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -465,7 +461,7 @@ const char *RdmaHeaderDescriptor::getFieldTypeString(int field) const//Cambiado
     return (field >= 0 && field < 5) ? fieldTypeStrings[field] : nullptr;
 }
 
-const char **RdmaHeaderDescriptor::getFieldPropertyNames(int field) const//Cambiado
+const char **RdmaHeaderDescriptor::getFieldPropertyNames(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -486,7 +482,7 @@ const char **RdmaHeaderDescriptor::getFieldPropertyNames(int field) const//Cambi
     }
 }
 
-const char *RdmaHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const//Cambiado
+const char *RdmaHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -506,7 +502,7 @@ const char *RdmaHeaderDescriptor::getFieldProperty(int field, const char *proper
     }
 }
 
-int RdmaHeaderDescriptor::getFieldArraySize(void *object, int field) const//Cambiado
+int RdmaHeaderDescriptor::getFieldArraySize(void *object, int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -514,13 +510,13 @@ int RdmaHeaderDescriptor::getFieldArraySize(void *object, int field) const//Camb
             return basedesc->getFieldArraySize(object, field);
         field -= basedesc->getFieldCount();
     }
-    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;//Cambiado
+    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-void RdmaHeaderDescriptor::setFieldArraySize(void *object, int field, int size) const//Cambiado
+void RdmaHeaderDescriptor::setFieldArraySize(void *object, int field, int size) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -530,13 +526,13 @@ void RdmaHeaderDescriptor::setFieldArraySize(void *object, int field, int size) 
         }
         field -= basedesc->getFieldCount();
     }
-    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;//Cambiado
+    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;
     switch (field) {
-        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RdmaHeader'", field);//Cambiado
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RdmaHeader'", field);
     }
 }
 
-const char *RdmaHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const//Cambiado
+const char *RdmaHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -544,13 +540,13 @@ const char *RdmaHeaderDescriptor::getFieldDynamicTypeString(void *object, int fi
             return basedesc->getFieldDynamicTypeString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;//Cambiado
+    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RdmaHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const//Cambiado
+std::string RdmaHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -558,7 +554,7 @@ std::string RdmaHeaderDescriptor::getFieldValueAsString(void *object, int field,
             return basedesc->getFieldValueAsString(object,field,i);
         field -= basedesc->getFieldCount();
     }
-    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;//Cambiado
+    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;
     switch (field) {
         case FIELD_srcPort: return ulong2string(pp->getSrcPort());
         case FIELD_destPort: return ulong2string(pp->getDestPort());
@@ -569,7 +565,7 @@ std::string RdmaHeaderDescriptor::getFieldValueAsString(void *object, int field,
     }
 }
 
-void RdmaHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const//Cambiado
+void RdmaHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -579,18 +575,18 @@ void RdmaHeaderDescriptor::setFieldValueAsString(void *object, int field, int i,
         }
         field -= basedesc->getFieldCount();
     }
-    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;//Cambiado
+    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;
     switch (field) {
         case FIELD_srcPort: pp->setSrcPort(string2ulong(value)); break;
         case FIELD_destPort: pp->setDestPort(string2ulong(value)); break;
         case FIELD_totalLengthField: pp->setTotalLengthField(B(string2long(value))); break;
         case FIELD_crc: pp->setCrc(utils::uhex(value)); break;
         case FIELD_crcMode: pp->setCrcMode((inet::CrcMode)string2enum(value, "inet::CrcMode")); break;
-        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RdmaHeader'", field);//Cambiado
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RdmaHeader'", field);
     }
 }
 
-const char *RdmaHeaderDescriptor::getFieldStructName(int field) const//Cambiado
+const char *RdmaHeaderDescriptor::getFieldStructName(int field) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -603,7 +599,7 @@ const char *RdmaHeaderDescriptor::getFieldStructName(int field) const//Cambiado
     };
 }
 
-void *RdmaHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const//Cambiado
+void *RdmaHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -611,13 +607,13 @@ void *RdmaHeaderDescriptor::getFieldStructValuePointer(void *object, int field, 
             return basedesc->getFieldStructValuePointer(object, field, i);
         field -= basedesc->getFieldCount();
     }
-    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;//Cambiado
+    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-void RdmaHeaderDescriptor::setFieldStructValuePointer(void *object, int field, int i, void *ptr) const//Cambiado
+void RdmaHeaderDescriptor::setFieldStructValuePointer(void *object, int field, int i, void *ptr) const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -627,13 +623,11 @@ void RdmaHeaderDescriptor::setFieldStructValuePointer(void *object, int field, i
         }
         field -= basedesc->getFieldCount();
     }
-    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;//Cambiado
+    RdmaHeader *pp = (RdmaHeader *)object; (void)pp;
     switch (field) {
-        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RdmaHeader'", field);//Cambiado
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RdmaHeader'", field);
     }
 }
 
 } // namespace inet
-
-
 

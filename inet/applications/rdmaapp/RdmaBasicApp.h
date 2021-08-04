@@ -25,7 +25,7 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     enum SelfMsgKinds { START = 1, SEND, STOP };
 
     // parameters
-    int destAddresses;//Cambiado
+    int destAddress;//Cambiado
     std::vector<std::string> destAddressStr;
     int localPort = -1, destPort = -1;    //Cambiado
     clocktime_t startTime;

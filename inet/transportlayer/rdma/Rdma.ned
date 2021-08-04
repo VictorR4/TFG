@@ -23,6 +23,8 @@ import inet.transportlayer.contract.IRdma;
 simple Rdma like IRdma
 {
     parameters:
+        string interfaceTableModule;   // The path to the InterfaceTable module
+        string crcMode @enum("disabled", "declared", "computed") = default("declared");
         @display("i=block/transport");
         @signal[packetSentToUpper](type=cPacket);
         @signal[packetReceivedFromUpper](type=cPacket);

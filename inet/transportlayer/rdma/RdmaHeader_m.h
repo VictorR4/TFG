@@ -1,12 +1,9 @@
-/*
- * RdmaHeader_m.h
- *
- *  Created on: Aug 2, 2021
- *      Author: usuario
- */
+//
+// Generated file, do not edit! Created by nedtool 6.0 from inet/transportlayer/rdma/RdmaHeader.msg.
+//
 
-#ifndef INET_TRANSPORTLAYER_RDMA_RDMAHEADER_M_H_
-#define INET_TRANSPORTLAYER_RDMA_RDMAHEADER_M_H_
+#ifndef __INET_RDMAHEADER_M_H
+#define __INET_RDMAHEADER_M_H
 
 #if defined(__clang__)
 #  pragma clang diagnostic ignored "-Wreserved-id-macro"
@@ -33,7 +30,7 @@
 
 namespace inet {
 
-class RdmaHeader;//Cambiado
+class RdmaHeader;
 } // namespace inet
 
 #include "inet/common/INETDefs_m.h" // import inet.common.INETDefs
@@ -50,48 +47,47 @@ class RdmaHeader;//Cambiado
 namespace inet {
 
 // cplusplus {{
-const B RDMA_HEADER_LENGTH = B(8);//Cambiado
+const B RDMA_HEADER_LENGTH = B(8);
 // }}
 
 /**
- * Class generated from <tt>inet/transportlayer/udp/UdpHeader.msg:39</tt> by nedtool.
+ * Class generated from <tt>inet/transportlayer/rdma/RdmaHeader.msg:19</tt> by nedtool.
  * <pre>
  * //
  * // Represents an Udp header, to be used with the ~Udp module.
  * //
- * class UdpHeader extends TransportHeaderBase
+ * class RdmaHeader extends TransportHeaderBase
  * {
  *     unsigned short srcPort;
  *     unsigned short destPort;
- *     chunkLength = UDP_HEADER_LENGTH;
- *     B totalLengthField = B(-1);   // UDP header + payload in bytes
+ *     chunkLength = RDMA_HEADER_LENGTH;
+ *     B totalLengthField = B(-1);   // RDMA header + payload in bytes
  *     uint16_t crc \@toString(utils::hex($)) \@fromString(utils::uhex($)) = 0;
  *     CrcMode crcMode = CRC_MODE_UNDEFINED;
  * }
  * </pre>
  */
-class INET_API RdmaHeader : public ::inet::TransportHeaderBase //Cambiado
+class INET_API RdmaHeader : public ::inet::TransportHeaderBase
 {
   protected:
     unsigned short srcPort = 0;
     unsigned short destPort = 0;
     B totalLengthField = B(-1);
-    //Duda: no se sabe si es necesario
     uint16_t crc = 0;
     inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
 
   private:
-    void copy(const RdmaHeader& other);//Cambiado
+    void copy(const RdmaHeader& other);
 
   protected:
-    bool operator==(const RdmaHeader&) = delete;//Cambiado
+    bool operator==(const RdmaHeader&) = delete;
 
   public:
-    RdmaHeader();//Cambiado
-    RdmaHeader(const RdmaHeader& other);//Cambiado
-    virtual ~RdmaHeader();//Cambiado
-    RdmaHeader& operator=(const RdmaHeader& other);//Cambiado
-    virtual RdmaHeader *dup() const override {return new RdmaHeader(*this);}//Cambiado
+    RdmaHeader();
+    RdmaHeader(const RdmaHeader& other);
+    virtual ~RdmaHeader();
+    RdmaHeader& operator=(const RdmaHeader& other);
+    virtual RdmaHeader *dup() const override {return new RdmaHeader(*this);}
     virtual void parsimPack(omnetpp::cCommBuffer *b) const override;
     virtual void parsimUnpack(omnetpp::cCommBuffer *b) override;
 
@@ -102,8 +98,6 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase //Cambiado
     virtual void setDestPort(unsigned short destPort);
     virtual B getTotalLengthField() const;
     virtual void setTotalLengthField(B totalLengthField);
-
-    //Duda: creo que no es necesario
     virtual uint16_t getCrc() const;
     virtual void setCrc(uint16_t crc);
     virtual inet::CrcMode getCrcMode() const;
@@ -116,13 +110,10 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase //Cambiado
     virtual void setDestinationPort(unsigned int port) override { setDestPort(port); }
 };
 
-inline void doParsimPacking(omnetpp::cCommBuffer *b, const RdmaHeader& obj) {obj.parsimPack(b);}//Cambiado
-inline void doParsimUnpacking(omnetpp::cCommBuffer *b, RdmaHeader& obj) {obj.parsimUnpack(b);}//Cambiado
+inline void doParsimPacking(omnetpp::cCommBuffer *b, const RdmaHeader& obj) {obj.parsimPack(b);}
+inline void doParsimUnpacking(omnetpp::cCommBuffer *b, RdmaHeader& obj) {obj.parsimUnpack(b);}
 
 } // namespace inet
 
+#endif // ifndef __INET_RDMAHEADER_M_H
 
-
-
-
-#endif /* INET_TRANSPORTLAYER_RDMA_RDMAHEADER_M_H_ */
