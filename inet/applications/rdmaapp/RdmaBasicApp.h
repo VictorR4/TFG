@@ -42,6 +42,8 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
 
     // statistics:
     static int counter; // counter for generating a global number for each packet
+  protected:
+    cGate *gateToRdma = nullptr;
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
@@ -52,6 +54,9 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
 
     // chooses random destination address
     //virtual L3Address chooseDestAddr(); //Cambiado
+    void setOutputGate(cGate *toRdma) { gateToRdma = toRdma; }//Cambiado
+    virtual void sendToRdma(cMessage *msg);//Cambiado
+    virtual void send(Packet *pk);//Cambiado
     virtual void sendPacket();
     virtual void processPacket(Packet *msg);
     virtual void processStart();

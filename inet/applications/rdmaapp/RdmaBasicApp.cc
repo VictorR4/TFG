@@ -16,6 +16,7 @@
 #include "inet/common/packet/Packet.h"
 #include "inet/networklayer/common/FragmentationTag_m.h"
 #include "inet/networklayer/common/L3AddressResolver.h"
+#include "inet/common/ProtocolTag_m.h"
 
 namespace inet {
 
@@ -85,8 +86,8 @@ void RdmaBasicApp::handleMessageWhenUp(cMessage *msg)
 
 void RdmaBasicApp::processStart()
 {
-    const char *localAddress = par("localAddress");
-
+    //const char *localAddress = par("localAddress");
+    setOutputGate(gate("socketOut"));//Cambiado
     const char *destAddrs = par("destAddresses");
     cStringTokenizer tokenizer(destAddrs);
     const char *token;
@@ -126,10 +127,25 @@ void RdmaBasicApp::processSend()
     }
 }
 
-void RdmaBasicApp::sendPacket()
+void RdmaBasicApp::sendToRdma(cMessage *msg)//Cambiado
+{
+    if (!gateToRdma)
+           throw cRuntimeError("Rdma: setOutputGate() must be invoked");
+       EV_DEBUG << "Sending to Rdma protocol" << EV_FIELD(msg) << EV_ENDL;
+       auto& tags = check_and_cast<ITaggedObject *>(msg)->getTags();
+       tags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::rdma);
+       check_and_cast<cSimpleModule *>(gateToRdma->getOwnerModule())->send(msg, gateToRdma);
+}
+
+void RdmaBasicApp::send(Packet *pk){//Cambiado
+    sendToRdma(pk);
+}
+
+void RdmaBasicApp::sendPacket()//Cambiado
 {
     char msgName[32];
-    sprintf(msgName, "RdmaBasicAppData-%d", counter++);
+    counter += 1;
+    sprintf(msgName, "RdmaBasicAppData-%d", numSent);
     Packet *packet = new Packet(msgName);
     if (dontFragment)
         packet->addTag<FragmentationReq>()->setDontFragment(true);
@@ -140,6 +156,8 @@ void RdmaBasicApp::sendPacket()
     packet->insertAtBack(payload);
     emit(packetSentSignal, packet);
     //socket.sendTo(packet, destAddr, destPort);
+    send(packet);
+    numSent++;
 }
 
 
@@ -162,7 +180,7 @@ void RdmaBasicApp::refreshDisplay() const
 void RdmaBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
-    EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+    EV_INFO << "Received packet: " << receive() << endl;
     delete pk;
     numReceived++;
 }
