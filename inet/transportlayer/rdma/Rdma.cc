@@ -91,11 +91,6 @@ void Rdma::handleLowerPacket(Packet *packet)//Cambiado
         throw cRuntimeError("Unknown protocol: %s(%d)", protocol->getName(), protocol->getId());
 }
 
-void Rdma::handleUpperCommand(cMessage *msg)//Cambiado
-{
-
-}
-
 
 ushort Rdma::getEphemeralPort()//Cambiado
 {
@@ -124,37 +119,25 @@ ushort Rdma::getEphemeralPort()//Cambiado
 void Rdma::handleUpperPacket(Packet *packet)//Cambiado
 {
     emit(packetReceivedFromUpperSignal, packet); //emit a signal indicating the arrival of a msg from app-layer
-    int srcPort = -1, destPort = -1;
+
     L3Address srcAddr, destAddr;
     auto addressReq = packet->addTagIfAbsent<L3AddressReq>();
     srcAddr = addressReq->getSrcAddress();
     destAddr = addressReq->getDestAddress();
 /*
-    if (srcAddr.isUnspecified())
-        addressReq->setSrcAddress(srcAddr = sd->localAddr);
-
-    if (destAddr.isUnspecified())
-        addressReq->setDestAddress(destAddr = sd->remoteAddr);
-*/
     if (auto& portsReq = packet->removeTagIfPresent<L4PortReq>()) {
         srcPort = portsReq->getSrcPort();
         destPort = portsReq->getDestPort();
     }
-/*
-    if (srcPort == -1)
-        srcPort = sd->localPort;
-
-    if (destPort == -1)
-        destPort = sd->remotePort;
 */
     const auto& interfaceReq = packet->findTag<InterfaceReq>();
     ASSERT(interfaceReq == nullptr || interfaceReq->getInterfaceId() != -1);
-
+/*
     if (interfaceReq == nullptr && destAddr.isMulticast()) {
         //auto membership = sd->findFirstMulticastMembership(destAddr);
         //int interfaceId = (membership != sd->multicastMembershipTable.end() && (*membership)->interfaceId != -1) ? (*membership)->interfaceId : sd->multicastOutputInterfaceId;
         /*if (interfaceId != -1)
-            packet->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceId);*/
+            packet->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceId);
     }
 
     if (addressReq->getDestAddress().isUnspecified())
@@ -162,7 +145,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
 
     if (destPort <= 0 || destPort > 65535)
         throw cRuntimeError("send: invalid remote port number %d", destPort);
-/*
+
     if (packet->findTag<MulticastReq>() == nullptr)
         packet->addTag<MulticastReq>()->setMulticastLoop(sd->multicastLoop);
 
@@ -190,8 +173,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
 */
     auto rdmaHeader = makeShared<RdmaHeader>();//Cambiado
     // set source and destination port
-    rdmaHeader->setSourcePort(srcPort);//Cambiado
-    rdmaHeader->setDestinationPort(destPort);//Cambiado
+    //rdmaHeader->setDstAddress(dstAddress);//Cambiado
 
     B totalLength = rdmaHeader->getChunkLength() + packet->getTotalLength();//Cambiado
     if (totalLength.get() > RDMA_MAX_MESSAGE_SIZE)

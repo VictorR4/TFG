@@ -144,7 +144,6 @@ void RdmaBasicApp::send(Packet *pk){//Cambiado
 void RdmaBasicApp::sendPacket()//Cambiado
 {
     char msgName[32];
-    counter += 1;
     sprintf(msgName, "RdmaBasicAppData-%d", numSent);
     Packet *packet = new Packet(msgName);
     if (dontFragment)

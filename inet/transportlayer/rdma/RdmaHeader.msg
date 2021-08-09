@@ -23,12 +23,13 @@ class RdmaHeader extends TransportHeaderBase
     B totalLengthField = B(-1);   // RDMA header + payload in bytes
     uint16_t crc = 0 @toString(utils::hex($)) @fromString(utils::uhex($));
     CrcMode crcMode = CRC_MODE_UNDEFINED;
+    int dstAddress;//Cambiado
 }
 
 cplusplus(RdmaHeader) {{
   public:
-    virtual unsigned int getSourcePort() const override { return getSrcPort(); }
-    virtual void setSourcePort(unsigned int port) override { setSrcPort(port); }
-    virtual unsigned int getDestinationPort() const override { return getDestPort(); }
-    virtual void setDestinationPort(unsigned int port) override { setDestPort(port); }
+//    virtual unsigned int getSourcePort() const override { return getSrcPort(); }
+//    virtual void setSourcePort(unsigned int port) override { setSrcPort(port); }
+//    virtual unsigned int getDestinationPort() const override { return getDestPort(); }
+//    virtual void setDestinationPort(unsigned int port) override { setDestPort(port); }
 }}
