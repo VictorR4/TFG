@@ -707,7 +707,7 @@ void Udp::setMulticastSourceFilter(SockDesc *sd, NetworkInterface *ie, L3Address
 // ###############################################################
 // ####################### set options end #######################
 // ###############################################################
-
+//Only method that participate in the sending of a packet to ip layer
 void Udp::handleUpperPacket(Packet *packet)
 {
     if (packet->getKind() != UDP_C_DATA)

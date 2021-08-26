@@ -20,6 +20,7 @@
 
 #include "inet/common/LayeredProtocolBase.h"
 #include "inet/common/lifecycle/ModuleOperations.h"
+#include "inet/common/Protocol.h" //Cambio importante
 
 namespace inet {
 

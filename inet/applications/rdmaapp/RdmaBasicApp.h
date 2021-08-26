@@ -1,8 +1,8 @@
 /*
  * RdmaBasicApp.h
  *
- *  Created on: Aug 2, 2021
- *      Author: usuario
+ *  Created on: Aug 10, 2021
+ *      Author: vr4
  */
 
 #ifndef INET_APPLICATIONS_RDMAAPP_RDMABASICAPP_H_
@@ -26,6 +26,7 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
 
     // parameters
     int destAddress;//Cambiado
+    std::vector<L3Address> destAddresses;
     std::vector<std::string> destAddressStr;
     int localPort = -1, destPort = -1;    //Cambiado
     clocktime_t startTime;
@@ -53,10 +54,11 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     virtual void refreshDisplay() const override;
 
     // chooses random destination address
-    //virtual L3Address chooseDestAddr(); //Cambiado
+    virtual L3Address chooseDestAddr(); //Cambiado
     void setOutputGate(cGate *toRdma) { gateToRdma = toRdma; }//Cambiado
     virtual void sendToRdma(cMessage *msg);//Cambiado
     virtual void send(Packet *pk);//Cambiado
+    void sendTo(Packet *pk, L3Address destAddr, int destPort);//Cambiado
     virtual void sendPacket();
     virtual void processPacket(Packet *msg);
     virtual void processStart();

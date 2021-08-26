@@ -125,7 +125,8 @@ class INET_API Protocol
     static const Protocol udp;
     static const Protocol xmac;
     static const Protocol xtp;
-    static const Protocol rdma;//Cambiado
+    static const Protocol rdma;
+
     // INET specific conceptual protocol identifiers (in alphanumeric order)
     static const Protocol ackingMac;
     static const Protocol apskPhy;

@@ -42,7 +42,7 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
             app[i].socketOut --> at.in++;
             app[i].socketIn <-- at.out++;
         }
-		
+
         at.out++ --> udp.appIn if hasUdp;
         at.in++ <-- udp.appOut if hasUdp;
 
@@ -55,7 +55,7 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
         at.out++ --> tn.in++;
         at.in++ <-- tn.out++;
         
-       	at.out++ --> rdma.appIn if hasRdma;
+		at.out++ --> rdma.appIn if hasRdma;
 		at.in++ <-- rdma.appOut if hasRdma;
 }
 

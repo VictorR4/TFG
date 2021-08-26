@@ -28,9 +28,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
     parameters:
         bool hasUdp = default(firstAvailableOrEmpty("Udp") != "");
         bool hasTcp = default(firstAvailableOrEmpty("Tcp", "TcpLwip", "TcpNsc") != "");
-        bool hasRdma = default(firstAvailableOrEmpty("Rdma") != "");
         bool hasSctp = default(false);
-        
+		bool hasRdma = default(firstAvailableOrEmpty("Rdma") != "");
         @figure[transportLayer](type=rectangle; pos=250,156; size=1000,130; fillColor=#ff0000; lineColor=#808080; cornerRadius=5; fillOpacity=0.1);
         @figure[transportLayer.title](type=text; pos=1245,161; anchor=ne; text="transport layer");
     submodules:
@@ -46,7 +45,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
             parameters:
                 @display("p=675,226");
         }
-        rdma: <default(firstAvailableOrEmpty("Rdma"))> like IRdma if hasRdma{
+ 		rdma: <default(firstAvailableOrEmpty("Rdma"))> like IRdma if hasRdma{
             parameters:
             @display("p=885.472,224.672");
         }
@@ -54,10 +53,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
             parameters:
                 @display("p=750,296;b=1000,5,,,,1");
         }
-		
+
     connections allowunconnected:
-        
-        
         udp.ipOut --> tn.in++ if hasUdp;
         udp.ipIn <-- tn.out++ if hasUdp;
 
@@ -80,6 +77,6 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         tn.in++ <-- nl.out++;
         
         rdma.lowerLayerOut --> nl.in++ if hasRdma;
-        rdma.lowerLayerIn <-- nl.out++ if hasRdma; 
+        rdma.lowerLayerIn <-- nl.out++ if hasRdma;
 }
 

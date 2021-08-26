@@ -1,8 +1,8 @@
 /*
  * rdmahdr.h
  *
- *  Created on: Aug 3, 2021
- *      Author: usuario
+ *  Created on: Aug 10, 2021
+ *      Author: vr4
  */
 
 #ifndef INET_TRANSPORTLAYER_RDMA_HEADERS_RDMAHDR_H_

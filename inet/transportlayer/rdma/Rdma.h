@@ -1,8 +1,8 @@
 /*
  * Rdma.h
  *
- *  Created on: Aug 2, 2021
- *      Author: usuario
+ *  Created on: Aug 10, 2021
+ *      Author: vr4
  */
 
 #ifndef INET_TRANSPORTLAYER_RDMA_RDMA_H_
@@ -21,6 +21,20 @@
 #include "inet/transportlayer/common/CrcMode_m.h"
 #include "inet/transportlayer/common/TransportPseudoHeader_m.h"
 #include "inet/transportlayer/contract/udp/UdpControlInfo.h"
+#include <list>
+#include <map>
+
+#include "inet/common/Protocol.h"
+#include "inet/common/lifecycle/ModuleOperations.h"
+#include "inet/common/packet/Message.h"
+#include "inet/common/packet/Packet.h"
+#include "inet/common/packet/chunk/BytesChunk.h"
+#include "inet/networklayer/contract/INetfilter.h"
+#include "inet/transportlayer/base/TransportProtocolBase.h"
+#include "inet/transportlayer/common/CrcMode_m.h"
+#include "inet/transportlayer/common/TransportPseudoHeader_m.h"
+#include "inet/transportlayer/contract/udp/UdpControlInfo.h"
+
 
 namespace inet {
 
@@ -94,8 +108,10 @@ class INET_API Rdma: public TransportProtocolBase
     // process packets from link layer
     virtual void handleLowerPacket(Packet *appData) override;
 
+    virtual void sendPacketToNIC(Packet *packet);
+    virtual void sendDatagramToOutput(Packet *packet, L3Address& destAddr);
     // process commands from application
-    virtual void handleUpperCommand(cMessage *msg) override;
+    //virtual void handleUpperCommand(cMessage *msg) override;
 
     // create a blank Rdma packet; override to subclass RdmaHeader
     virtual RdmaHeader *createRdmaPacket();//Cambiado
@@ -123,5 +139,6 @@ class INET_API Rdma: public TransportProtocolBase
 };
 
 } // namespace inet
+
 
 #endif /* INET_TRANSPORTLAYER_RDMA_RDMA_H_ */

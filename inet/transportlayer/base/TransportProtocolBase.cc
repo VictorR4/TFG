@@ -26,7 +26,9 @@ bool TransportProtocolBase::isUpperMessage(cMessage *msg)
 
 bool TransportProtocolBase::isLowerMessage(cMessage *msg)
 {
-    return msg->arrivedOn("ipIn");
+    if(msg->arrivedOn("ipIn"))
+        return msg->arrivedOn("ipIn");
+    else return msg->arrivedOn("lowerLayerIn");
 }
 
 bool TransportProtocolBase::isInitializeStage(int stage)

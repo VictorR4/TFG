@@ -1,10 +1,9 @@
 /*
  * RdmaBasicApp.cc
  *
- *  Created on: Aug 2, 2021
- *      Author: usuario
+ *  Created on: Aug 10, 2021
+ *      Author: vr4
  */
-
 
 #include "inet/applications/rdmaapp/RdmaBasicApp.h"
 
@@ -17,12 +16,13 @@
 #include "inet/networklayer/common/FragmentationTag_m.h"
 #include "inet/networklayer/common/L3AddressResolver.h"
 #include "inet/common/ProtocolTag_m.h"
+#include "inet/networklayer/common/L3AddressTag_m.h"
+#include "inet/transportlayer/common/L4PortTag_m.h"
 
 namespace inet {
 
 Define_Module(RdmaBasicApp);
 
-int RdmaBasicApp::counter;
 
 RdmaBasicApp::~RdmaBasicApp()
 {
@@ -39,8 +39,8 @@ void RdmaBasicApp::initialize(int stage)
         WATCH(numSent);
         WATCH(numReceived);
 
-        localPort = par("localPort"); //Cambiado
-        destPort = par("destPort");   //Cambiado
+        localPort = par("localPort");
+        destPort = par("destPort");
         startTime = par("startTime");
         stopTime = par("stopTime");
         packetName = par("packetName");
@@ -84,10 +84,19 @@ void RdmaBasicApp::handleMessageWhenUp(cMessage *msg)
         socket.processMessage(msg);*/
 }
 
+L3Address RdmaBasicApp::chooseDestAddr()
+{
+    int k = intrand(destAddresses.size());
+    if (destAddresses[k].isUnspecified() || destAddresses[k].isLinkLocal()) {
+        L3AddressResolver().tryResolve(destAddressStr[k].c_str(), destAddresses[k]);
+    }
+    return destAddresses[k];
+}
+
 void RdmaBasicApp::processStart()
 {
-    //const char *localAddress = par("localAddress");
     setOutputGate(gate("socketOut"));//Cambiado
+//    const char *localAddress = par("localAddress");
     const char *destAddrs = par("destAddresses");
     cStringTokenizer tokenizer(destAddrs);
     const char *token;
@@ -98,10 +107,10 @@ void RdmaBasicApp::processStart()
         L3AddressResolver().tryResolve(token, result);
         if (result.isUnspecified())
             EV_ERROR << "cannot resolve destination address: " << token << endl;
-        //destAddresses.push_back(result);
+        destAddresses.push_back(result);
     }
 
-    if (destAddress != 0) {
+    if (!destAddresses.empty()) {//Cambiado
         selfMsg->setKind(SEND);
         processSend();
     }
@@ -113,6 +122,7 @@ void RdmaBasicApp::processStart()
     }
 }
 
+//Completo
 void RdmaBasicApp::processSend()
 {
     sendPacket();
@@ -137,6 +147,16 @@ void RdmaBasicApp::sendToRdma(cMessage *msg)//Cambiado
        check_and_cast<cSimpleModule *>(gateToRdma->getOwnerModule())->send(msg, gateToRdma);
 }
 
+void RdmaBasicApp::sendTo(Packet *pk, L3Address destAddr, int destPort)
+{
+    pk->addTagIfAbsent<L4PortReq>()->setSrcPort(localPort);
+    auto addressReq = pk->addTagIfAbsent<L3AddressReq>();
+    addressReq->setDestAddress(destAddr);
+    if (destPort != -1)
+        pk->addTagIfAbsent<L4PortReq>()->setDestPort(destPort);
+    sendToRdma(pk);
+}
+
 void RdmaBasicApp::send(Packet *pk){//Cambiado
     sendToRdma(pk);
 }
@@ -153,9 +173,10 @@ void RdmaBasicApp::sendPacket()//Cambiado
     payload->setSequenceNumber(numSent);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
     packet->insertAtBack(payload);
+    L3Address destAddr = chooseDestAddr();
     emit(packetSentSignal, packet);
     //socket.sendTo(packet, destAddr, destPort);
-    send(packet);
+    sendTo(packet, destAddr, destPort);
     numSent++;
 }
 
@@ -207,7 +228,5 @@ void RdmaBasicApp::handleCrashOperation(LifecycleOperation *operation)
 }
 
 } // namespace inet
-
-
 
 

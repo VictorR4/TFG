@@ -1,9 +1,12 @@
-//
-// Generated file, do not edit! Created by nedtool 6.0 from inet/transportlayer/rdma/RdmaHeader.msg.
-//
+/*
+ * RdmaHeader_m.h
+ *
+ *  Created on: Aug 10, 2021
+ *      Author: vr4
+ */
 
-#ifndef __INET_RDMAHEADER_M_H
-#define __INET_RDMAHEADER_M_H
+#ifndef INET_TRANSPORTLAYER_RDMA_RDMAHEADER_M_H_
+#define INET_TRANSPORTLAYER_RDMA_RDMAHEADER_M_H_
 
 #if defined(__clang__)
 #  pragma clang diagnostic ignored "-Wreserved-id-macro"
@@ -76,8 +79,8 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     B totalLengthField = B(-1);
     uint16_t crc = 0;
     inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
-    int srcAddress = 0;
-    int dstAddress = 0;
+   /* L3Address srcAddress = 0;
+    L3Address dstAddress = 0;*/
 
   private:
     void copy(const RdmaHeader& other);
@@ -105,10 +108,10 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     virtual void setCrc(uint16_t crc);
     virtual inet::CrcMode getCrcMode() const;
     virtual void setCrcMode(inet::CrcMode crcMode);
-    virtual int getSrcAddress() const;//Cambiado
+ /*   virtual int getSrcAddress() const;//Cambiado
     virtual void setSrcAddress(int srcAddress);//Cambiado
     virtual int getDestAddress() const;//Cambiado
-    virtual void setDestAddress(int dstAddress);//Cambiado
+    virtual void setDestAddress(int dstAddress);//Cambiado*/
 
   public:
     virtual unsigned int getSourcePort() const override { return getSrcPort(); }
@@ -122,5 +125,6 @@ inline void doParsimUnpacking(omnetpp::cCommBuffer *b, RdmaHeader& obj) {obj.par
 
 } // namespace inet
 
-#endif // ifndef __INET_RDMAHEADER_M_H
 
+
+#endif /* INET_TRANSPORTLAYER_RDMA_RDMAHEADER_M_H_ */
