@@ -48,7 +48,7 @@ void RdmaBasicApp::initialize(int stage)
         if (stopTime >= CLOCKTIME_ZERO && stopTime < startTime)
             throw cRuntimeError("Invalid startTime/stopTime parameters");
         selfMsg = new ClockEvent("sendTimer");
-        destAddress = par("destAddress");//Cambiado
+        //destAddress = par("destAddress");//Cambiado
     }
 }
 

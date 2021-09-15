@@ -78,6 +78,8 @@ class INET_API Rdma: public TransportProtocolBase
     // other state vars
     ushort lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
     IInterfaceTable *ift = nullptr;
+    Icmp *icmp = nullptr;
+    Icmpv6 *icmpv6 = nullptr;
 
     // statistics
     int numSent = 0;
@@ -108,8 +110,6 @@ class INET_API Rdma: public TransportProtocolBase
     // process packets from link layer
     virtual void handleLowerPacket(Packet *appData) override;
 
-    virtual void sendPacketToNIC(Packet *packet);
-    virtual void sendDatagramToOutput(Packet *packet, L3Address& destAddr);
     // process commands from application
     //virtual void handleUpperCommand(cMessage *msg) override;
 

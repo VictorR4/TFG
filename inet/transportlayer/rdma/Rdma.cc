@@ -28,6 +28,22 @@
 #include "inet/networklayer/contract/IL3AddressType.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
 #include "inet/linklayer/common/MacAddressTag_m.h"
+
+#ifdef INET_WITH_IPv4
+#include "inet/networklayer/ipv4/Icmp.h"
+#include "inet/networklayer/ipv4/IcmpHeader.h"
+#include "inet/networklayer/ipv4/Ipv4Header_m.h"
+#include "inet/networklayer/ipv4/Ipv4InterfaceData.h"
+#endif // ifdef INET_WITH_IPv4
+
+#ifdef INET_WITH_IPv6
+#include "inet/networklayer/icmpv6/Icmpv6.h"
+#include "inet/networklayer/icmpv6/Icmpv6Header_m.h"
+#include "inet/networklayer/ipv6/Ipv6ExtensionHeaders_m.h"
+#include "inet/networklayer/ipv6/Ipv6Header.h"
+#include "inet/networklayer/ipv6/Ipv6InterfaceData.h"
+#endif // ifdef INET_WITH_IPv6
+
 #include "inet/transportlayer/common/L4PortTag_m.h"
 #include "inet/transportlayer/common/L4Tools.h"
 #include "inet/transportlayer/rdma/Rdma.h"
@@ -98,15 +114,7 @@ ushort Rdma::getEphemeralPort()//Cambiado
     //ushort searchUntil = lastEphemeralPort++;
     if (lastEphemeralPort == EPHEMERAL_PORTRANGE_END) // wrap
         lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
-/*
-    while (socketsByPortMap.find(lastEphemeralPort) != socketsByPortMap.end()) {
-        if (lastEphemeralPort == searchUntil) // got back to starting point?
-            throw cRuntimeError("Ephemeral port range %d..%d exhausted, all ports occupied", EPHEMERAL_PORTRANGE_START, EPHEMERAL_PORTRANGE_END);
-        lastEphemeralPort++;
-        if (lastEphemeralPort == EPHEMERAL_PORTRANGE_END) // wrap
-            lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
-    }
-*/
+
     // found a free one, return it
     return lastEphemeralPort;
 }
@@ -125,10 +133,6 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     srcAddr = addressReq->getSrcAddress();
     destAddr = addressReq->getDestAddress();
 
-   /*MacAddress srcMacAddr = srcAddr.toMac();
-    packet->addTagIfAbsent<MacAddressReq>()->setSrcAddress(srcMacAddr);
-    MacAddress destMacAddr = destAddr.toMac();
-    packet->addTagIfAbsent<MacAddressReq>()->setDestAddress(destMacAddr);*/
     int srcPort = -1, destPort = -1;
 
     if (auto& portsReq = packet->removeTagIfPresent<L4PortReq>()) {
@@ -145,7 +149,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     ASSERT(interfaceReq == nullptr || interfaceReq->getInterfaceId() != -1);
 
 
-   if (interfaceReq == nullptr /*&& destAddr.isMulticast()*/) {
+   if (interfaceReq == nullptr) {
        auto membership = ift->findFirstMulticastInterface();
         //auto membership = sd->findFirstMulticastMembership(destAddr);
         int interfaceId =  membership->getInterfaceId() ;// sd->multicastMembershipTable.end() && (*membership)->interfaceId != -1) ? (*membership)->interfaceId : sd->multicastOutputInterfaceId;
@@ -157,19 +161,8 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
         throw cRuntimeError("send: unspecified destination address");
     if (destPort <= 0 || destPort > 65535)
         throw cRuntimeError("send: invalid remote port number %d", destPort);
- /*if (packet->findTag<MulticastReq>() == nullptr)
-        packet->addTag<MulticastReq>()->setMulticastLoop(sd->multicastLoop);
-   if (sd->ttl != -1 && packet->findTag<HopLimitReq>() == nullptr)
-        packet->addTag<HopLimitReq>()->setHopLimit(sd->ttl);
-    if (sd->dscp != -1 && packet->findTag<DscpReq>() == nullptr)
-        packet->addTag<DscpReq>()->setDifferentiatedServicesCodePoint(sd->dscp);
-    if (sd->tos != -1 && packet->findTag<TosReq>() == nullptr) {
-        packet->addTag<TosReq>()->setTos(sd->tos);
-        if (packet->findTag<DscpReq>())
-            throw cRuntimeError("setting error: TOS and DSCP found together");
-    }
 
-    const Protocol *l3Protocol = &Protocol::ipv4;
+    const Protocol *l3Protocol = nullptr;
     // TODO apps use ModuleIdAddress if the network interface doesn't have an IP address configured, and UDP uses NextHopForwarding which results in a weird error in MessageDispatcher
     if (destAddr.getType() == L3Address::IPv4)
         l3Protocol = &Protocol::ipv4;
@@ -177,7 +170,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
         l3Protocol = &Protocol::ipv6;
     else
         l3Protocol = &Protocol::nextHopForwarding;
-*/
+
     auto rdmaHeader = makeShared<RdmaHeader>();//Cambiado
     // set source and destination port
     rdmaHeader->setSourcePort(srcPort);
@@ -194,58 +187,20 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     }
     else {
         rdmaHeader->setCrcMode(crcMode);//Cambiado
-        //insertCrc(l3Protocol, srcAddr, destAddr, rdmaHeader, packet);//Cambiado
+        insertCrc(l3Protocol, srcAddr, destAddr, rdmaHeader, packet);
     }
 
     insertTransportProtocolHeader(packet, Protocol::rdma, rdmaHeader);//Cambiado
-    packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::ethernetMac);
+    packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
     packet->setKind(0);
 
-    EV_INFO << "Sending app packet " << packet->getName();// << " over " << l3Protocol->getName() << ".\n";
+    EV_INFO << "Sending app packet " << packet->getName() << " over " << l3Protocol->getName() << ".\n";
     emit(packetSentSignal, packet); //emit a signal indicating the sending of a msg
     emit(packetSentToLowerSignal, packet); //emit a signal indicating the sending of a msg to lower layer
-    //sendPacketToNIC(packet);
-    sendDatagramToOutput(packet, destAddr);
+
+    send(packet, "lowerLayerOut");
     numSent++;
 }
-
-/*
- * Methods for sending to eth
- */
-
-void Rdma::sendPacketToNIC(Packet *packet)
-{
-    auto networkInterface = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
-    EV_INFO << "Sending " << packet << " to output interface = " << networkInterface->getInterfaceName() << ".\n";
-    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
-    packet->addTagIfAbsent<DispatchProtocolInd>()->setProtocol(&Protocol::rdma);
-    auto protocol = networkInterface->getProtocol();
-    if (protocol != nullptr)
-        packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(protocol);
-    else
-        packet->removeTagIfPresent<DispatchProtocolReq>();
-    ASSERT(packet->findTag<InterfaceReq>() != nullptr);
-    send(packet, "lowerLayerOut");
-}
-
-void Rdma::sendDatagramToOutput(Packet *packet, L3Address& destAddr)
-{
-    const NetworkInterface *ie = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
-    //auto nextHopAddressReq = packet->removeTag<NextHopAddressReq>();
-    Ipv4Address nextHopAddr = destAddr.toIpv4();
-    if (!ie->isBroadcast() || ie->getMacAddress().isUnspecified()) // we can't do ARP
-        sendPacketToNIC(packet);
-    else {
-        MacAddress macAddr = ie->getMacAddress(); // Mal, coge la mac del host origen
-        EV_DETAIL << "Sending packet to MAC address " << macAddr << "\n";
-        //MacAddress nextHopMacAddr = resolveNextHopMacAddress(packet, nextHopAddr, ie);
-
-//        ASSERT2(pendingPackets.find(nextHopAddr) == pendingPackets.end(), "Ipv4-ARP error: nextHopAddr found in ARP table, but Ipv4 queue for nextHopAddr not empty");
-        packet->addTagIfAbsent<MacAddressReq>()->setDestAddress(macAddr);
-        sendPacketToNIC(packet);
-    }
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Rdma::insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<RdmaHeader>& rdmaHeader, Packet *packet)//Cambiado
 {
@@ -344,38 +299,6 @@ void Rdma::processRdmaPacket(Packet *rdmaPacket)//Cambiado
     if (totalLength < rdmaPacket->getDataLength()) {//Cambiado
         rdmaPacket->setBackOffset(rdmaHeaderPopPosition + totalLength);//Cambiado
     }
-/*
-    bool isMulticast = destAddr.isMulticast();
-    bool isBroadcast = destAddr.isBroadcast();
-    if (!isMulticast && !isBroadcast) {
-        // unicast packet, there must be only one socket listening
-        //SockDesc *sd = findSocketForUnicastPacket(destAddr, destPort, srcAddr, srcPort);
-        if (!sd) {
-            EV_WARN << "No socket registered on port " << destPort << "\n";
-            rdmaPacket->setFrontOffset(rdmaHeaderPopPosition);//Cambiado
-            processUndeliverablePacket(rdmaPacket);//Cambiado
-            return;
-        }
-        else {
-            sendUp(rdmaHeader, rdmaPacket, sd, srcPort, destPort);//Cambiado
-        }
-    }
-    else {
-        // multicast packet: find all matching sockets, and send up a copy to each
-        //std::vector<SockDesc *> sds = findSocketsForMcastBcastPacket(destAddr, destPort, srcAddr, srcPort, isMulticast, isBroadcast);
-        if (sds.empty()) {
-            EV_WARN << "No socket registered on port " << destPort << "\n";
-            rdmaPacket->setFrontOffset(rdmaHeaderPopPosition);//Cambiado
-            processUndeliverablePacket(rdmaPacket);//Cambiado
-            return;
-        }
-        else {
-            unsigned int i;
-            for (i = 0; i < sds.size() - 1; i++) // sds.size() >= 1
-                sendUp(rdmaHeader, rdmaPacket->dup(), sds[i], srcPort, destPort); // dup() to all but the last one //Cambiado
-            sendUp(rdmaHeader, rdmaPacket, sds[i], srcPort, destPort); // send original to last socket //Cambiado
-        }
-    }*/
 }
 
 bool Rdma::verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader>& rdmaHeader, Packet *packet)//Cambiado
@@ -437,11 +360,25 @@ void Rdma::processUndeliverablePacket(Packet *rdmaPacket)//Cambiado
     // push back network protocol header
     rdmaPacket->trim();//Cambiado
     rdmaPacket->insertAtFront(rdmaPacket->getTag<NetworkProtocolInd>()->getNetworkProtocolHeader());//Cambiado
-    //auto inIe = rdmaPacket->getTag<InterfaceInd>()->getInterfaceId();//Cambiado
+    auto inIe = rdmaPacket->getTag<InterfaceInd>()->getInterfaceId();
 
     if (protocol->getId() == Protocol::ipv4.getId()) {
-
-        delete rdmaPacket;//Cambiado
+#ifdef INET_WITH_IPv4
+        if (!icmp)
+            // TODO move to initialize?
+            icmp = getModuleFromPar<Icmp>(par("icmpModule"), this);
+        icmp->sendErrorMessage(rdmaPacket, inIe, ICMP_DESTINATION_UNREACHABLE, ICMP_DU_PORT_UNREACHABLE);
+#endif // ifdef INET_WITH_IPv4
+        delete rdmaPacket;
+    }
+    else if (protocol->getId() == Protocol::ipv6.getId()) {
+#ifdef INET_WITH_IPv6
+        if (!icmpv6)
+            // TODO move to initialize?
+            icmpv6 = getModuleFromPar<Icmpv6>(par("icmpv6Module"), this);
+        icmpv6->sendErrorMessage(rdmaPacket, ICMPv6_DESTINATION_UNREACHABLE, PORT_UNREACHABLE);
+#endif // ifdef INET_WITH_IPv6
+        delete rdmaPacket;
     }
     else if (protocol->getId() == Protocol::nextHopForwarding.getId()) {
         delete rdmaPacket;//Cambiado
@@ -452,57 +389,27 @@ void Rdma::processUndeliverablePacket(Packet *rdmaPacket)//Cambiado
         delete rdmaPacket;//Cambiado
     }
 }
-/*
-void Rdma::sendUp(Ptr<const RdmaHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort)//Cambiado
-{
-    EV_INFO << "Sending payload up to socket sockId=" << sd->sockId << "\n";
-    // send payload with UdpControlInfo up to the application
-    payload->setKind(UDP_I_DATA);
-    payload->removeTagIfPresent<PacketProtocolTag>();
-    payload->removeTagIfPresent<DispatchProtocolReq>();
-    //payload->addTagIfAbsent<SocketInd>()->setSocketId(sd->sockId);
-    payload->addTagIfAbsent<TransportProtocolInd>()->setProtocol(&Protocol::rdma);
-    payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
-    payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
-    payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
-    emit(packetSentToUpperSignal, payload);
-    send(payload, "appOut");
-    numPassedUp++;
-}
-*/
 
-/*
-void Rdma::sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort)//Cambiado
-{
-    auto indication = new Indication("ERROR", UDP_I_ERROR);
-    UdpErrorIndication *udpCtrl = new UdpErrorIndication();
-    indication->setControlInfo(udpCtrl);
-    // FIXME notifyMsg->addTagIfAbsent<InterfaceInd>()->setInterfaceId(interfaceId);
-    indication->addTag<SocketInd>()->setSocketId(sd->sockId);
-    auto addresses = indication->addTag<L3AddressInd>();
-    addresses->setSrcAddress(localAddr);
-    addresses->setDestAddress(remoteAddr);
-    auto ports = indication->addTag<L4PortInd>();
-    ports->setSrcPort(sd->localPort);
-    ports->setDestPort(remotePort);
-    send(indication, "appOut");
-}
-*/
+
 // #############################
 // other UDP methods
 // #############################
 void Rdma::handleStartOperation(LifecycleOperation *operation)
 {
+    icmp = nullptr;
+    icmpv6 = nullptr;
 }
 
 void Rdma::handleStopOperation(LifecycleOperation *operation)
 {
-
+    icmp = nullptr;
+    icmpv6 = nullptr;
 }
 
 void Rdma::handleCrashOperation(LifecycleOperation *operation)
 {
-
+    icmp = nullptr;
+    icmpv6 = nullptr;
 }
 
 void Rdma::refreshDisplay() const//Cambiado
@@ -563,14 +470,7 @@ INetfilter::IHook::Result Rdma::CrcInsertion::datagramPostRoutingHook(Packet *pa
 
     return ACCEPT;
 }
-/*
-bool Rdma::MulticastMembership::isSourceAllowed(L3Address sourceAddr)//Cambiado
-{
-    auto it = std::find(sourceList.begin(), sourceList.end(), sourceAddr);
-    return (filterMode == UDP_INCLUDE_MCAST_SOURCES && it != sourceList.end()) ||
-           (filterMode == UDP_EXCLUDE_MCAST_SOURCES && it == sourceList.end());
-}
-*/
+
 // unused functions!
 
 RdmaHeader *Rdma::createRdmaPacket()//Cambiado

@@ -114,6 +114,7 @@ ProtocolGroup ProtocolGroup::ipprotocol("ipprotocol", {
     { 8, &Protocol::egp },
     { 9, &Protocol::igp },
     { 17, &Protocol::udp },
+    { 20, &Protocol::rdma },//Cambiado
     { 36, &Protocol::xtp },
     { 41, &Protocol::ipv6 },
     { 46, &Protocol::rsvpTe },

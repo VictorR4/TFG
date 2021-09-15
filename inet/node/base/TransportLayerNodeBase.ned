@@ -76,7 +76,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         tn.out++ --> nl.in++;
         tn.in++ <-- nl.out++;
         
-        rdma.lowerLayerOut --> nl.in++ if hasRdma;
-        rdma.lowerLayerIn <-- nl.out++ if hasRdma;
+        rdma.lowerLayerOut --> tn.in++ if hasRdma;
+        rdma.lowerLayerIn <-- tn.out++ if hasRdma;
 }
 

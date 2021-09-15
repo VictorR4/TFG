@@ -21,7 +21,7 @@ import inet.node.base.ApplicationLayerNodeBase;
 network RdmaHost extends ApplicationLayerNodeBase
 {
     parameters:
-        int srcAddresses;
+        //int srcAddresses;
         @display("i=device/pc2");
         @figure[submodules];
 }
