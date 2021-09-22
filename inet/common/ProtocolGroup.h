@@ -52,6 +52,7 @@ class INET_API ProtocolGroup
     static ProtocolGroup snapOui;
     static ProtocolGroup tcpprotocol;
     static ProtocolGroup udpprotocol;
+    static ProtocolGroup rdmaprotocol;
 };
 
 } // namespace inet

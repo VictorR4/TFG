@@ -25,7 +25,6 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     enum SelfMsgKinds { START = 1, SEND, STOP };
 
     // parameters
-    int destAddress;//Cambiado
     std::vector<L3Address> destAddresses;
     std::vector<std::string> destAddressStr;
     int localPort = -1, destPort = -1;    //Cambiado
@@ -64,7 +63,7 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     virtual void processStart();
     virtual void processSend();
     virtual void processStop();
-
+    static std::string getReceivedPacketInfo(Packet *pk);
     virtual void handleStartOperation(LifecycleOperation *operation) override;
     virtual void handleStopOperation(LifecycleOperation *operation) override;
     virtual void handleCrashOperation(LifecycleOperation *operation) override;

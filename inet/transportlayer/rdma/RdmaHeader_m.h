@@ -57,7 +57,7 @@ const B RDMA_HEADER_LENGTH = B(8);
  * Class generated from <tt>inet/transportlayer/rdma/RdmaHeader.msg:19</tt> by nedtool.
  * <pre>
  * //
- * // Represents an Udp header, to be used with the ~Udp module.
+ * // Represents an Rdma header, to be used with the ~Rdma module.
  * //
  * class RdmaHeader extends TransportHeaderBase
  * {
@@ -79,8 +79,6 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     B totalLengthField = B(-1);
     uint16_t crc = 0;
     inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
-   /* L3Address srcAddress = 0;
-    L3Address dstAddress = 0;*/
 
   private:
     void copy(const RdmaHeader& other);
@@ -108,10 +106,6 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     virtual void setCrc(uint16_t crc);
     virtual inet::CrcMode getCrcMode() const;
     virtual void setCrcMode(inet::CrcMode crcMode);
- /*   virtual int getSrcAddress() const;//Cambiado
-    virtual void setSrcAddress(int srcAddress);//Cambiado
-    virtual int getDestAddress() const;//Cambiado
-    virtual void setDestAddress(int dstAddress);//Cambiado*/
 
   public:
     virtual unsigned int getSourcePort() const override { return getSrcPort(); }

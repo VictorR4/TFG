@@ -125,7 +125,7 @@ void Udp::initialize(int stage)
         registerProtocol(Protocol::udp, gate("ipOut"), gate("ipIn"));
     }
 }
-
+//Usado en la recepción
 void Udp::handleLowerPacket(Packet *packet)
 {
     // received from IP layer
@@ -920,7 +920,7 @@ void Udp::destroySocket(int sockId)
 
     destroySocket(it);
 }
-
+//Usado en la recepción
 void Udp::processUDPPacket(Packet *udpPacket)
 {
     ASSERT(udpPacket->getControlInfo() == nullptr);
@@ -990,7 +990,26 @@ void Udp::processUDPPacket(Packet *udpPacket)
         }
     }
 }
+//Usado en la recepción
+void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort)
+{
+    EV_INFO << "Sending payload up to socket sockId=" << sd->sockId << "\n";
 
+    // send payload with UdpControlInfo up to the application
+    payload->setKind(UDP_I_DATA);
+    payload->removeTagIfPresent<PacketProtocolTag>();
+    payload->removeTagIfPresent<DispatchProtocolReq>();
+    payload->addTagIfAbsent<SocketInd>()->setSocketId(sd->sockId);
+    payload->addTagIfAbsent<TransportProtocolInd>()->setProtocol(&Protocol::udp);
+    payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
+    payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
+    payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
+
+    emit(packetSentToUpperSignal, payload);
+    send(payload, "appOut");
+    numPassedUp++;
+}
+//Usado en la recepción
 bool Udp::verifyCrc(const Protocol *networkProtocol, const Ptr<const UdpHeader>& udpHeader, Packet *packet)
 {
     switch (udpHeader->getCrcMode()) {
@@ -1026,7 +1045,7 @@ bool Udp::verifyCrc(const Protocol *networkProtocol, const Ptr<const UdpHeader>&
             throw cRuntimeError("Unknown CRC mode");
     }
 }
-
+//Usado en la recepción
 Udp::SockDesc *Udp::findSocketForUnicastPacket(const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort)
 {
     auto it = socketsByPortMap.find(localPort);
@@ -1136,24 +1155,7 @@ void Udp::processUndeliverablePacket(Packet *udpPacket)
     }
 }
 
-void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort)
-{
-    EV_INFO << "Sending payload up to socket sockId=" << sd->sockId << "\n";
 
-    // send payload with UdpControlInfo up to the application
-    payload->setKind(UDP_I_DATA);
-    payload->removeTagIfPresent<PacketProtocolTag>();
-    payload->removeTagIfPresent<DispatchProtocolReq>();
-    payload->addTagIfAbsent<SocketInd>()->setSocketId(sd->sockId);
-    payload->addTagIfAbsent<TransportProtocolInd>()->setProtocol(&Protocol::udp);
-    payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
-    payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
-    payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
-
-    emit(packetSentToUpperSignal, payload);
-    send(payload, "appOut");
-    numPassedUp++;
-}
 
 void Udp::processICMPv4Error(Packet *packet)
 {

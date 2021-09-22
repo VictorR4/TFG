@@ -80,7 +80,6 @@ class INET_API Rdma: public TransportProtocolBase
     IInterfaceTable *ift = nullptr;
     Icmp *icmp = nullptr;
     Icmpv6 *icmpv6 = nullptr;
-
     // statistics
     int numSent = 0;
     int numPassedUp = 0;
@@ -96,7 +95,7 @@ class INET_API Rdma: public TransportProtocolBase
     virtual ushort getEphemeralPort();
 
 
-   // virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort);//Cambiado
+    virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort);// const L3Address& srcAddr, const L3Address& destAddr);//Cambiado
     virtual void processUndeliverablePacket(Packet *rdmaPacket);//Cambiado
     //virtual void sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
 

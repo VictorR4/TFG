@@ -148,7 +148,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     const auto& interfaceReq = packet->findTag<InterfaceReq>();
     ASSERT(interfaceReq == nullptr || interfaceReq->getInterfaceId() != -1);
 
-
+/*
    if (interfaceReq == nullptr) {
        auto membership = ift->findFirstMulticastInterface();
         //auto membership = sd->findFirstMulticastMembership(destAddr);
@@ -156,7 +156,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
         if (interfaceId != -1)
             packet->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceId);
     }
-
+*/
     if (destAddr.isUnspecified())
         throw cRuntimeError("send: unspecified destination address");
     if (destPort <= 0 || destPort > 65535)
@@ -240,7 +240,7 @@ uint16_t Rdma::computeCrc(const Protocol *networkProtocol, const L3Address& srcA
     pseudoHeader->setSrcAddress(srcAddress);
     pseudoHeader->setDestAddress(destAddress);
     pseudoHeader->setNetworkProtocolId(networkProtocol->getId());
-    pseudoHeader->setProtocolId(IP_PROT_UDP);
+    pseudoHeader->setProtocolId(IP_PROT_RDMA);
     pseudoHeader->setPacketLength(rdmaHeader->getChunkLength() + rdmaData->getChunkLength());//Cambiado
     // pseudoHeader length: ipv4: 12 bytes, ipv6: 40 bytes, other: ???
     if (networkProtocol == &Protocol::ipv4)
@@ -278,9 +278,11 @@ void Rdma::processRdmaPacket(Packet *rdmaPacket)//Cambiado
     // simulate checksum: discard packet if it has bit error
     EV_INFO << "Packet " << rdmaPacket->getName() << " received from network, dest port " << rdmaHeader->getDestinationPort() << "\n";//Cambiado
 
-    //auto srcPort = rdmaHeader->getSourcePort();//Cambiado
-    //auto destPort = rdmaHeader->getDestinationPort();//Cambiado
+    auto srcPort = rdmaHeader->getSourcePort();//Cambiado
+    auto destPort = rdmaHeader->getDestinationPort();//Cambiado
     auto l3AddressInd = rdmaPacket->getTag<L3AddressInd>();//Cambiado
+    auto srcAddr = l3AddressInd->getSrcAddress();
+    auto destAddr = l3AddressInd->getDestAddress();
     auto totalLength = B(rdmaHeader->getTotalLengthField());//Cambiado
     auto hasIncorrectLength = totalLength<rdmaHeader->getChunkLength() || totalLength> rdmaHeader->getChunkLength() + rdmaPacket->getDataLength();//Cambiado
     auto networkProtocol = rdmaPacket->getTag<NetworkProtocolInd>()->getProtocol();//Cambiado
@@ -299,8 +301,29 @@ void Rdma::processRdmaPacket(Packet *rdmaPacket)//Cambiado
     if (totalLength < rdmaPacket->getDataLength()) {//Cambiado
         rdmaPacket->setBackOffset(rdmaHeaderPopPosition + totalLength);//Cambiado
     }
+
+
+    sendUp(rdmaHeader, rdmaPacket, srcPort, destPort);//, srcAddr, destAddr);
 }
 
+void Rdma::sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort)//, const L3Address& srcAddr, const L3Address& destAddr)
+{
+    EV_INFO << "Sending payload up to app layer\n";
+
+    payload->setKind(0);
+    //payload->removeTagIfPresent<PacketProtocolTag>();
+    //payload->removeTagIfPresent<DispatchProtocolReq>();
+    payload->addTagIfAbsent<TransportProtocolInd>()->setProtocol(&Protocol::rdma);
+    payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
+    payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
+    payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
+//    payload->addTagIfAbsent<L3AddressInd>()->setSrcAddress(srcAddr);
+//    payload->addTagIfAbsent<L3AddressInd>()->setDestAddress(destAddr);
+
+    emit(packetSentToUpperSignal, payload);
+    send(payload, "appOut");
+    numPassedUp++;
+}
 bool Rdma::verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader>& rdmaHeader, Packet *packet)//Cambiado
 {
     switch (rdmaHeader->getCrcMode()) {//Cambiado

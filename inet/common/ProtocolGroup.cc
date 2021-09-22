@@ -91,7 +91,7 @@ ProtocolGroup ProtocolGroup::ethertype("ethertype", {
     { 0x88CC, &Protocol::lldp },
     { 0x88E5, &Protocol::ieee8021ae },
     { 0x891d, &Protocol::tteth },
-    { 0x3333, &Protocol::rdma}, //Cambiado
+//    { 0x3333, &Protocol::rdma}, //Cambiado
 });
 
 // excerpt from http://www.iana.org/assignments/ppp-numbers/ppp-numbers.xhtml
@@ -159,5 +159,7 @@ ProtocolGroup ProtocolGroup::tcpprotocol("tcpprotocol", {
     { 554, &Protocol::rtsp },
 });
 
+ProtocolGroup ProtocolGroup::rdmaprotocol("rdmaprotocol", {
+});
 } // namespace inet
 

@@ -18,6 +18,7 @@
 #include "inet/common/ProtocolTag_m.h"
 #include "inet/networklayer/common/L3AddressTag_m.h"
 #include "inet/transportlayer/common/L4PortTag_m.h"
+#include "inet/linklayer/common/InterfaceTag_m.h"
 
 namespace inet {
 
@@ -163,9 +164,11 @@ void RdmaBasicApp::send(Packet *pk){//Cambiado
 
 void RdmaBasicApp::sendPacket()//Cambiado
 {
-    char msgName[32];
-    sprintf(msgName, "RdmaBasicAppData-%d", numSent);
-    Packet *packet = new Packet(msgName);
+    /*char msgName[32];
+    sprintf(msgName, "RdmaBasicAppData-%d", numSent);*/
+    std::ostringstream str;
+    str << packetName << "-" << numSent;
+    Packet *packet = new Packet(str.str().c_str());
     if (dontFragment)
         packet->addTag<FragmentationReq>()->setDontFragment(true);
     const auto& payload = makeShared<ApplicationPacket>();
@@ -200,9 +203,26 @@ void RdmaBasicApp::refreshDisplay() const
 void RdmaBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
-    EV_INFO << "Received packet: " << receive() << endl;
+    EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
     delete pk;
     numReceived++;
+}
+
+std::string RdmaBasicApp::getReceivedPacketInfo(Packet *pk)
+{
+    auto l3Addresses = pk->getTag<L3AddressInd>();
+    auto ports = pk->getTag<L4PortInd>();
+    L3Address srcAddr = l3Addresses->getSrcAddress();
+    L3Address destAddr = l3Addresses->getDestAddress();
+    int srcPort = ports->getSrcPort();
+    int destPort = ports->getDestPort();
+    int interfaceID = pk->getTag<InterfaceInd>()->getInterfaceId();
+
+    std::stringstream os;
+    os << pk << " (" << pk->getByteLength() << " bytes) ";
+    os << srcAddr << ":" << srcPort << " --> " << destAddr << ":" << destPort;
+    os << " on ifID=" << interfaceID;
+    return os.str();
 }
 
 void RdmaBasicApp::handleStartOperation(LifecycleOperation *operation)
