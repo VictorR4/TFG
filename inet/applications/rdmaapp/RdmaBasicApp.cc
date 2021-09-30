@@ -80,9 +80,10 @@ void RdmaBasicApp::handleMessageWhenUp(cMessage *msg)
                 throw cRuntimeError("Invalid kind %d in self message", (int)selfMsg->getKind());
         }
     }
-    /*else
-        socket.processMessage(msg);*/
+    else
+        processPacket(check_and_cast<Packet *>(msg));
 }
+
 
 L3Address RdmaBasicApp::chooseDestAddr()
 {
