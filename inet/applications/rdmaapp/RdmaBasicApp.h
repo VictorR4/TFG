@@ -21,13 +21,14 @@ namespace inet {
  */
 class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, public UdpSocket::ICallback
 {
+
   protected:
     enum SelfMsgKinds { START = 1, SEND, STOP };
 
     // parameters
     std::vector<L3Address> destAddresses;
     std::vector<std::string> destAddressStr;
-    int localPort = -1, destPort = -1;    //Cambiado
+    int localPort = -1, destPort = -1;
     clocktime_t startTime;
     clocktime_t stopTime;
     bool dontFragment = false;

@@ -70,7 +70,6 @@ void Rdma::initialize(int stage)//Cambiado
         //CRC (Comprobación de Redundancia Ciclica) está presente en el protocolo tcp/ip
         const char *crcModeString = par("crcMode");
         crcMode = parseCrcMode(crcModeString, true);
-
         lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
         ift = getModuleFromPar<IInterfaceTable>(par("interfaceTableModule"), this);
 
@@ -86,7 +85,18 @@ void Rdma::initialize(int stage)//Cambiado
 
     }
     else if (stage == INITSTAGE_TRANSPORT_LAYER) {
-
+        if (crcMode == CRC_COMPUTED) {
+#ifdef INET_WITH_IPv4
+            auto ipv4 = dynamic_cast<INetfilter *>(findModuleByPath("^.ipv4.ip"));
+            if (ipv4 != nullptr)
+                ipv4->registerHook(0, &crcInsertion);
+#endif
+#ifdef INET_WITH_IPv6
+            auto ipv6 = dynamic_cast<INetfilter *>(findModuleByPath("^.ipv6.ipv6"));
+            if (ipv6 != nullptr)
+                ipv6->registerHook(0, &crcInsertion);
+#endif
+        }
         registerService(Protocol::rdma, gate("appIn"), gate("appOut")); //Cambiado
         registerProtocol(Protocol::rdma, gate("lowerLayerOut"), gate("lowerLayerIn")); //Cambiado
     }
@@ -95,8 +105,6 @@ void Rdma::initialize(int stage)//Cambiado
 
 void Rdma::handleLowerPacket(Packet *packet)//Cambiado
 {
-    //Duda: creo necesario cambiar esta clase ya que no tiene que tratar la capa de red
-
     // received from linklayer
     ASSERT(packet->getControlInfo() == nullptr);
     auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
@@ -130,7 +138,6 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
 
     L3Address srcAddr, destAddr;
     auto addressReq = packet->addTagIfAbsent<L3AddressReq>();
-    srcAddr = addressReq->getSrcAddress();
     destAddr = addressReq->getDestAddress();
 
     int srcPort = -1, destPort = -1;
@@ -310,7 +317,7 @@ void Rdma::sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort
 {
     EV_INFO << "Sending payload up to app layer\n";
 
-    payload->setKind(0);
+
     //payload->removeTagIfPresent<PacketProtocolTag>();
     //payload->removeTagIfPresent<DispatchProtocolReq>();
     payload->addTagIfAbsent<TransportProtocolInd>()->setProtocol(&Protocol::rdma);

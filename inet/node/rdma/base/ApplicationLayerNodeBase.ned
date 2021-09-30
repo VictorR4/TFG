@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-package inet.node.base;
+package inet.node.rdma.base;
 
 import inet.applications.contract.IApp;
 import inet.common.MessageDispatcher;
@@ -39,8 +39,8 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
 
     connections allowunconnected:
         for i=0..numApps-1 {
-            app[i].socketOut --> at.in++;
-            app[i].socketIn <-- at.out++;
+            app[i].socketOut --> rdma.appIn if hasRdma;
+            app[i].socketIn <-- rdma.appOut if hasRdma;
             
         }
 
@@ -55,7 +55,6 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
 
         at.out++ --> tn.in++;
         at.in++ <-- tn.out++;
-
 	
 }
 

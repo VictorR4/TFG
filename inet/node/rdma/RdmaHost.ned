@@ -14,7 +14,7 @@
 // 
 
 package inet.node.rdma;
-import inet.node.base.ApplicationLayerNodeBase;
+import inet.node.rdma.base.ApplicationLayerNodeBase;
 //
 // TODO auto-generated type
 //

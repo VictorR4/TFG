@@ -15,12 +15,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-package inet.node.base;
+package inet.node.rdma.base;
 
 import inet.common.MessageDispatcher;
+import inet.node.base.NetworkLayerNodeBase;
 import inet.transportlayer.contract.ISctp;
 import inet.transportlayer.contract.ITcp;
 import inet.transportlayer.contract.IUdp;
+import inet.transportlayer.contract.IRdma;
 
 module TransportLayerNodeBase extends NetworkLayerNodeBase
 {
@@ -28,6 +30,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         bool hasUdp = default(firstAvailableOrEmpty("Udp") != "");
         bool hasTcp = default(firstAvailableOrEmpty("Tcp", "TcpLwip", "TcpNsc") != "");
         bool hasSctp = default(false);
+		bool hasRdma = default(firstAvailableOrEmpty("Rdma") != "");
         @figure[transportLayer](type=rectangle; pos=250,156; size=1000,130; fillColor=#ff0000; lineColor=#808080; cornerRadius=5; fillOpacity=0.1);
         @figure[transportLayer.title](type=text; pos=1245,161; anchor=ne; text="transport layer");
     submodules:
@@ -42,6 +45,10 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         sctp: <default(firstAvailableOrEmpty("Sctp"))> like ISctp if hasSctp {
             parameters:
                 @display("p=675,226");
+        }
+ 		rdma: <default(firstAvailableOrEmpty("Rdma"))> like IRdma if hasRdma{
+            parameters:
+            @display("p=885.472,224.672");
         }
         tn: MessageDispatcher {
             parameters:
@@ -69,5 +76,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
 
         tn.out++ --> nl.in++;
         tn.in++ <-- nl.out++;
+        
+        rdma.lowerLayerOut --> tn.in++ if hasRdma;
+        rdma.lowerLayerIn <-- tn.out++ if hasRdma;
 }
 

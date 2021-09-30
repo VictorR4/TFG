@@ -49,7 +49,6 @@ void RdmaBasicApp::initialize(int stage)
         if (stopTime >= CLOCKTIME_ZERO && stopTime < startTime)
             throw cRuntimeError("Invalid startTime/stopTime parameters");
         selfMsg = new ClockEvent("sendTimer");
-        //destAddress = par("destAddress");//Cambiado
     }
 }
 
@@ -164,8 +163,6 @@ void RdmaBasicApp::send(Packet *pk){//Cambiado
 
 void RdmaBasicApp::sendPacket()//Cambiado
 {
-    /*char msgName[32];
-    sprintf(msgName, "RdmaBasicAppData-%d", numSent);*/
     std::ostringstream str;
     str << packetName << "-" << numSent;
     Packet *packet = new Packet(str.str().c_str());
