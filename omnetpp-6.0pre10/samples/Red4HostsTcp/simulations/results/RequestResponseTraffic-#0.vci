@@ -1,0 +1,1165 @@
+file 130085 1632914741                                          
+version 3
+run RequestResponseTraffic-0-20210929-13:23:37-15264
+attr configname RequestResponseTraffic
+attr datetime 20210929-13:23:37
+attr datetimef 20210929-132337
+attr experiment RequestResponseTraffic
+attr inifile Red4Tcp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Red4Tcp
+attr processid 15264
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config debug-on-errors true
+config image-path ../../inet/images
+config *.hA.app[0].listener.serverConnectionModuleType "\"inet.applications.tcpapp.TcpRequestResponseApp\""
+config *.hA.app[0].connection[*].sink.tokenGenerator[0].numTokensPerPacket "intuniform(1, 5)"
+config *.hA.app[0].connection[*].source.provider[0].providingInterval "uniform(0s, 2s)"
+config *.hA.app[0].connection[*].source.provider[0].packetLength "intuniform(100B, 1000B)"
+config *.hA.app[0].connection[*].sink.tokenGenerator[1].numTokensPerPacket "intuniform(10, 20)"
+config *.hA.app[0].connection[*].source.provider[1].providingInterval "uniform(0s, 0.2s)"
+config *.hA.app[0].connection[*].source.provider[1].packetLength "intuniform(1000B, 10000B)"
+config *.hB.app[0].listener.serverConnectionModuleType "\"inet.applications.tcpapp.TcpRequestResponseApp\""
+config *.hB.app[0].connection[*].sink.tokenGenerator[0].numTokensPerPacket "intuniform(1, 5)"
+config *.hB.app[0].connection[*].source.provider[0].providingInterval "uniform(0s, 2s)"
+config *.hB.app[0].connection[*].source.provider[0].packetLength "intuniform(100B, 1000B)"
+config *.hB.app[0].connection[*].sink.tokenGenerator[1].numTokensPerPacket "intuniform(10, 20)"
+config *.hB.app[0].connection[*].source.provider[1].providingInterval "uniform(0s, 0.2s)"
+config *.hB.app[0].connection[*].source.provider[1].packetLength "intuniform(1000B, 10000B)"
+config *.hD.app[0].listener.serverConnectionModuleType "\"inet.applications.tcpapp.TcpRequestResponseApp\""
+config *.hD.app[0].connection[*].sink.tokenGenerator[0].numTokensPerPacket "intuniform(1, 5)"
+config *.hD.app[0].connection[*].source.provider[0].providingInterval "uniform(0s, 2s)"
+config *.hD.app[0].connection[*].source.provider[0].packetLength "intuniform(100B, 1000B)"
+config *.hD.app[0].connection[*].sink.tokenGenerator[1].numTokensPerPacket "intuniform(10, 20)"
+config *.hD.app[0].connection[*].source.provider[1].providingInterval "uniform(0s, 0.2s)"
+config *.hD.app[0].connection[*].source.provider[1].packetLength "intuniform(1000B, 10000B)"
+config network Red4Tcp
+config sim-time-limit 2s
+config *.hA.numApps 1
+config *.hB.numApps 1
+config *.hC.numApps 2
+config *.hD.numApps 2
+config *.hA.app[0].typename TcpServerApp
+config *.hA.app[0].listener.localPort 1000
+config *.hB.app[0].typename TcpServerApp
+config *.hB.app[0].listener.localPort 1000
+config *.hD.app[0].typename TcpServerApp
+config *.hD.app[0].listener.localPort 1000
+config *.hC.app[0].typename TcpClientApp
+config *.hC.app[0].io.connectAddress "\"hB\""
+config *.hC.app[0].io.connectPort 1000
+config *.hC.app[0].source.productionInterval 0.001s+uniform(-0.0001s,0.0001s)
+config *.hC.app[0].source.packetLength "intuniform(100B, 200B)"
+config *.hC.app[0].source.packetData "intuniform(0, 1)"
+config *.hC.app[1].typename TcpClientApp
+config *.hC.app[1].io.connectAddress "\"hD\""
+config *.hC.app[1].io.connectPort 1000
+config *.hC.app[1].source.productionInterval 0.001s+uniform(-0.0001s,0.0001s)
+config *.hC.app[1].source.packetLength "intuniform(100B, 200B)"
+config *.hC.app[1].source.packetData "intuniform(0, 1)"
+config *.hD.app[1].typename TcpClientApp
+config *.hD.app[1].io.connectAddress "\"hA\""
+config *.hD.app[1].io.connectPort 1000
+config *.hD.app[1].source.productionInterval 0.001s+uniform(-0.0001s,0.0001s)
+config *.hD.app[1].source.packetLength "intuniform(100B, 200B)"
+config *.hD.app[1].source.packetData "intuniform(0, 1)"
+
+vector 0 Red4Tcp.hC.app[0].source packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 1 Red4Tcp.hC.app[1].source packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 2 Red4Tcp.hD.app[1].source packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 3 Red4Tcp.hC.tcp.conn-3 tcpRcvQueueBytes:vector ETV
+attr interpolationmode sample-hold
+vector 4 Red4Tcp.hC.tcp.conn-3 rcvAdv:vector ETV
+attr interpolationmode sample-hold
+vector 5 Red4Tcp.hC.tcp.conn-3 rcvWnd:vector ETV
+attr interpolationmode sample-hold
+vector 6 Red4Tcp.hC.tcp.conn-3 sndAck:vector ETV
+attr interpolationmode sample-hold
+vector 7 Red4Tcp.hC.tcp.conn-4 tcpRcvQueueBytes:vector ETV
+attr interpolationmode sample-hold
+vector 8 Red4Tcp.hC.tcp.conn-4 rcvAdv:vector ETV
+attr interpolationmode sample-hold
+vector 9 Red4Tcp.hC.tcp.conn-4 rcvWnd:vector ETV
+attr interpolationmode sample-hold
+vector 10 Red4Tcp.hC.tcp.conn-4 sndAck:vector ETV
+attr interpolationmode sample-hold
+vector 11 Red4Tcp.hD.tcp.conn-5 tcpRcvQueueBytes:vector ETV
+attr interpolationmode sample-hold
+vector 12 Red4Tcp.hD.tcp.conn-5 rcvAdv:vector ETV
+attr interpolationmode sample-hold
+vector 13 Red4Tcp.hD.tcp.conn-5 rcvWnd:vector ETV
+attr interpolationmode sample-hold
+vector 14 Red4Tcp.hD.tcp.conn-5 sndAck:vector ETV
+attr interpolationmode sample-hold
+vector 15 Red4Tcp.hC.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 16 Red4Tcp.hD.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 17 Red4Tcp.hC.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 18 Red4Tcp.hD.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 19 Red4Tcp.hC.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 20 Red4Tcp.hC.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 21 Red4Tcp.hC.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 22 Red4Tcp.hC.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 23 Red4Tcp.hC.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 24 Red4Tcp.hD.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 25 Red4Tcp.hD.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 26 Red4Tcp.hD.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 27 Red4Tcp.hD.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 28 Red4Tcp.hD.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 29 Red4Tcp.hC.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 30 Red4Tcp.hD.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 31 Red4Tcp.switch2.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 32 Red4Tcp.switch2.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 33 Red4Tcp.switch2.eth[1].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 34 Red4Tcp.switch2.eth[1].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 35 Red4Tcp.switch2.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 36 Red4Tcp.switch2.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 37 Red4Tcp.switch2.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 38 Red4Tcp.switch2.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 39 Red4Tcp.switch2.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 40 Red4Tcp.switch2.eth[2].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 41 Red4Tcp.switch2.eth[2].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 42 Red4Tcp.switch2.eth[2].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 43 Red4Tcp.switch2.eth[2].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 44 Red4Tcp.switch2.eth[2].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 45 Red4Tcp.switch2.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 46 Red4Tcp.switch2.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 47 Red4Tcp.switch2.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 48 Red4Tcp.switch2.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 49 Red4Tcp.switch2.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 50 Red4Tcp.switch2.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 51 Red4Tcp.switch2.eth[2].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 52 Red4Tcp.switch2.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 53 Red4Tcp.hD.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 54 Red4Tcp.hD.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 55 Red4Tcp.switch1.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 56 Red4Tcp.switch1.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 57 Red4Tcp.hC.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 58 Red4Tcp.hC.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 59 Red4Tcp.hD.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 60 Red4Tcp.hC.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 61 Red4Tcp.switch1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 62 Red4Tcp.switch1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 63 Red4Tcp.switch1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 64 Red4Tcp.switch1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 65 Red4Tcp.switch1.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 66 Red4Tcp.switch1.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 67 Red4Tcp.switch1.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 68 Red4Tcp.switch1.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 69 Red4Tcp.switch1.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 70 Red4Tcp.switch1.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 71 Red4Tcp.switch1.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 72 Red4Tcp.switch1.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 73 Red4Tcp.hD.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr source arpReplySent
+attr title "ARP replies sent, vector(packetBytes)"
+vector 74 Red4Tcp.hA.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 75 Red4Tcp.hA.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 76 Red4Tcp.hB.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 77 Red4Tcp.hB.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 78 Red4Tcp.hA.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 79 Red4Tcp.hB.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 80 Red4Tcp.hB.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr source arpReplySent
+attr title "ARP replies sent, vector(packetBytes)"
+vector 81 Red4Tcp.hB.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 82 Red4Tcp.hB.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 83 Red4Tcp.hB.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 84 Red4Tcp.hB.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 85 Red4Tcp.hB.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 86 Red4Tcp.hB.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 87 Red4Tcp.hB.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 88 Red4Tcp.hA.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr source arpReplySent
+attr title "ARP replies sent, vector(packetBytes)"
+vector 89 Red4Tcp.hA.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 90 Red4Tcp.hA.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 91 Red4Tcp.hA.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 92 Red4Tcp.hA.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 93 Red4Tcp.hA.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 94 Red4Tcp.hA.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 95 Red4Tcp.hA.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 96 Red4Tcp.switch1.eth[1].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 97 Red4Tcp.switch1.eth[1].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 98 Red4Tcp.switch1.eth[2].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 99 Red4Tcp.switch1.eth[2].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 100 Red4Tcp.switch1.eth[2].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 101 Red4Tcp.switch1.eth[2].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 102 Red4Tcp.switch1.eth[2].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 103 Red4Tcp.hD.tcp.conn-2 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 104 Red4Tcp.hD.tcp.conn-2 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 105 Red4Tcp.hD.tcp.conn-2 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 106 Red4Tcp.hD.tcp.conn-6 rcvAdv:vector ETV
+attr interpolationmode sample-hold
+vector 107 Red4Tcp.hD.tcp.conn-6 sndWnd:vector ETV
+attr interpolationmode sample-hold
+vector 108 Red4Tcp.hD.tcp.conn-6 tcpRcvQueueBytes:vector ETV
+attr interpolationmode sample-hold
+vector 109 Red4Tcp.hD.tcp.conn-6 rcvWnd:vector ETV
+attr interpolationmode sample-hold
+vector 110 Red4Tcp.hD.tcp.conn-6 sndAck:vector ETV
+attr interpolationmode sample-hold
+vector 111 Red4Tcp.switch1.eth[2].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 112 Red4Tcp.switch1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 113 Red4Tcp.switch1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 114 Red4Tcp.switch2.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 115 Red4Tcp.switch2.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 116 Red4Tcp.hC.tcp.conn-4 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 117 Red4Tcp.hC.tcp.conn-4 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 118 Red4Tcp.hC.tcp.conn-4 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 119 Red4Tcp.hC.tcp.conn-4 sndWnd:vector ETV
+attr interpolationmode sample-hold
+vector 120 Red4Tcp.hC.tcp.conn-4 sndNxt:vector ETV
+attr interpolationmode sample-hold
+vector 121 Red4Tcp.hC.tcp.conn-4 unacked:vector ETV
+attr interpolationmode sample-hold
+vector 122 Red4Tcp.hD.tcp.conn-6 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 123 Red4Tcp.hD.tcp.conn-6 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 124 Red4Tcp.hD.tcp.conn-6 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 125 Red4Tcp.hD.tcp.conn-6 unacked:vector ETV
+attr interpolationmode sample-hold
+vector 126 Red4Tcp.hD.tcp.conn-6 cwnd:vector ETV
+attr interpolationmode sample-hold
+vector 127 Red4Tcp.hD.tcp.conn-6 ssthresh:vector ETV
+attr interpolationmode sample-hold
+vector 128 Red4Tcp.hD.tcp.conn-6 dupAcks:vector ETV
+attr interpolationmode sample-hold
+vector 129 Red4Tcp.hD.app[0].connection[0].source.provider[0] packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 130 Red4Tcp.hD.app[0].connection[0].source.provider[1] packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 131 Red4Tcp.hD.app[0].connection[0].sink.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 132 Red4Tcp.hD.app[0].connection[0].sink.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 133 Red4Tcp.hD.app[0].connection[0].sink.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 134 Red4Tcp.hD.app[0].connection[0].sink.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 135 Red4Tcp.hD.app[0].connection[0].sink.server packetServed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets served, vector(packetBytes)"
+vector 136 Red4Tcp.hD.app[0].connection[0].sink.classifier packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pushed, vector(packetBytes)"
+vector 137 Red4Tcp.hD.app[0].connection[0].sink.tokenGenerator[1] tokensCreated:vector ETV
+attr interpolationmode none
+attr title "tokens created, vector"
+vector 138 Red4Tcp.hD.app[0].connection[0].source.provider[1] packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pulled, vector(packetBytes)"
+vector 139 Red4Tcp.hD.app[0].connection[0].source.server[1] packetServed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets served, vector(packetBytes)"
+vector 140 Red4Tcp.hD.tcp.conn-6 sndNxt:vector ETV
+attr interpolationmode sample-hold
+vector 141 Red4Tcp.hB.tcp.conn-1 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 142 Red4Tcp.hB.tcp.conn-1 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 143 Red4Tcp.hB.tcp.conn-1 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 144 Red4Tcp.hB.tcp.conn-7 rcvAdv:vector ETV
+attr interpolationmode sample-hold
+vector 145 Red4Tcp.hB.tcp.conn-7 sndWnd:vector ETV
+attr interpolationmode sample-hold
+vector 146 Red4Tcp.hB.tcp.conn-7 tcpRcvQueueBytes:vector ETV
+attr interpolationmode sample-hold
+vector 147 Red4Tcp.hB.tcp.conn-7 rcvWnd:vector ETV
+attr interpolationmode sample-hold
+vector 148 Red4Tcp.hB.tcp.conn-7 sndAck:vector ETV
+attr interpolationmode sample-hold
+vector 149 Red4Tcp.hA.tcp.conn-0 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 150 Red4Tcp.hA.tcp.conn-0 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 151 Red4Tcp.hA.tcp.conn-0 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 152 Red4Tcp.hA.tcp.conn-8 rcvAdv:vector ETV
+attr interpolationmode sample-hold
+vector 153 Red4Tcp.hA.tcp.conn-8 sndWnd:vector ETV
+attr interpolationmode sample-hold
+vector 154 Red4Tcp.hA.tcp.conn-8 tcpRcvQueueBytes:vector ETV
+attr interpolationmode sample-hold
+vector 155 Red4Tcp.hA.tcp.conn-8 rcvWnd:vector ETV
+attr interpolationmode sample-hold
+vector 156 Red4Tcp.hA.tcp.conn-8 sndAck:vector ETV
+attr interpolationmode sample-hold
+vector 157 Red4Tcp.hC.tcp.conn-4 rtt:vector ETV
+attr interpolationmode sample-hold
+vector 158 Red4Tcp.hC.tcp.conn-4 srtt:vector ETV
+attr interpolationmode sample-hold
+vector 159 Red4Tcp.hC.tcp.conn-4 rttvar:vector ETV
+attr interpolationmode sample-hold
+vector 160 Red4Tcp.hC.tcp.conn-4 rto:vector ETV
+attr interpolationmode sample-hold
+vector 161 Red4Tcp.hC.tcp.conn-4 cwnd:vector ETV
+attr interpolationmode sample-hold
+vector 162 Red4Tcp.hC.tcp.conn-4 ssthresh:vector ETV
+attr interpolationmode sample-hold
+vector 163 Red4Tcp.hC.tcp.conn-4 dupAcks:vector ETV
+attr interpolationmode sample-hold
+vector 164 Red4Tcp.hC.app[1].sink packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pushed, vector(packetBytes)"
+vector 165 Red4Tcp.hC.app[1].sink packetDropped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets dropped, vector(packetBytes)"
+vector 166 Red4Tcp.hC.tcp.conn-3 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 167 Red4Tcp.hC.tcp.conn-3 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 168 Red4Tcp.hC.tcp.conn-3 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 169 Red4Tcp.hC.tcp.conn-3 sndWnd:vector ETV
+attr interpolationmode sample-hold
+vector 170 Red4Tcp.hC.tcp.conn-3 sndNxt:vector ETV
+attr interpolationmode sample-hold
+vector 171 Red4Tcp.hC.tcp.conn-3 unacked:vector ETV
+attr interpolationmode sample-hold
+vector 172 Red4Tcp.hD.tcp.conn-5 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 173 Red4Tcp.hD.tcp.conn-5 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 174 Red4Tcp.hD.tcp.conn-5 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 175 Red4Tcp.hD.tcp.conn-5 sndWnd:vector ETV
+attr interpolationmode sample-hold
+vector 176 Red4Tcp.hD.tcp.conn-5 sndNxt:vector ETV
+attr interpolationmode sample-hold
+vector 177 Red4Tcp.hD.tcp.conn-5 unacked:vector ETV
+attr interpolationmode sample-hold
+vector 178 Red4Tcp.hD.tcp.conn-6 rtt:vector ETV
+attr interpolationmode sample-hold
+vector 179 Red4Tcp.hD.tcp.conn-6 srtt:vector ETV
+attr interpolationmode sample-hold
+vector 180 Red4Tcp.hD.tcp.conn-6 rttvar:vector ETV
+attr interpolationmode sample-hold
+vector 181 Red4Tcp.hD.tcp.conn-6 rto:vector ETV
+attr interpolationmode sample-hold
+vector 182 Red4Tcp.hB.tcp.conn-7 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 183 Red4Tcp.hB.tcp.conn-7 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 184 Red4Tcp.hB.tcp.conn-7 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 185 Red4Tcp.hB.tcp.conn-7 unacked:vector ETV
+attr interpolationmode sample-hold
+vector 186 Red4Tcp.hB.tcp.conn-7 cwnd:vector ETV
+attr interpolationmode sample-hold
+vector 187 Red4Tcp.hB.tcp.conn-7 ssthresh:vector ETV
+attr interpolationmode sample-hold
+vector 188 Red4Tcp.hB.tcp.conn-7 dupAcks:vector ETV
+attr interpolationmode sample-hold
+vector 189 Red4Tcp.hB.app[0].connection[0].source.provider[0] packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 190 Red4Tcp.hB.app[0].connection[0].source.provider[1] packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 191 Red4Tcp.hB.app[0].connection[0].sink.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 192 Red4Tcp.hB.app[0].connection[0].sink.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 193 Red4Tcp.hB.app[0].connection[0].sink.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 194 Red4Tcp.hB.app[0].connection[0].sink.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 195 Red4Tcp.hB.app[0].connection[0].sink.server packetServed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets served, vector(packetBytes)"
+vector 196 Red4Tcp.hB.app[0].connection[0].sink.classifier packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pushed, vector(packetBytes)"
+vector 197 Red4Tcp.hB.app[0].connection[0].sink.tokenGenerator[1] tokensCreated:vector ETV
+attr interpolationmode none
+attr title "tokens created, vector"
+vector 198 Red4Tcp.hB.app[0].connection[0].source.provider[1] packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pulled, vector(packetBytes)"
+vector 199 Red4Tcp.hB.app[0].connection[0].source.server[1] packetServed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets served, vector(packetBytes)"
+vector 200 Red4Tcp.hB.tcp.conn-7 sndNxt:vector ETV
+attr interpolationmode sample-hold
+vector 201 Red4Tcp.hA.tcp.conn-8 rcvSeq:vector ETV
+attr interpolationmode sample-hold
+vector 202 Red4Tcp.hA.tcp.conn-8 rcvAck:vector ETV
+attr interpolationmode sample-hold
+vector 203 Red4Tcp.hA.tcp.conn-8 tcpRcvPayloadBytes:vector ETV
+attr interpolationmode sample-hold
+vector 204 Red4Tcp.hA.tcp.conn-8 unacked:vector ETV
+attr interpolationmode sample-hold
+vector 205 Red4Tcp.hA.tcp.conn-8 cwnd:vector ETV
+attr interpolationmode sample-hold
+vector 206 Red4Tcp.hA.tcp.conn-8 ssthresh:vector ETV
+attr interpolationmode sample-hold
+vector 207 Red4Tcp.hA.tcp.conn-8 dupAcks:vector ETV
+attr interpolationmode sample-hold
+vector 208 Red4Tcp.hA.app[0].connection[0].source.provider[0] packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 209 Red4Tcp.hA.app[0].connection[0].source.provider[1] packetCreated:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets created, vector(packetBytes)"
+vector 210 Red4Tcp.hA.app[0].connection[0].sink.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 211 Red4Tcp.hA.app[0].connection[0].sink.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 212 Red4Tcp.hA.app[0].connection[0].sink.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 213 Red4Tcp.hA.app[0].connection[0].sink.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 214 Red4Tcp.hA.app[0].connection[0].sink.server packetServed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets served, vector(packetBytes)"
+vector 215 Red4Tcp.hA.app[0].connection[0].sink.classifier packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pushed, vector(packetBytes)"
+vector 216 Red4Tcp.hA.app[0].connection[0].sink.tokenGenerator[1] tokensCreated:vector ETV
+attr interpolationmode none
+attr title "tokens created, vector"
+vector 217 Red4Tcp.hA.app[0].connection[0].source.provider[1] packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pulled, vector(packetBytes)"
+vector 218 Red4Tcp.hA.app[0].connection[0].source.server[1] packetServed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets served, vector(packetBytes)"
+vector 219 Red4Tcp.hA.tcp.conn-8 sndNxt:vector ETV
+attr interpolationmode sample-hold
+vector 220 Red4Tcp.hC.tcp.conn-3 rtt:vector ETV
+attr interpolationmode sample-hold
+vector 221 Red4Tcp.hC.tcp.conn-3 srtt:vector ETV
+attr interpolationmode sample-hold
+vector 222 Red4Tcp.hC.tcp.conn-3 rttvar:vector ETV
+attr interpolationmode sample-hold
+vector 223 Red4Tcp.hC.tcp.conn-3 rto:vector ETV
+attr interpolationmode sample-hold
+vector 224 Red4Tcp.hC.tcp.conn-3 cwnd:vector ETV
+attr interpolationmode sample-hold
+vector 225 Red4Tcp.hC.tcp.conn-3 ssthresh:vector ETV
+attr interpolationmode sample-hold
+vector 226 Red4Tcp.hC.tcp.conn-3 dupAcks:vector ETV
+attr interpolationmode sample-hold
+vector 227 Red4Tcp.hD.tcp.conn-5 rtt:vector ETV
+attr interpolationmode sample-hold
+vector 228 Red4Tcp.hD.tcp.conn-5 srtt:vector ETV
+attr interpolationmode sample-hold
+vector 229 Red4Tcp.hD.tcp.conn-5 rttvar:vector ETV
+attr interpolationmode sample-hold
+vector 230 Red4Tcp.hD.tcp.conn-5 rto:vector ETV
+attr interpolationmode sample-hold
+vector 231 Red4Tcp.hD.tcp.conn-5 cwnd:vector ETV
+attr interpolationmode sample-hold
+vector 232 Red4Tcp.hD.tcp.conn-5 ssthresh:vector ETV
+attr interpolationmode sample-hold
+vector 233 Red4Tcp.hD.tcp.conn-5 dupAcks:vector ETV
+attr interpolationmode sample-hold
+vector 234 Red4Tcp.hC.app[0].sink packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pushed, vector(packetBytes)"
+vector 235 Red4Tcp.hC.app[0].sink packetDropped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets dropped, vector(packetBytes)"
+vector 236 Red4Tcp.hD.app[1].sink packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets pushed, vector(packetBytes)"
+vector 237 Red4Tcp.hD.app[1].sink packetDropped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets dropped, vector(packetBytes)"
+vector 238 Red4Tcp.hB.tcp.conn-7 rtt:vector ETV
+attr interpolationmode sample-hold
+vector 239 Red4Tcp.hB.tcp.conn-7 srtt:vector ETV
+attr interpolationmode sample-hold
+vector 240 Red4Tcp.hB.tcp.conn-7 rttvar:vector ETV
+attr interpolationmode sample-hold
+vector 241 Red4Tcp.hB.tcp.conn-7 rto:vector ETV
+attr interpolationmode sample-hold
+vector 242 Red4Tcp.hA.tcp.conn-8 rtt:vector ETV
+attr interpolationmode sample-hold
+vector 243 Red4Tcp.hA.tcp.conn-8 srtt:vector ETV
+attr interpolationmode sample-hold
+vector 244 Red4Tcp.hA.tcp.conn-8 rttvar:vector ETV
+attr interpolationmode sample-hold
+vector 245 Red4Tcp.hA.tcp.conn-8 rto:vector ETV
+attr interpolationmode sample-hold
+0	38237 34 0 1659 0 0.0010097627 2 147 177 324 52938
+1	38271 36 0 1737 0 0.001068853149 2 120 167 287 42289
+2	38307 36 0 1651 0 0.001008976635 2 109 181 290 44642
+3	38343 699 7 1661 0 0.0010097627 33 0 0 0 0
+4	39042 465 7 1661 0 0.0010097627 19 7504 15251 214398 2559770162
+5	39507 429 7 1661 0 0.0010097627 18 7504 7504 135072 1013580288
+6	39936 422 7 1661 0 0.0010097627 18 0 7747 71819 411975273
+7	40358 589 9 1739 0 0.001068853149 29 0 0 0 0
+8	40947 403 9 1739 0 0.001068853149 17 7504 14380 183156 2073003416
+9	41350 369 9 1739 0 0.001068853149 16 7504 7504 120064 900960256
+10	41719 378 9 1739 0 0.001068853149 16 0 6876 55586 281468436
+11	42097 373 11 1653 0 0.001008976635 17 0 0 0 0
+12	42470 274 11 1653 0 0.001008976635 11 7504 11106 101028 948978400
+13	42744 245 11 1653 0 0.001008976635 10 7504 7504 75040 563100160
+14	42989 238 11 1653 0 0.001008976635 10 0 3602 18481 52160343
+15	43227 22 13 14 0 0 2 28 28 56 1568
+16	43249 11 15 15 0 0 1 28 28 28 784
+17	43260 815 16 1741 0 0.001068853149 36 28 217 2035 200747
+18	44075 628 18 1655 0 0.001008976635 27 28 576 8228 4302918
+19	44703 788 19 1664 0 0.0010097627 35 46 235 2505 253987
+20	45491 788 19 1664 0 0.0010097627 35 46 235 2505 253987
+21	46279 1511 19 1664 0 0.0010097627 70 0 1 35 35
+22	47790 799 19 1664 0 0.0010097627 35 46 235 2505 253987
+23	48589 768 19 1664 0 0.0010097627 35 0 1.68e-08 1.68e-08 2.8224e-16
+24	49357 628 21 1656 0 0.001008976635 27 46 594 8714 4607874
+25	49985 628 21 1656 0 0.001008976635 27 46 594 8714 4607874
+26	50613 1172 21 1656 0 0.001008976635 54 0 3 39 55
+27	51785 628 21 1656 0 0.001008976635 27 46 594 8714 4607874
+28	52413 665 21 1656 0 0.001008976635 27 0 3.684e-07 1.7528e-06 3.967664e-13
+29	53078 816 22 1665 0.0000000144 0.0010098113 35 64 235 2713 278947
+30	53894 635 23 1657 0.0000000144 0.001009026035 27 64 594 8802 4618194
+31	54529 816 28 1672 0.0000010144 0.0010108113 35 64 235 2713 278947
+32	55345 816 28 1672 0.0000010144 0.0010108113 35 64 235 2713 278947
+33	56161 636 29 1667 0.0000010144 0.001010026035 27 64 594 8802 4618194
+34	56797 636 29 1667 0.0000010144 0.001010026035 27 64 594 8802 4618194
+35	57433 654 32 1721 0.0000010144 0.001014153635 28 64 594 5510 2444042
+36	58087 654 32 1721 0.0000010144 0.001014153635 28 64 594 5510 2444042
+37	58741 1235 32 1721 0.0000010144 0.001014153635 56 0 1 28 28
+38	59976 653 32 1721 0.0000010144 0.001014153635 28 64 594 5510 2444042
+39	60629 624 32 1721 0.0000010144 0.001014153635 28 0 3.76e-08 3.76e-08 1.41376e-15
+40	61253 732 33 1674 0.0000010144 0.0010108113 31 64 239 2574 292852
+41	61985 732 33 1674 0.0000010144 0.0010108113 31 64 239 2574 292852
+42	62717 1393 33 1674 0.0000010144 0.0010108113 62 0 1 31 31
+43	64110 731 33 1674 0.0000010144 0.0010108113 31 64 239 2574 292852
+44	64841 717 33 1674 0.0000010144 0.0010108113 31 0 3.58e-08 6.94e-08 1.84612e-15
+45	65558 861 34 1726 0.0000010144 0.0010149373 36 64 594 16754 9545308
+46	66419 861 34 1726 0.0000010144 0.0010149373 36 64 594 16754 9545308
+47	67280 1595 34 1726 0.0000010144 0.0010149373 72 0 1 36 36
+48	68875 862 34 1726 0.0000010144 0.0010149373 36 64 594 16754 9545308
+49	69737 847 34 1726 0.0000010144 0.0010149373 36 0 5.38e-08 3.396e-07 1.764888e-14
+50	70584 656 36 1722 0.0000010288 0.001014168035 28 64 594 5510 2444042
+51	71240 729 37 1675 0.0000010288 0.0010108599 31 64 239 2574 292852
+52	71969 860 38 1727 0.0000010288 0.0010149517 36 64 594 16754 9545308
+53	72829 656 52 1729 0.0000020288 0.001015168035 28 64 594 5510 2444042
+54	73485 656 52 1729 0.0000020288 0.001015168035 28 64 594 5510 2444042
+55	74141 729 53 1682 0.0000020288 0.0010118599 31 64 239 2574 292852
+56	74870 729 53 1682 0.0000020288 0.0010118599 31 64 239 2574 292852
+57	75599 860 54 1733 0.0000020288 0.0010159517 36 64 594 16754 9545308
+58	76459 860 54 1733 0.0000020288 0.0010159517 36 64 594 16754 9545308
+59	77319 656 55 1730 0.0000020288 0.001015168035 28 46 576 5006 2254754
+60	77975 860 57 1734 0.0000020288 0.0010159517 36 46 576 16106 8953828
+61	78835 305 59 1679 0.0000020288 0.001011075435 13 64 239 1110 130066
+62	79140 305 59 1679 0.0000020288 0.001011075435 13 64 239 1110 130066
+63	79445 580 59 1679 0.0000020288 0.001011075435 26 0 1 13 13
+64	80025 305 59 1679 0.0000020288 0.001011075435 13 64 239 1110 130066
+65	80330 290 59 1679 0.0000020288 0.001011075435 13 0 0 0 0
+66	80620 490 60 1684 0.0000020288 0.0010118599 21 64 235 1656 175074
+67	81110 490 60 1684 0.0000020288 0.0010118599 21 64 235 1656 175074
+68	81600 934 60 1684 0.0000020288 0.0010118599 42 0 1 21 21
+69	82534 490 60 1684 0.0000020288 0.0010118599 21 64 235 1656 175074
+70	83024 467 60 1684 0.0000020288 0.0010118599 21 0 0 0 0
+71	83491 302 64 1680 0.0000020432 0.001011124835 13 64 239 1110 130066
+72	83793 492 65 1685 0.0000020432 0.0010119085 21 64 235 1656 175074
+73	84285 22 76 76 0.0000020456 0.0000020456 1 28 28 28 784
+74	84307 304 93 1687 0.0000030432 0.001012124835 13 64 239 1110 130066
+75	84611 304 93 1687 0.0000030432 0.001012124835 13 64 239 1110 130066
+76	84915 494 94 1698 0.0000030432 0.0010129085 21 64 235 1656 175074
+77	85409 494 94 1698 0.0000030432 0.0010129085 21 64 235 1656 175074
+78	85903 304 96 1688 0.0000030432 0.001012124835 13 46 221 876 94318
+79	86207 494 97 1699 0.0000030432 0.0010129085 21 46 217 1278 122262
+80	86701 23 100 100 0.0000030432 0.0000030432 1 28 28 28 784
+81	86724 460 102 1705 0.0000030432 0.0010129085 19 28 576 8496 4729184
+82	87184 460 103 1706 0.0000030432 0.0010129085 19 46 594 8838 5041196
+83	87644 460 103 1706 0.0000030432 0.0010129085 19 46 594 8838 5041196
+84	88104 852 103 1706 0.0000030432 0.0010129085 38 0 2 25 31
+85	88956 460 103 1706 0.0000030432 0.0010129085 19 46 594 8838 5041196
+86	89416 505 103 1706 0.0000030432 0.0010129085 19 0 2.456e-07 1.3844e-06 2.3088816e-13
+87	89921 458 105 1707 0.0000030576 0.0010129229 19 64 594 8870 5044892
+88	90379 21 114 114 0.00000306 0.00000306 1 28 28 28 784
+89	90400 262 117 1694 0.00000306 0.001012124835 11 28 576 4031 2175505
+90	90662 262 118 1695 0.00000306 0.001012124835 11 46 594 4229 2324185
+91	90924 262 118 1695 0.00000306 0.001012124835 11 46 594 4229 2324185
+92	91186 485 118 1695 0.00000306 0.001012124835 22 0 2 13 15
+93	91671 259 118 1695 0.00000306 0.001012124835 11 46 594 4229 2324185
+94	91930 272 118 1695 0.00000306 0.001012124835 11 0 1.396e-07 4.02e-07 4.993008e-14
+95	92202 263 120 1696 0.0000030744 0.001012139235 11 64 594 4261 2327881
+96	92465 458 130 1714 0.0000040576 0.0010139229 19 64 594 8870 5044892
+97	92923 458 130 1714 0.0000040576 0.0010139229 19 64 594 8870 5044892
+98	93381 721 134 1716 0.0000040576 0.0010139229 30 64 594 13131 7372773
+99	94102 721 134 1716 0.0000040576 0.0010139229 30 64 594 13131 7372773
+100	94823 1398 134 1716 0.0000040576 0.0010139229 60 0 3 44 66
+101	96221 751 134 1716 0.0000040576 0.0010139229 30 64 594 13131 7372773
+102	96972 783 134 1716 0.0000040576 0.0010139229 30 0 3.684e-07 2.028e-06 5.019712e-13
+103	97755 23 135 135 0.0000040576 0.0000040576 1 0 0 0 0
+104	97778 23 135 135 0.0000040576 0.0000040576 1 0 0 0 0
+105	97801 23 135 135 0.0000040576 0.0000040576 1 0 0 0 0
+106	97824 414 135 884 0.0000040576 0.0000216898 16 7505 7672 122251 934149667
+107	98238 389 135 1138 0.0000040576 0.0000259594 15 7504 7504 112560 844650240
+108	98627 368 135 884 0.0000040576 0.0000216898 16 0 167 167 27889
+109	98995 388 135 884 0.0000040576 0.0000216898 15 7337 7504 112393 842171793
+110	99383 371 135 884 0.0000040576 0.0000216898 15 1 168 2353 395137
+111	99754 750 139 1717 0.000004072 0.0010139373 30 64 594 13131 7372773
+112	100504 274 142 1709 0.0000040744 0.001013139235 11 64 594 4261 2327881
+113	100778 274 142 1709 0.0000040744 0.001013139235 11 64 594 4261 2327881
+114	101052 758 151 1724 0.000005072 0.0010149373 30 64 594 13131 7372773
+115	101810 758 151 1724 0.000005072 0.0010149373 30 64 594 13131 7372773
+116	102568 375 179 994 0.0000061032 0.000023893 15 1 6434 41837 186909689
+117	102943 368 179 994 0.0000061032 0.000023893 15 1 168 2353 395137
+118	103311 366 179 994 0.0000061032 0.000023893 15 0 536 6874 3642916
+119	103677 52 179 287 0.0000061032 0.0000102252 2 7337 7504 14841 110141585
+120	103729 51 179 1739 0.0000061032 0.001068853149 2 1 168 169 28225
+121	103780 76 179 1739 0.0000061032 0.001068853149 3 0 167 287 42289
+122	103856 347 218 1138 0.0000081964 0.0000259594 14 1 168 2185 366913
+123	104203 359 218 1138 0.0000081964 0.0000259594 14 2 6876 48710 234189060
+124	104562 323 218 1138 0.0000081964 0.0000259594 14 0 167 167 27889
+125	104885 532 218 1138 0.0000081964 0.0000259594 21 0 3752 34210 82074724
+126	105417 363 218 1138 0.0000081964 0.0000259594 14 1072 8040 63784 355959744
+127	105780 447 218 1138 0.0000081964 0.0000259594 14 4294967295 4294967295 60129542130 2.5825441691167e+20
+128	106227 321 218 1138 0.0000081964 0.0000259594 14 0 0 0 0
+129	106548 25 219 219 0.0000081964 0.0000081964 1 377 377 377 142129
+130	106573 26 219 219 0.0000081964 0.0000081964 1 6874 6874 6874 47251876
+131	106599 25 226 226 0.0000081964 0.0000081964 1 167 167 167 27889
+132	106624 46 226 226 0.0000081964 0.0000081964 2 0 1 1 1
+133	106670 25 226 226 0.0000081964 0.0000081964 1 167 167 167 27889
+134	106695 23 226 226 0.0000081964 0.0000081964 1 0 0 0 0
+135	106718 25 226 226 0.0000081964 0.0000081964 1 167 167 167 27889
+136	106743 25 226 226 0.0000081964 0.0000081964 1 167 167 167 27889
+137	106768 24 226 226 0.0000081964 0.0000081964 1 14 14 14 196
+138	106792 26 226 226 0.0000081964 0.0000081964 1 6874 6874 6874 47251876
+139	106818 26 226 226 0.0000081964 0.0000081964 1 6874 6874 6874 47251876
+140	106844 332 228 884 0.0000081964 0.0000216898 13 2 6434 41834 186909684
+141	107176 23 244 244 0.0000091296 0.0000091296 1 0 0 0 0
+142	107199 23 244 244 0.0000091296 0.0000091296 1 0 0 0 0
+143	107222 23 244 244 0.0000091296 0.0000091296 1 0 0 0 0
+144	107245 502 244 1701 0.0000091296 0.0010129085 19 7505 7829 145124 1108564876
+145	107747 453 244 1650 0.0000091296 0.0000417092 17 7504 7504 127568 957270272
+146	108200 471 244 1701 0.0000091296 0.0010129085 20 0 147 147 21609
+147	108671 476 244 1701 0.0000091296 0.0010129085 18 7357 7504 134925 1011395721
+148	109147 456 244 1701 0.0000091296 0.0010129085 18 1 325 2694 456090
+149	109603 23 253 253 0.0000091464 0.0000091464 1 0 0 0 0
+150	109626 23 253 253 0.0000091464 0.0000091464 1 0 0 0 0
+151	109649 23 253 253 0.0000091464 0.0000091464 1 0 0 0 0
+152	109672 290 253 1690 0.0000091464 0.001012124835 11 7505 7795 83608 635548072
+153	109962 237 253 1606 0.0000091464 0.000035329 9 7504 7504 67536 506790144
+154	110199 285 253 1690 0.0000091464 0.001012124835 12 0 109 109 11881
+155	110484 264 253 1690 0.0000091464 0.001012124835 10 7395 7504 74931 561476169
+156	110748 252 253 1690 0.0000091464 0.001012124835 10 1 291 1172 181482
+157	111000 31 287 287 0.0000102252 0.0000102252 1 4.122e-06 4.122e-06 4.122e-06 1.6990884e-11
+158	111031 32 287 287 0.0000102252 0.0000102252 1 5.1525e-07 5.1525e-07 5.1525e-07 2.654825625e-13
+159	111063 35 287 287 0.0000102252 0.0000102252 1 0.65625051525 0.65625051525 0.65625051525 0.43066473876589
+160	111098 35 287 287 0.0000102252 0.0000102252 1 2.62500257625 2.62500257625 2.62500257625 6.8906385253191
+161	111133 26 287 287 0.0000102252 0.0000102252 1 1072 1072 1072 1149184
+162	111159 32 287 287 0.0000102252 0.0000102252 1 4294967295 4294967295 4294967295 1.844674406512e+19
+163	111191 317 287 994 0.0000102252 0.000023893 14 0 0 0 0
+164	111508 320 294 997 0.000010454 0.000023893 13 442 536 6874 3642916
+165	111828 320 294 997 0.000010454 0.000023893 13 442 536 6874 3642916
+166	112148 468 334 1736 0.0000121728 0.0010159517 18 2 7747 64077 351959277
+167	112616 458 334 1736 0.0000121728 0.0010159517 18 1 325 2694 456090
+168	113074 454 334 1736 0.0000121728 0.0010159517 18 0 536 7744 4079744
+169	113528 79 334 1736 0.0000121728 0.0010159517 3 7357 7504 22365 166745481
+170	113607 49 334 1661 0.0000121728 0.0010097627 2 1 148 149 21905
+171	113656 98 334 1736 0.0000121728 0.0010159517 4 0 177 324 52938
+172	113754 257 342 1732 0.0000121896 0.001015168035 10 2 3602 14884 39185952
+173	114011 255 342 1732 0.0000121896 0.001015168035 10 1 291 1172 181482
+174	114266 251 342 1732 0.0000121896 0.001015168035 10 0 536 3599 1870465
+175	114517 81 342 1732 0.0000121896 0.001015168035 3 7395 7504 22403 167306057
+176	114598 51 342 1653 0.0000121896 0.001008976635 2 1 110 111 12101
+177	114649 102 342 1732 0.0000121896 0.001015168035 4 0 181 290 44642
+178	114751 129 354 1138 0.0000124828 0.0000259594 4 4.2696e-06 4.3234e-06 1.7149e-05 7.352398084e-11
+179	114880 133 354 1138 0.0000124828 0.0000259594 4 5.358e-07 1.77413e-06 4.730089e-06 6.449361430481e-12
+180	115013 142 354 1138 0.0000124828 0.0000259594 4 0.439637666466 0.6562505358 2.172550527782 1.2061228972426
+181	115155 142 354 1138 0.0000124828 0.0000259594 4 1.758552439994 2.625002679 8.690206841217 19.29798571223
+182	115297 435 466 1701 0.0000153006 0.0010129085 17 1 148 2369 350465
+183	115732 450 466 1701 0.0000153006 0.0010129085 17 3 7747 71819 411975273
+184	116182 407 466 1701 0.0000153006 0.0010129085 17 0 177 324 52938
+185	116589 627 466 1650 0.0000153006 0.0000417092 24 0 4288 45264 124744064
+186	117216 427 466 1650 0.0000153006 0.0000417092 16 1072 9112 81472 512536064
+187	117643 523 466 1650 0.0000153006 0.0000417092 16 4294967295 4294967295 68719476720 2.9514790504191e+20
+188	118166 403 466 1701 0.0000153006 0.0010129085 17 0 0 0 0
+189	118569 25 467 467 0.0000153006 0.0000153006 1 170 170 170 28900
+190	118594 26 467 467 0.0000153006 0.0000153006 1 7744 7744 7744 59969536
+191	118620 51 474 1704 0.0000153006 0.0010129085 2 147 177 324 52938
+192	118671 70 474 1704 0.0000153006 0.0010129085 3 0 1 2 2
+193	118741 25 474 474 0.0000153006 0.0000153006 1 147 147 147 21609
+194	118766 23 474 474 0.0000153006 0.0000153006 1 0 0 0 0
+195	118789 25 474 474 0.0000153006 0.0000153006 1 147 147 147 21609
+196	118814 25 474 474 0.0000153006 0.0000153006 1 147 147 147 21609
+197	118839 24 474 474 0.0000153006 0.0000153006 1 20 20 20 400
+198	118863 26 474 474 0.0000153006 0.0000153006 1 7744 7744 7744 59969536
+199	118889 26 474 474 0.0000153006 0.0000153006 1 7744 7744 7744 59969536
+200	118915 393 476 1610 0.0000153006 0.0000354824 15 3 7507 56325 291943255
+201	119308 229 488 1690 0.0000153304 0.001012124835 9 1 110 881 96801
+202	119537 236 488 1690 0.0000153304 0.001012124835 9 3 3602 18481 52160343
+203	119773 217 488 1690 0.0000153304 0.001012124835 9 0 181 290 44642
+204	119990 304 488 1606 0.0000153304 0.000035329 12 0 2144 10031 13936897
+205	120294 211 488 1606 0.0000153304 0.000035329 8 1072 4824 23584 81592064
+206	120505 259 488 1606 0.0000153304 0.000035329 8 4294967295 4294967295 34359738360 1.4757395252096e+20
+207	120764 213 488 1690 0.0000153304 0.001012124835 9 0 0 0 0
+208	120977 25 489 489 0.0000153304 0.0000153304 1 586 586 586 343396
+209	121002 26 489 489 0.0000153304 0.0000153304 1 3599 3599 3599 12952801
+210	121028 53 496 1693 0.0000153304 0.001012124835 2 109 181 290 44642
+211	121081 72 496 1693 0.0000153304 0.001012124835 3 0 1 2 2
+212	121153 25 496 496 0.0000153304 0.0000153304 1 109 109 109 11881
+213	121178 23 496 496 0.0000153304 0.0000153304 1 0 0 0 0
+214	121201 25 496 496 0.0000153304 0.0000153304 1 109 109 109 11881
+215	121226 25 496 496 0.0000153304 0.0000153304 1 109 109 109 11881
+216	121251 24 496 496 0.0000153304 0.0000153304 1 17 17 17 289
+217	121275 26 496 496 0.0000153304 0.0000153304 1 3599 3599 3599 12952801
+218	121301 26 496 496 0.0000153304 0.0000153304 1 3599 3599 3599 12952801
+219	121327 179 498 1288 0.0000153304 0.0000289858 7 3 3219 11277 26211535
+220	121506 63 662 1736 0.0000183438 0.0010159517 2 6.171e-06 6.189e-06 1.236e-05 7.6384962e-11
+221	121569 68 662 1736 0.0000183438 0.0010159517 2 7.71375e-07 1.448578e-06 2.219953e-06 2.693397612709e-12
+222	121637 73 662 1736 0.0000183438 0.0010159517 2 0.574220102156 0.656250771375 1.230470873531 0.76039380065033
+223	121710 73 662 1736 0.0000183438 0.0010159517 2 2.296881857202 2.625003856875 4.921885714077 12.166311514552
+224	121783 53 662 1736 0.0000183438 0.0010159517 2 1072 1608 2680 3734848
+225	121836 65 662 1736 0.0000183438 0.0010159517 2 4294967295 4294967295 8589934590 3.6893488130239e+19
+226	121901 401 662 1736 0.0000183438 0.0010159517 17 0 0 0 0
+227	122302 66 669 1732 0.0000183736 0.001015168035 2 6.184e-06 6.1914e-06 1.23754e-05 7.657528996e-11
+228	122368 65 669 1732 0.0000183736 0.001015168035 2 7.73e-07 1.4503e-06 2.2233e-06 2.70089909e-12
+229	122433 72 669 1732 0.0000183736 0.001015168035 2 0.574220103675 0.656250773 1.230470876675 0.76039380452763
+230	122505 69 669 1732 0.0000183736 0.001015168035 2 2.296881865 2.625003865 4.92188573 12.166311593031
+231	122574 55 669 1732 0.0000183736 0.001015168035 2 1072 1608 2680 3734848
+232	122629 67 669 1732 0.0000183736 0.001015168035 2 4294967295 4294967295 8589934590 3.6893488130239e+19
+233	122696 214 669 1732 0.0000183736 0.001015168035 9 0 0 0 0
+234	122910 384 685 1632 0.0000186786 0.000038666 15 240 536 7744 4079744
+235	123294 384 685 1632 0.0000186786 0.000038666 15 240 536 7744 4079744
+236	123678 179 697 1469 0.0000188014 0.0000322858 7 383 536 3599 1870465
+237	123857 179 697 1469 0.0000188014 0.0000322858 7 383 536 3599 1870465
+238	124036 131 891 1650 0.0000217218 0.0000417092 4 6.2268e-06 6.4212e-06 2.54568e-05 1.620375264e-10
+239	124167 136 891 1650 0.0000217218 0.0000417092 4 8.0265e-07 2.629465e-06 7.050544e-06 1.4292542553486e-11
+240	124303 146 891 1650 0.0000217218 0.0000417092 4 0.439638354297 0.65625080265 2.172552555647 1.2061249977423
+241	124449 146 891 1650 0.0000217218 0.0000417092 4 1.758556046653 2.62500401325 8.690217273132 19.29802883333
+242	124595 97 905 1606 0.0000218446 0.000035329 3 6.3432e-06 6.5272e-06 1.93846e-05 1.2527532772e-10
+243	124692 102 905 1606 0.0000218446 0.000035329 3 8.14275e-07 2.130242e-06 4.472908e-06 7.53695380307e-12
+244	124794 109 905 1606 0.0000218446 0.000035329 3 0.502443256381 0.656250814275 1.732914247262 1.0128431683408
+245	124903 109 905 1606 0.0000218446 0.000035329 3 2.009775155766 2.625004071375 6.931661461956 16.205510552078
+1	125012 26 1770 1770 0.001986279008 0.001986279008 1 169 169 169 28561
+2	125038 26 1803 1803 0.002022585548 0.002022585548 1 147 147 147 21609
+7	125064 24 1772 1772 0.001986279008 0.001986279008 1 0 0 0 0
+8	125088 28 1772 1772 0.001986279008 0.001986279008 1 14380 14380 14380 206784400
+9	125116 27 1772 1772 0.001986279008 0.001986279008 1 7504 7504 7504 56310016
+10	125143 28 1772 1772 0.001986279008 0.001986279008 1 6876 6876 6876 47279376
+11	125171 25 1805 1805 0.002022585548 0.002022585548 1 0 0 0 0
+12	125196 29 1805 1805 0.002022585548 0.002022585548 1 11106 11106 11106 123343236
+13	125225 28 1805 1805 0.002022585548 0.002022585548 1 7504 7504 7504 56310016
+14	125253 28 1805 1805 0.002022585548 0.002022585548 1 3602 3602 3602 12974404
+17	125281 27 1774 1774 0.001986279008 0.001986279008 1 209 209 209 43681
+18	125308 79 1757 1807 0.001070927549 0.002022585548 3 40 187 267 38169
+19	125387 54 1742 1775 0.001068853149 0.001986279008 2 178 227 405 83213
+20	125441 54 1742 1775 0.001068853149 0.001986279008 2 178 227 405 83213
+21	125495 100 1742 1775 0.001068853149 0.001986279008 4 0 1 2 2
+22	125595 54 1742 1775 0.001068853149 0.001986279008 2 178 227 405 83213
+23	125649 50 1742 1775 0.001068853149 0.001986279008 2 0 0 0 0
+24	125699 79 1758 1808 0.001070927549 0.002022585548 3 58 205 321 48753
+25	125778 79 1758 1808 0.001070927549 0.002022585548 3 58 205 321 48753
+26	125857 150 1758 1808 0.001070927549 0.002022585548 6 0 1 3 3
+27	126007 79 1758 1808 0.001070927549 0.002022585548 3 58 205 321 48753
+28	126086 75 1758 1808 0.001070927549 0.002022585548 3 0 0 0 0
+29	126161 54 1743 1776 0.001068890349 0.001986326008 2 178 227 405 83213
+30	126215 79 1759 1809 0.001070941949 0.002022628148 3 64 205 333 50217
+31	126294 54 1745 1778 0.001069890349 0.001987326008 2 178 227 405 83213
+32	126348 54 1745 1778 0.001069890349 0.001987326008 2 178 227 405 83213
+33	126402 79 1761 1811 0.001071941949 0.002023628148 3 64 205 333 50217
+34	126481 79 1761 1811 0.001071941949 0.002023628148 3 64 205 333 50217
+35	126560 54 1747 1780 0.001069890349 0.001987326008 2 178 227 405 83213
+36	126614 54 1747 1780 0.001069890349 0.001987326008 2 178 227 405 83213
+37	126668 100 1747 1780 0.001069890349 0.001987326008 4 0 1 2 2
+38	126768 54 1747 1780 0.001069890349 0.001987326008 2 178 227 405 83213
+39	126822 50 1747 1780 0.001069890349 0.001987326008 2 0 0 0 0
+40	126872 27 1813 1813 0.002023628148 0.002023628148 1 205 205 205 42025
+41	126899 27 1813 1813 0.002023628148 0.002023628148 1 205 205 205 42025
+42	126926 50 1813 1813 0.002023628148 0.002023628148 2 0 1 1 1
+43	126976 27 1813 1813 0.002023628148 0.002023628148 1 205 205 205 42025
+44	127003 25 1813 1813 0.002023628148 0.002023628148 1 0 0 0 0
+45	127028 52 1763 1796 0.001071941949 0.001989387408 2 64 64 128 8192
+46	127080 52 1763 1796 0.001071941949 0.001989387408 2 64 64 128 8192
+47	127132 100 1763 1796 0.001071941949 0.001989387408 4 0 1 2 2
+48	127232 52 1763 1796 0.001071941949 0.001989387408 2 64 64 128 8192
+49	127284 50 1763 1796 0.001071941949 0.001989387408 2 0 0 0 0
+50	127334 54 1748 1781 0.001069927549 0.001987373008 2 178 227 405 83213
+51	127388 27 1814 1814 0.002023670748 0.002023670748 1 205 205 205 42025
+52	127415 52 1764 1797 0.001071956349 0.001989401808 2 64 64 128 8192
+53	127467 54 1750 1783 0.001070927549 0.001988373008 2 178 227 405 83213
+54	127521 54 1750 1783 0.001070927549 0.001988373008 2 178 227 405 83213
+55	127575 27 1816 1816 0.002024670748 0.002024670748 1 205 205 205 42025
+56	127602 27 1816 1816 0.002024670748 0.002024670748 1 205 205 205 42025
+57	127629 52 1766 1799 0.001072956349 0.001990401808 2 64 64 128 8192
+58	127681 52 1766 1799 0.001072956349 0.001990401808 2 64 64 128 8192
+59	127733 54 1751 1784 0.001070927549 0.001988373008 2 160 209 369 69281
+60	127787 52 1767 1800 0.001072956349 0.001990401808 2 46 46 92 4232
+61	127839 27 1818 1818 0.002024670748 0.002024670748 1 205 205 205 42025
+62	127866 27 1818 1818 0.002024670748 0.002024670748 1 205 205 205 42025
+63	127893 50 1818 1818 0.002024670748 0.002024670748 2 0 1 1 1
+64	127943 27 1818 1818 0.002024670748 0.002024670748 1 205 205 205 42025
+65	127970 25 1818 1818 0.002024670748 0.002024670748 1 0 0 0 0
+71	127995 27 1819 1819 0.002024713348 0.002024713348 1 205 205 205 42025
+74	128022 27 1821 1821 0.002025713348 0.002025713348 1 205 205 205 42025
+75	128049 27 1821 1821 0.002025713348 0.002025713348 1 205 205 205 42025
+78	128076 27 1822 1822 0.002025713348 0.002025713348 1 187 187 187 34969
+106	128103 58 1753 1786 0.001070927549 0.001988373008 2 7792 7961 15753 124092785
+108	128161 104 1753 1786 0.001070927549 0.001988373008 4 0 0 0 0
+109	128265 58 1753 1786 0.001070927549 0.001988373008 2 7504 7504 15008 112620032
+110	128323 56 1753 1786 0.001070927549 0.001988373008 2 288 457 745 291793
+116	128379 58 1769 1802 0.001072956349 0.001990401808 2 6876 6876 13752 94558752
+117	128437 56 1769 1802 0.001072956349 0.001990401808 2 288 457 745 291793
+118	128493 52 1769 1802 0.001072956349 0.001990401808 2 0 0 0 0
+119	128545 58 1769 1802 0.001072956349 0.001990401808 2 7504 7504 15008 112620032
+120	128603 28 1772 1772 0.001986279008 0.001986279008 1 288 288 288 82944
+121	128631 80 1769 1802 0.001072956349 0.001990401808 3 0 169 169 28561
+122	128711 56 1753 1786 0.001070927549 0.001988373008 2 168 288 456 111168
+123	128767 58 1753 1786 0.001070927549 0.001988373008 2 6876 6876 13752 94558752
+124	128825 56 1753 1786 0.001070927549 0.001988373008 2 120 169 289 42961
+128	128881 52 1753 1786 0.001070927549 0.001988373008 2 0 0 0 0
+131	128933 56 1756 1789 0.001070927549 0.001988373008 2 120 169 289 42961
+132	128989 52 1756 1789 0.001070927549 0.001988373008 2 1 2 3 5
+157	129041 70 1769 1802 0.001072956349 0.001990401808 2 4.1032e-06 4.1228e-06 8.226e-06 3.383373008e-11
+158	129111 73 1769 1802 0.001072956349 0.001990401808 2 9.63744e-07 1.358626e-06 2.32237e-06 2.774667105412e-12
+159	129184 78 1769 1802 0.001072956349 0.001990401808 2 0.502442588053 0.574219649338 1.076662237391 0.58217675997525
+160	129262 78 1769 1802 0.001072956349 0.001990401808 2 2.009771710838 2.296879561096 4.306651271934 9.3148380478653
+161	129340 58 1769 1802 0.001072956349 0.001990401808 2 1608 2144 3752 7182400
+162	129398 70 1769 1802 0.001072956349 0.001990401808 2 4294967295 4294967295 8589934590 3.6893488130239e+19
+163	129468 52 1769 1802 0.001072956349 0.001990401808 2 0 0 0 0
+176	129520 28 1805 1805 0.002022585548 0.002022585548 1 291 291 291 84681
+177	129548 28 1805 1805 0.002022585548 0.002022585548 1 147 147 147 21609
+89	129576 26 1828 1828 0.002025713348 0.002025713348 1 40 40 40 1600
+90	129602 26 1829 1829 0.002025713348 0.002025713348 1 58 58 58 3364
+91	129628 26 1829 1829 0.002025713348 0.002025713348 1 58 58 58 3364
+92	129654 50 1829 1829 0.002025713348 0.002025713348 2 0 1 1 1
+93	129704 26 1829 1829 0.002025713348 0.002025713348 1 58 58 58 3364
+94	129730 25 1829 1829 0.002025713348 0.002025713348 1 0 0 0 0
+95	129755 26 1830 1830 0.002025727748 0.002025727748 1 64 64 64 4096
+152	129781 29 1824 1824 0.002025713348 0.002025713348 1 7942 7942 7942 63075364
+154	129810 52 1824 1824 0.002025713348 0.002025713348 2 0 0 0 0
+155	129862 29 1824 1824 0.002025713348 0.002025713348 1 7504 7504 7504 56310016
+156	129891 28 1824 1824 0.002025713348 0.002025713348 1 438 438 438 191844
+201	129919 28 1824 1824 0.002025713348 0.002025713348 1 291 291 291 84681
+202	129947 29 1824 1824 0.002025713348 0.002025713348 1 3602 3602 3602 12974404
+203	129976 28 1824 1824 0.002025713348 0.002025713348 1 147 147 147 21609
+207	130004 26 1824 1824 0.002025713348 0.002025713348 1 0 0 0 0
+210	130030 28 1827 1827 0.002025713348 0.002025713348 1 147 147 147 21609
+211	130058 26 1827 1827 0.002025713348 0.002025713348 1 2 2 2 4
+
