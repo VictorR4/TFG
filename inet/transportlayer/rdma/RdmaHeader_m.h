@@ -44,6 +44,7 @@ class RdmaHeader;
 
 // cplusplus {{
 #include "inet/common/INETUtils.h"
+#include "inet/clock/contract/ClockTime.h"
 // }}
 
 
@@ -79,6 +80,8 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     B totalLengthField = B(-1);
     uint16_t crc = 0;
     inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
+    clocktime_t generationTime;
+    clocktime_t receptionTime;
 
   private:
     void copy(const RdmaHeader& other);
@@ -106,6 +109,8 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     virtual void setCrc(uint16_t crc);
     virtual inet::CrcMode getCrcMode() const;
     virtual void setCrcMode(inet::CrcMode crcMode);
+    virtual clocktime_t getGenerationTime() const;
+    virtual void setGenerationTime(clocktime_t generationtime);
 
   public:
     virtual unsigned int getSourcePort() const override { return getSrcPort(); }

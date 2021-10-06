@@ -32,22 +32,21 @@ simple RdmaBasicApp like IApp
         double startTime @unit(s) = default(this.sendInterval); // application start time (start of the first packet)
         double stopTime @unit(s) = default(-1s);  // time of finishing sending, -1s means forever
         volatile double sendInterval @unit(s); // should usually be a random value, e.g. exponential(1)
-        //int timeToLive = default(-1); // if not -1, set the TTL (IPv4) or Hop Limit (IPv6) field of sent packets to this value
         bool dontFragment = default(false); // if true, asks IP to not fragment the message during routing
-        //int dscp = default(-1); // if not -1, set the DSCP field (on IPv4/IPv6) of sent packets to this value
-        //int tos = default(-1); // if not -1, set the Type Of Service (IPv4) / Traffic Class (IPv6) field of sent packets to this value
         @display("i=block/app");
         @lifecycleSupport;
         double stopOperationExtraTime @unit(s) = default(-1s);    // extra time after lifecycle stop operation finished
         double stopOperationTimeout @unit(s) = default(2s);    // timeout value for lifecycle stop operation
         @signal[packetSent](type=inet::Packet);
         @signal[packetReceived](type=inet::Packet);
+        @signal[latency](type=inet::Packet);
         @statistic[packetReceived](title="packets received"; source=packetReceived; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[throughput](title="throughput"; unit=bps; source="throughput(packetReceived)"; record=vector);
         @statistic[packetSent](title="packets sent"; source=packetSent; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[rcvdPkLifetime](title="received packet lifetime"; source="dataAge(packetReceived)"; unit=s; record=stats,vector; interpolationmode=none);
         @statistic[rcvdPkSeqNo](title="received packet sequence number"; source="appPkSeqNo(packetReceived)"; record=vector; interpolationmode=none);
-
+		//@statistic[latency](title="latency"; source=latency; unit=s; record=count,"vector(latencyPacket)"; interpolationmode=none);
+		//double latency @unit(s) = default(0s);
       gates:
         input socketIn @labels(RdmaControlInfo/up);
         output socketOut @labels(RdmaControlInfo/down);

@@ -34,6 +34,7 @@
 #include "inet/transportlayer/common/CrcMode_m.h"
 #include "inet/transportlayer/common/TransportPseudoHeader_m.h"
 #include "inet/transportlayer/contract/udp/UdpControlInfo.h"
+#include "inet/clock/contract/ClockTime.h"
 
 
 namespace inet {
@@ -95,7 +96,7 @@ class INET_API Rdma: public TransportProtocolBase
     virtual ushort getEphemeralPort();
 
 
-    virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort);// const L3Address& srcAddr, const L3Address& destAddr);//Cambiado
+    virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort, clocktime_t generationTime);
     virtual void processUndeliverablePacket(Packet *rdmaPacket);//Cambiado
     //virtual void sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
 

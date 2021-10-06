@@ -325,30 +325,20 @@ void RdmaHeader::setCrcMode(inet::CrcMode crcMode)
 {
     handleChange();
     this->crcMode = crcMode;
-}/*
+}
+
 //Añadidos
-int RdmaHeader::getSrcAddress() const
+clocktime_t RdmaHeader::getGenerationTime() const
 {
-    return this->srcAddress;
+    return this->generationTime;
 }
 
-void RdmaHeader::setSrcAddress(int srcAddress)
+void RdmaHeader::setGenerationTime(clocktime_t generationTime)
 {
     handleChange();
-    this->srcAddress = srcAddress;
+    this->generationTime = generationTime;
 }
 
-int RdmaHeader::getDestAddress() const
-{
-    return this->srcAddress;
-}
-
-void RdmaHeader::setDestAddress(L3Address destAddress)
-{
-    handleChange();
-    this->dstAddress = destAddress;
-}
-*/
 class RdmaHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
