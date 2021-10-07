@@ -39,6 +39,7 @@ void RdmaBasicApp::initialize(int stage)
         numReceived = 0;
         WATCH(numSent);
         WATCH(numReceived);
+        WATCH(latency);
 
         localPort = par("localPort");
         destPort = par("destPort");

@@ -59,7 +59,7 @@
 #include "inet/transportlayer/common/L4Tools.h"
 #include "inet/transportlayer/udp/Udp.h"
 #include "inet/transportlayer/udp/UdpHeader_m.h"
-
+#include "inet/common/TimeTag_m.h"
 namespace inet {
 
 Define_Module(Udp);
@@ -725,6 +725,8 @@ void Udp::handleUpperPacket(Packet *packet)
     auto addressReq = packet->addTagIfAbsent<L3AddressReq>();
     srcAddr = addressReq->getSrcAddress();
     destAddr = addressReq->getDestAddress();
+    auto time = packet->addTagIfAbsent<CreationTimeTag>();
+    clocktime_t generationTime= time->getCreationTime();
 
     if (srcAddr.isUnspecified())
         addressReq->setSrcAddress(srcAddr = sd->localAddr);
@@ -787,6 +789,9 @@ void Udp::handleUpperPacket(Packet *packet)
     // set source and destination port
     udpHeader->setSourcePort(srcPort);
     udpHeader->setDestinationPort(destPort);
+
+    // set generation time of the packet
+    udpHeader->setGenerationTime(generationTime);
 
     B totalLength = udpHeader->getChunkLength() + packet->getTotalLength();
     if (totalLength.get() > UDP_MAX_MESSAGE_SIZE)
@@ -1004,7 +1009,7 @@ void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, us
     payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
     payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
     payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
-
+    payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(header->getGenerationTime());
     emit(packetSentToUpperSignal, payload);
     send(payload, "appOut");
     numPassedUp++;

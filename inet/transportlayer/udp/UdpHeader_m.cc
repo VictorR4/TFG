@@ -318,6 +318,17 @@ void UdpHeader::setCrcMode(inet::CrcMode crcMode)
     this->crcMode = crcMode;
 }
 
+//Añadidos
+clocktime_t UdpHeader::getGenerationTime() const
+{
+    return this->generationTime;
+}
+
+void UdpHeader::setGenerationTime(clocktime_t generationTime)
+{
+    handleChange();
+    this->generationTime = generationTime;
+}
 class UdpHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:

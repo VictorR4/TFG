@@ -63,6 +63,8 @@ void UdpBasicApp::finish()
 {
     recordScalar("packets sent", numSent);
     recordScalar("packets received", numReceived);
+    recordScalar("latency", latency.dbl());
+    recordScalar("meanLatency", latency.dbl()/numReceived);
     ApplicationBase::finish();
 }
 
@@ -122,6 +124,7 @@ void UdpBasicApp::sendPacket()
     payload->setSequenceNumber(numSent);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
     packet->insertAtBack(payload);
+    packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
     L3Address destAddr = chooseDestAddr();
     emit(packetSentSignal, packet);
     socket.sendTo(packet, destAddr, destPort);
@@ -227,15 +230,17 @@ void UdpBasicApp::refreshDisplay() const
     ApplicationBase::refreshDisplay();
 
     char buf[100];
-    sprintf(buf, "rcvd: %d pks\nsent: %d pks", numReceived, numSent);
+    sprintf(buf, "rcvd: %d pks\nsent: %d pks\n latency: %f s", numReceived, numSent, latency.dbl());
     getDisplayString().setTagArg("t", 0, buf);
 }
 
 void UdpBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
+    clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
     EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
     delete pk;
+    latency += (simTime() - generationTime);
     numReceived++;
 }
 

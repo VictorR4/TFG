@@ -51,6 +51,7 @@ class INET_API UdpBasicApp : public ClockUserModuleMixin<ApplicationBase>, publi
     // statistics
     int numSent = 0;
     int numReceived = 0;
+    clocktime_t latency;
 
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }

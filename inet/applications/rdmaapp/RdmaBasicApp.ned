@@ -45,8 +45,7 @@ simple RdmaBasicApp like IApp
         @statistic[packetSent](title="packets sent"; source=packetSent; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[rcvdPkLifetime](title="received packet lifetime"; source="dataAge(packetReceived)"; unit=s; record=stats,vector; interpolationmode=none);
         @statistic[rcvdPkSeqNo](title="received packet sequence number"; source="appPkSeqNo(packetReceived)"; record=vector; interpolationmode=none);
-		//@statistic[latency](title="latency"; source=latency; unit=s; record=count,"vector(latencyPacket)"; interpolationmode=none);
-		//double latency @unit(s) = default(0s);
+		@statistic[latency](title="latency"; source=latency; unit=s; record=count; interpolationmode=none);
       gates:
         input socketIn @labels(RdmaControlInfo/up);
         output socketOut @labels(RdmaControlInfo/down);
