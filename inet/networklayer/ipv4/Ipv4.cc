@@ -200,6 +200,9 @@ void Ipv4::handleRequest(Request *request)
 
 void Ipv4::handleMessageWhenUp(cMessage *msg)
 {
+
+    if(check_and_cast<Packet *>(msg)->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma)
+        isRdma = true;
     if (msg->arrivedOn("transportIn")) { // TODO packet->getArrivalGate()->getBaseId() == transportInGateBaseId
         if (auto request = dynamic_cast<Request *>(msg))
             handleRequest(request);
@@ -1147,7 +1150,10 @@ void Ipv4::sendPacketToNIC(Packet *packet)
 {
     auto networkInterface = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
     EV_INFO << "Sending " << packet << " to output interface = " << networkInterface->getInterfaceName() << ".\n";
-    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ipv4);
+    if(isRdma)//Ultimocambio
+        packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
+    else
+        packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ipv4);
     packet->addTagIfAbsent<DispatchProtocolInd>()->setProtocol(&Protocol::ipv4);
     auto protocol = networkInterface->getProtocol();
     if (protocol != nullptr)

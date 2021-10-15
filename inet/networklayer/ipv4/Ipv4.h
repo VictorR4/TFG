@@ -77,7 +77,7 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     IArp *arp = nullptr;
     Icmp *icmp = nullptr;
     int transportInGateBaseId = -1;
-
+    bool isRdma = false;
     // config
     CrcMode crcMode = CRC_MODE_UNDEFINED;
     int defaultTimeToLive = -1;

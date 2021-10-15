@@ -207,6 +207,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
 
     insertTransportProtocolHeader(packet, Protocol::rdma, rdmaHeader);//Cambiado
     packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
+    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
     packet->setKind(0);
 
     EV_INFO << "Sending app packet " << packet->getName() << " over " << l3Protocol->getName() << ".\n";

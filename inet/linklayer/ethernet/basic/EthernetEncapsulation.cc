@@ -22,6 +22,7 @@
 #include "inet/common/IProtocolRegistrationListener.h"
 #include "inet/common/ModuleAccess.h"
 #include "inet/common/ProtocolTag_m.h"
+#include "inet/common/Protocol.h"
 #include "inet/common/checksum/EthernetCRC.h"
 #include "inet/common/socket/SocketTag_m.h"
 #include "inet/linklayer/common/EtherType_m.h"
@@ -171,6 +172,8 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
         const auto& protocolTag = packet->findTag<PacketProtocolTag>();
         if (protocolTag) {
             const Protocol *protocol = protocolTag->getProtocol();
+            if (protocol == &Protocol::rdma)//Ultimocambio
+                protocol = &Protocol::ipv4;
             if (protocol) {
                 int ethType = ProtocolGroup::ethertype.findProtocolNumber(protocol);
                 if (ethType != -1)
@@ -194,7 +197,7 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
     const auto& ethernetFcs = makeShared<EthernetFcs>();
     ethernetFcs->setFcsMode(fcsMode);
     packet->insertAtBack(ethernetFcs);
-    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);
+    //packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);//Ultimocambio
     EV_INFO << "Sending " << packet << " to lower layer.\n";
     send(packet, "lowerLayerOut");
 }
@@ -268,7 +271,12 @@ void EthernetEncapsulation::processPacketFromMac(Packet *packet)
 
             // pass up to higher layers.
             EV_INFO << "Sending " << packet << " to upper layer.\n";
-            send(packet, "upperLayerOut");
+            auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
+            if(protocol== &Protocol::rdma){
+                send(packet, "appLayerOut");
+            }else{
+                send(packet, "upperLayerOut");
+            }
         }
         else {
             EV_WARN << "Unknown protocol, dropping packet\n";

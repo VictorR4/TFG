@@ -15,11 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-package inet.node.base;
+package inet.node.rdma.base;
 
+import inet.node.base.NodeBase;
 import inet.common.MessageDispatcher;
 import inet.common.packet.recorder.PcapRecorder;
-import inet.linklayer.contract.IEthernetInterface;
+import inet.linklayer.contract.rdma.IEthernetInterface;
 import inet.linklayer.contract.ILoopbackInterface;
 import inet.linklayer.contract.IPppInterface;
 import inet.linklayer.contract.ITunnelInterface;
@@ -28,6 +29,7 @@ import inet.linklayer.contract.IWirelessInterface;
 import inet.linklayer.ethernet.contract.IEthernetLayer;
 import inet.linklayer.ieee8021q.IIeee8021qLayer;
 import inet.networklayer.common.InterfaceTable;
+
 
 module LinkLayerNodeBase extends NodeBase
 {
@@ -90,7 +92,7 @@ module LinkLayerNodeBase extends NodeBase
         }
         eth[sizeof(ethg)]: <default("EthernetInterface")> like IEthernetInterface {
             parameters:
-                @display("p=1088.668,675.66797,row,150;q=txQueue");
+                @display("p=1049.02,675.66797,row,150;q=txQueue");
         }
         tun[numTunInterfaces]: <default("TunInterface")> like ITunnelInterface {
             parameters:
@@ -112,7 +114,7 @@ module LinkLayerNodeBase extends NodeBase
             radioIn[i] --> { @display("m=s"); } --> wlan[i].radioIn;
         }
 
-        for i=0..sizeof(ethg)-1 {
+        for i=0..sizeof(ethg) -1 {
             ethg[i] <--> { @display("m=s"); } <--> eth[i].phys;
         }
 

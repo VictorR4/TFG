@@ -14,11 +14,10 @@
 // 
 
 package inet.applications.rdmaapp;
-import inet.applications.contract.IApp;
 //
 // TODO auto-generated type
 //
-simple RdmaBasicApp like IApp
+simple RdmaBasicApp like IAppRdma
 {
     parameters:
         string interfaceTableModule;   // The path to the InterfaceTable module
@@ -49,6 +48,8 @@ simple RdmaBasicApp like IApp
       gates:
         input socketIn @labels(RdmaControlInfo/up);
         output socketOut @labels(RdmaControlInfo/down);
+        input linkLayerIn;
+	    output linkLayerOut;
         
 }
 

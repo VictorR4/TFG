@@ -18,7 +18,7 @@
 package inet.node.rdma.base;
 
 import inet.common.MessageDispatcher;
-import inet.node.base.NetworkLayerNodeBase;
+//import inet.node.base.NetworkLayerNodeBase;
 import inet.transportlayer.contract.ISctp;
 import inet.transportlayer.contract.ITcp;
 import inet.transportlayer.contract.IUdp;
@@ -27,25 +27,11 @@ import inet.transportlayer.contract.IRdma;
 module TransportLayerNodeBase extends NetworkLayerNodeBase
 {
     parameters:
-        bool hasUdp = default(firstAvailableOrEmpty("Udp") != "");
-        bool hasTcp = default(firstAvailableOrEmpty("Tcp", "TcpLwip", "TcpNsc") != "");
-        bool hasSctp = default(false);
 		bool hasRdma = default(firstAvailableOrEmpty("Rdma") != "");
         @figure[transportLayer](type=rectangle; pos=250,156; size=1000,130; fillColor=#ff0000; lineColor=#808080; cornerRadius=5; fillOpacity=0.1);
         @figure[transportLayer.title](type=text; pos=1245,161; anchor=ne; text="transport layer");
     submodules:
-        udp: <default(firstAvailableOrEmpty("Udp"))> like IUdp if hasUdp {
-            parameters:
-                @display("p=375,226");
-        }
-        tcp: <default(firstAvailableOrEmpty("Tcp", "TcpLwip", "TcpNsc"))> like ITcp if hasTcp {
-            parameters:
-                @display("p=525,226");
-        }
-        sctp: <default(firstAvailableOrEmpty("Sctp"))> like ISctp if hasSctp {
-            parameters:
-                @display("p=675,226");
-        }
+
  		rdma: <default(firstAvailableOrEmpty("Rdma"))> like IRdma if hasRdma{
             parameters:
             @display("p=885.472,224.672");
@@ -56,15 +42,6 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         }
 
     connections allowunconnected:
-        udp.ipOut --> tn.in++ if hasUdp;
-        udp.ipIn <-- tn.out++ if hasUdp;
-
-        tcp.ipOut --> tn.in++ if hasTcp;
-        tcp.ipIn <-- tn.out++ if hasTcp;
-
-        sctp.ipOut --> tn.in++ if hasSctp;
-        tn.out++ --> sctp.ipIn if hasSctp;
-
         tn.out++ --> ipv4.transportIn if hasIpv4;
         tn.in++ <-- ipv4.transportOut if hasIpv4;
 

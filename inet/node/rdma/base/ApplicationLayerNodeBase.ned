@@ -17,7 +17,7 @@
 
 package inet.node.rdma.base;
 
-import inet.applications.contract.IApp;
+import inet.applications.rdmaapp.IAppRdma;
 import inet.common.MessageDispatcher;
 
 module ApplicationLayerNodeBase extends TransportLayerNodeBase
@@ -28,9 +28,9 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
         @figure[applicationLayer.title](type=text; pos=1245,11; anchor=ne; text="application layer");
 
     submodules:
-        app[numApps]: <> like IApp {
+        app[numApps]: <> like IAppRdma {
             parameters:
-                @display("p=375,76,row,150");
+                @display("p=1050.672,79.296,row,150");
         }
         at: MessageDispatcher {
             parameters:
@@ -39,22 +39,17 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
 
     connections allowunconnected:
         for i=0..numApps-1 {
-            app[i].socketOut --> rdma.appIn if hasRdma;
-            app[i].socketIn <-- rdma.appOut if hasRdma;
-            
+            app[i].socketOut --> at.in++;
+            //app[i].socketOut --> rdma.appIn if hasRdma;
+            //app[i].socketIn <-- li.out++ if hasRdma;
+           	eth[0].appLayerOut++ --> app[i].socketIn;
         }
+		
+        
 
-        at.out++ --> udp.appIn if hasUdp;
-        at.in++ <-- udp.appOut if hasUdp;
 
-        at.out++ --> tcp.appIn if hasTcp;
-        at.in++ <-- tcp.appOut if hasTcp;
-
-        at.out++ --> sctp.appIn if hasSctp;
-        at.in++ <-- sctp.appOut if hasSctp;
-
+        at.out++ --> rdma.appIn if hasRdma;
+        
         at.out++ --> tn.in++;
         at.in++ <-- tn.out++;
-	
 }
-

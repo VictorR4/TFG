@@ -189,7 +189,6 @@ void Arp::sendArpRequest(const NetworkInterface *ie, Ipv4Address ipAddress)
     else
         packet->removeTagIfPresent<DispatchProtocolReq>();
     packet->addTag<PacketProtocolTag>()->setProtocol(&Protocol::arp);
-
     // send out
     EV_INFO << "Sending " << packet << " to network protocol.\n";
     emit(arpRequestSentSignal, packet);
