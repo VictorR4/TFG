@@ -39,7 +39,7 @@ module LayeredEthernetInterface extends NetworkInterface like IEthernetInterface
     gates:
         input upperLayerIn;
         output upperLayerOut;
-        output appLayerOut[];
+        output appLayerOut;
         input cutthroughIn @loose;
         output cutthroughOut @loose;
         inout phys @labels(EthernetSignal);

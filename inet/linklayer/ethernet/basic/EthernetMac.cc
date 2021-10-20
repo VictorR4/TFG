@@ -351,7 +351,7 @@ void EthernetMac::processReceivedDataFrame(Packet *packet, const Ptr<const Ether
     macAddressInd->setSrcAddress(frame->getSrc());
     macAddressInd->setDestAddress(frame->getDest());
     packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::ethernetMac);
-    //packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);//Ultimocambio
+    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);//Ultimocambio
     if (networkInterface)
         packet->addTagIfAbsent<InterfaceInd>()->setInterfaceId(networkInterface->getInterfaceId());
 

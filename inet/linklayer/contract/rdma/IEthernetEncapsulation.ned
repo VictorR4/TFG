@@ -15,27 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_APPLICATIONBASE_H
-#define __INET_APPLICATIONBASE_H
+package inet.linklayer.contract.rdma;
 
-#include "inet/common/lifecycle/ModuleOperations.h"
-#include "inet/common/lifecycle/OperationalBase.h"
-
-namespace inet {
-
-class INET_API ApplicationBase : public OperationalBase
+//
+// Module interface for Ethernet encapsulation/decapsulation.
+//
+moduleinterface IEthernetEncapsulation
 {
-  public:
-    ApplicationBase();
-
-  protected:
-    virtual bool isInitializeStage(int stage) override { return stage == INITSTAGE_APPLICATION_LAYER; }
-    virtual bool isModuleStartStage(int stage) override { return stage == ModuleStartOperation::STAGE_APPLICATION_LAYER; }
-    virtual bool isModuleStopStage(int stage) override { return stage == ModuleStopOperation::STAGE_APPLICATION_LAYER; }
-};
-
-} // namespace inet
-
-#endif
-
+    parameters:
+        @display("i=block/square");
+    gates:
+        input upperLayerIn @labels(Ieee802Ctrl/down); // higher layer
+        output upperLayerOut @labels(Ieee802Ctrl/up); // higher layer
+        input lowerLayerIn @labels(EtherFrame);   // to Ethernet MAC
+        output lowerLayerOut @labels(EtherFrame); // to Ethernet MAC
+        output appLayerOut; //to app layer
+}
 

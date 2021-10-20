@@ -48,6 +48,8 @@ class EthernetFragmentFcs;
 
 #include "inet/linklayer/common/MacAddress_m.h" // import inet.linklayer.common.MacAddress
 
+#include "inet/common/ProtocolTag_m.h"
+
 
 namespace inet {
 
@@ -83,7 +85,6 @@ class INET_API EthernetMacAddressFields : public ::inet::FieldsChunk
   protected:
     MacAddress dest;
     MacAddress src;
-
   private:
     void copy(const EthernetMacAddressFields& other);
 
@@ -106,6 +107,7 @@ class INET_API EthernetMacAddressFields : public ::inet::FieldsChunk
     virtual const MacAddress& getSrc() const;
     virtual MacAddress& getSrcForUpdate() { handleChange();return const_cast<MacAddress&>(const_cast<EthernetMacAddressFields*>(this)->getSrc());}
     virtual void setSrc(const MacAddress& src);
+
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const EthernetMacAddressFields& obj) {obj.parsimPack(b);}
@@ -201,6 +203,7 @@ class INET_API EthernetMacHeader : public ::inet::EthernetMacAddressFields
 {
   protected:
     uint16_t typeOrLength = 0;
+    int isRdma;
 
   private:
     void copy(const EthernetMacHeader& other);
@@ -220,6 +223,8 @@ class INET_API EthernetMacHeader : public ::inet::EthernetMacAddressFields
     // field getter/setter methods
     virtual uint16_t getTypeOrLength() const;
     virtual void setTypeOrLength(uint16_t typeOrLength);
+    virtual int getIsRdma() const;
+    virtual void setIsRdma(int isRdma);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const EthernetMacHeader& obj) {obj.parsimPack(b);}

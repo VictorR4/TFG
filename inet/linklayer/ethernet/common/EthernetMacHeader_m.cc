@@ -925,6 +925,17 @@ void EthernetMacHeader::setTypeOrLength(uint16_t typeOrLength)
     this->typeOrLength = typeOrLength;
 }
 
+int EthernetMacHeader::getIsRdma() const
+{
+    return this->isRdma;
+}
+
+void EthernetMacHeader::setIsRdma(int isRdma)
+{
+    handleChange();
+    this->isRdma = isRdma;
+}
+
 class EthernetMacHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:

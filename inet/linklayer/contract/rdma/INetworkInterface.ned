@@ -27,6 +27,6 @@ moduleinterface INetworkInterface
     gates:
         input upperLayerIn;
         output upperLayerOut;
-        output appLayerOut[];
+        output appLayerOut;
 }
 

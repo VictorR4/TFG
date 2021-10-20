@@ -18,7 +18,7 @@
 package inet.linklayer.contract.rdma;
 
 import inet.linklayer.contract.IEtherMac;
-import inet.linklayer.ethernet.contract.IEthernetEncapsulation;
+import inet.linklayer.contract.rdma.IEthernetEncapsulation;
 import inet.networklayer.common.NetworkInterface;
 import inet.queueing.contract.ITrafficConditioner;
 
@@ -44,7 +44,7 @@ module EthernetInterface extends NetworkInterface like IEthernetInterface
     gates:
         input upperLayerIn;
         output upperLayerOut;
-        output appLayerOut[];
+        output appLayerOut;
         input cutthroughIn @loose;
         output cutthroughOut @loose;
         inout phys @labels(EthernetSignal);
@@ -69,9 +69,10 @@ module EthernetInterface extends NetworkInterface like IEthernetInterface
     connections:
         mac.upperLayerOut --> encap.lowerLayerIn;
         mac.upperLayerIn <-- encap.lowerLayerOut;
-
+		
         mac.phys <--> { @display("m=s"); } <--> phys;
 
+		encap.appLayerOut --> { @display("m=n"); } --> appLayerOut;
         encap.upperLayerOut --> { @display("m=n"); } --> upperLayerOut if !exists(ingressTC);
         encap.upperLayerOut --> ingressTC.in if exists(ingressTC);
         ingressTC.out --> { @display("m=n"); } --> upperLayerOut if exists(ingressTC);

@@ -42,7 +42,7 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
             app[i].socketOut --> at.in++;
             //app[i].socketOut --> rdma.appIn if hasRdma;
             //app[i].socketIn <-- li.out++ if hasRdma;
-           	eth[0].appLayerOut++ --> app[i].socketIn;
+           	eth[0].appLayerOut --> app[i].socketIn;
         }
 		
         

@@ -37,7 +37,6 @@ class ApplicationPacket;
 
 #include "inet/common/packet/chunk/Chunk_m.h" // import inet.common.packet.chunk.Chunk
 
-
 namespace inet {
 
 /**

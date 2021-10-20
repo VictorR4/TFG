@@ -172,8 +172,10 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
         const auto& protocolTag = packet->findTag<PacketProtocolTag>();
         if (protocolTag) {
             const Protocol *protocol = protocolTag->getProtocol();
-            if (protocol == &Protocol::rdma)//Ultimocambio
+            if (protocol == &Protocol::rdma){//Ultimocambio
                 protocol = &Protocol::ipv4;
+
+            }
             if (protocol) {
                 int ethType = ProtocolGroup::ethertype.findProtocolNumber(protocol);
                 if (ethType != -1)
@@ -187,6 +189,9 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
     }
     auto macAddressReq = packet->getTag<MacAddressReq>();
     const auto& ethHeader = makeShared<EthernetMacHeader>();
+    if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma){
+        ethHeader->setIsRdma(1);
+    }
     auto srcAddr = macAddressReq->getSrcAddress();
     if (srcAddr.isUnspecified() && networkInterface != nullptr)
         srcAddr = networkInterface->getMacAddress();
@@ -197,7 +202,7 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
     const auto& ethernetFcs = makeShared<EthernetFcs>();
     ethernetFcs->setFcsMode(fcsMode);
     packet->insertAtBack(ethernetFcs);
-    //packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);//Ultimocambio
+    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);//Ultimocambio
     EV_INFO << "Sending " << packet << " to lower layer.\n";
     send(packet, "lowerLayerOut");
 }
@@ -271,10 +276,11 @@ void EthernetEncapsulation::processPacketFromMac(Packet *packet)
 
             // pass up to higher layers.
             EV_INFO << "Sending " << packet << " to upper layer.\n";
-            auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
-            if(protocol== &Protocol::rdma){
+            //auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
+            auto isRdma = ethHeader->getIsRdma();
+            if(isRdma == 1){
                 send(packet, "appLayerOut");
-            }else{
+             }else{
                 send(packet, "upperLayerOut");
             }
         }

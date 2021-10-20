@@ -144,7 +144,6 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     clocktime_t generationTime= time->getCreationTime();
 
 
-
     int srcPort = -1, destPort = -1;
 
     if (auto& portsReq = packet->removeTagIfPresent<L4PortReq>()) {

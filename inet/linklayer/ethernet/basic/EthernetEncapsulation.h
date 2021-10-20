@@ -36,7 +36,7 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
   protected:
     FcsMode fcsMode = FCS_MODE_UNDEFINED;
     int seqNum;
-
+    int isRdma = 0;
     // statistics
     long totalFromHigherLayer; // total number of packets received from higher layer
     long totalFromMAC; // total number of frames received from MAC
