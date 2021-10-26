@@ -37,6 +37,7 @@ class ApplicationPacket;
 
 #include "inet/common/packet/chunk/Chunk_m.h" // import inet.common.packet.chunk.Chunk
 
+#include "inet/clock/contract/ClockTime.h"
 namespace inet {
 
 /**
@@ -56,7 +57,6 @@ class INET_API ApplicationPacket : public ::inet::FieldsChunk
 {
   protected:
     uint32_t sequenceNumber = 0;
-
   private:
     void copy(const ApplicationPacket& other);
 

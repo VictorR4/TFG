@@ -176,7 +176,6 @@ void RdmaBasicApp::sendPacket()//Cambiado
     payload->setChunkLength(B(par("messageLength")));
     payload->setSequenceNumber(numSent);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
-    //payload->setGenerationTime(simTime());
     packet->insertAtBack(payload);
     packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
 
@@ -206,9 +205,9 @@ void RdmaBasicApp::refreshDisplay() const
 void RdmaBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
-    //auto payload = pk->popAtFront<ApplicationPacket>(b(-1), Chunk::PF_ALLOW_INCORRECT);
+    //clocktime_t generationTime = payload->getGenerationTime();
     clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
-    EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
+    //EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
     delete pk;
     latency += (simTime() - generationTime);
     numReceived++;

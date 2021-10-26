@@ -37,6 +37,8 @@
 #include "inet/linklayer/ethernet/common/EthernetMacHeader_m.h"
 #include "inet/linklayer/ieee8022/Ieee8022LlcHeader_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
+#include "inet/clock/contract/ClockTime.h"
+#include "inet/common/TimeTag_m.h"
 
 namespace inet {
 
@@ -191,7 +193,12 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
     const auto& ethHeader = makeShared<EthernetMacHeader>();
     if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma){
         ethHeader->setIsRdma(1);
+        auto time = packet->getTag<CreationTimeTag>();
+        clocktime_t generationTime = time->getCreationTime();
+        // set generation time of the packet
+        ethHeader->setGenerationTime(generationTime);
     }
+
     auto srcAddr = macAddressReq->getSrcAddress();
     if (srcAddr.isUnspecified() && networkInterface != nullptr)
         srcAddr = networkInterface->getMacAddress();
@@ -279,6 +286,8 @@ void EthernetEncapsulation::processPacketFromMac(Packet *packet)
             //auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
             auto isRdma = ethHeader->getIsRdma();
             if(isRdma == 1){
+                auto generationTime = ethHeader->getGenerationTime();
+                packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
                 send(packet, "appLayerOut");
              }else{
                 send(packet, "upperLayerOut");

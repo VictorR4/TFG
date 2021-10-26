@@ -50,6 +50,8 @@ class EthernetFragmentFcs;
 
 #include "inet/common/ProtocolTag_m.h"
 
+#include "inet/clock/contract/ClockTime.h"
+
 
 namespace inet {
 
@@ -204,6 +206,7 @@ class INET_API EthernetMacHeader : public ::inet::EthernetMacAddressFields
   protected:
     uint16_t typeOrLength = 0;
     int isRdma;
+    clocktime_t generationTime;
 
   private:
     void copy(const EthernetMacHeader& other);
@@ -225,6 +228,8 @@ class INET_API EthernetMacHeader : public ::inet::EthernetMacAddressFields
     virtual void setTypeOrLength(uint16_t typeOrLength);
     virtual int getIsRdma() const;
     virtual void setIsRdma(int isRdma);
+    virtual clocktime_t getGenerationTime() const;
+    virtual void setGenerationTime(clocktime_t generationtime);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const EthernetMacHeader& obj) {obj.parsimPack(b);}

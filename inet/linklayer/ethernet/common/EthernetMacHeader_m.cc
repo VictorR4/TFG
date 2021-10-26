@@ -936,6 +936,16 @@ void EthernetMacHeader::setIsRdma(int isRdma)
     this->isRdma = isRdma;
 }
 
+clocktime_t EthernetMacHeader::getGenerationTime() const
+{
+    return this->generationTime;
+}
+
+void EthernetMacHeader::setGenerationTime(clocktime_t generationTime)
+{
+    handleChange();
+    this->generationTime = generationTime;
+}
 class EthernetMacHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
