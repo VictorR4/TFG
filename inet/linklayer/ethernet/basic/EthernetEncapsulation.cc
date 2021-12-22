@@ -193,8 +193,8 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
     const auto& ethHeader = makeShared<EthernetMacHeader>();
     if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma){
         ethHeader->setIsRdma(1);
-        auto time = packet->getTag<CreationTimeTag>();
-        clocktime_t generationTime = time->getCreationTime();
+        //auto time = packet->removeTagIfPresent<CreationTimeTag>();
+        clocktime_t generationTime = simTime();// - time->getCreationTime();
         // set generation time of the packet
         ethHeader->setGenerationTime(generationTime);
     }

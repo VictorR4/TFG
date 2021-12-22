@@ -33,6 +33,7 @@
 #include "inet/transportlayer/common/CrcMode_m.h"
 #include "inet/transportlayer/common/TransportPseudoHeader_m.h"
 #include "inet/transportlayer/contract/udp/UdpControlInfo.h"
+#include "inet/common/clock/ClockUserModuleMixin.h"
 
 namespace inet {
 
@@ -130,6 +131,7 @@ class INET_API Udp : public TransportProtocolBase
     int numPassedUp = 0;
     int numDroppedWrongPort = 0;
     int numDroppedBadChecksum = 0;
+    clocktime_t latency = 0;
 
   protected:
     // utility: show current statistics above the icon
@@ -168,7 +170,7 @@ class INET_API Udp : public TransportProtocolBase
     virtual SockDesc *findSocketForUnicastPacket(const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
     virtual std::vector<SockDesc *> findSocketsForMcastBcastPacket(const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort, bool isMulticast, bool isBroadcast);
     virtual SockDesc *findFirstSocketByLocalAddress(const L3Address& localAddr, ushort localPort);
-    virtual void sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort);
+    virtual void sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort, clocktime_t latency);
     virtual void processUndeliverablePacket(Packet *udpPacket);
     virtual void sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
 

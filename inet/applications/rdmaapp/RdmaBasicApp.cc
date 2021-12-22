@@ -177,7 +177,7 @@ void RdmaBasicApp::sendPacket()//Cambiado
     payload->setSequenceNumber(numSent);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
     packet->insertAtBack(payload);
-    packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+    //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Cambiado
 
     L3Address destAddr = chooseDestAddr();
     emit(packetSentSignal, packet);

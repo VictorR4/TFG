@@ -141,7 +141,8 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     auto addressReq = packet->addTagIfAbsent<L3AddressReq>();
     destAddr = addressReq->getDestAddress();
     auto time = packet->addTagIfAbsent<CreationTimeTag>();
-    clocktime_t generationTime= time->getCreationTime();
+    //clocktime_t generationTime = simTime() - time->getCreationTime();
+    //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Cambiado
 
 
     int srcPort = -1, destPort = -1;
@@ -188,7 +189,7 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     rdmaHeader->setDestinationPort(destPort);
 
     // set generation time of the packet
-    rdmaHeader->setGenerationTime(generationTime);
+    //rdmaHeader->setGenerationTime(generationTime);
 
     B totalLength = rdmaHeader->getChunkLength() + packet->getTotalLength();//Cambiado
     if (totalLength.get() > RDMA_MAX_MESSAGE_SIZE)
@@ -296,7 +297,7 @@ void Rdma::processRdmaPacket(Packet *rdmaPacket)//Cambiado
     auto srcPort = rdmaHeader->getSourcePort();//Cambiado
     auto destPort = rdmaHeader->getDestinationPort();//Cambiado
     auto l3AddressInd = rdmaPacket->getTag<L3AddressInd>();//Cambiado
-    auto generationTime = rdmaHeader->getGenerationTime();
+    //auto generationTime = rdmaHeader->getGenerationTime();
     auto totalLength = B(rdmaHeader->getTotalLengthField());//Cambiado
     auto hasIncorrectLength = totalLength<rdmaHeader->getChunkLength() || totalLength> rdmaHeader->getChunkLength() + rdmaPacket->getDataLength();//Cambiado
     auto networkProtocol = rdmaPacket->getTag<NetworkProtocolInd>()->getProtocol();//Cambiado
@@ -317,10 +318,10 @@ void Rdma::processRdmaPacket(Packet *rdmaPacket)//Cambiado
     }
 
 
-    sendUp(rdmaHeader, rdmaPacket, srcPort, destPort, generationTime);
+    sendUp(rdmaHeader, rdmaPacket, srcPort, destPort);//, generationTime);
 }
 
-void Rdma::sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort, clocktime_t generationTime)
+void Rdma::sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort)//, clocktime_t generationTime)
 {
     EV_INFO << "Sending payload up to app layer\n";
 
@@ -331,7 +332,7 @@ void Rdma::sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort
     payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
     payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
     payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
-    payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
+    //payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
 
     emit(packetSentToUpperSignal, payload);
     send(payload, "appOut");

@@ -124,7 +124,7 @@ void UdpBasicApp::sendPacket()
     payload->setSequenceNumber(numSent);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
     packet->insertAtBack(payload);
-    packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+    packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Mio
     L3Address destAddr = chooseDestAddr();
     emit(packetSentSignal, packet);
     socket.sendTo(packet, destAddr, destPort);
@@ -184,6 +184,7 @@ void UdpBasicApp::processStop()
 
 void UdpBasicApp::handleMessageWhenUp(cMessage *msg)
 {
+
     if (msg->isSelfMessage()) {
         ASSERT(msg == selfMsg);
         switch (selfMsg->getKind()) {
@@ -237,10 +238,9 @@ void UdpBasicApp::refreshDisplay() const
 void UdpBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
-    clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
+    latency = pk->getTag<CreationTimeTag>()->getCreationTime();
     EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
     delete pk;
-    latency += (simTime() - generationTime);
     numReceived++;
 }
 

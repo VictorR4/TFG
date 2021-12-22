@@ -46,7 +46,7 @@ class RdmaHeader;
 class NetworkInterface;
 
 const bool DEFAULT_MULTICAST_LOOP = true;
-const uint16_t RDMA_MAX_MESSAGE_SIZE = 65535; // bytes
+const uint16_t RDMA_MAX_MESSAGE_SIZE = 1500; // bytes
 
 /**
  * Implements the Rdma protocol: encapsulates/decapsulates user data into/from Rdma.
@@ -96,7 +96,7 @@ class INET_API Rdma: public TransportProtocolBase
     virtual ushort getEphemeralPort();
 
 
-    virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort, clocktime_t generationTime);
+    virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort);//, clocktime_t generationTime);
     virtual void processUndeliverablePacket(Packet *rdmaPacket);//Cambiado
     //virtual void sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
 

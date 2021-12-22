@@ -947,7 +947,7 @@ void Udp::processUDPPacket(Packet *udpPacket)
     auto totalLength = B(udpHeader->getTotalLengthField());
     auto hasIncorrectLength = totalLength<udpHeader->getChunkLength() || totalLength> udpHeader->getChunkLength() + udpPacket->getDataLength();
     auto networkProtocol = udpPacket->getTag<NetworkProtocolInd>()->getProtocol();
-
+    latency += (simTime() - udpHeader->getGenerationTime());
     if (hasIncorrectLength || !verifyCrc(networkProtocol, udpHeader, udpPacket)) {
         EV_WARN << "Packet has bit error, discarding\n";
         PacketDropDetails details;
@@ -975,7 +975,7 @@ void Udp::processUDPPacket(Packet *udpPacket)
             return;
         }
         else {
-            sendUp(udpHeader, udpPacket, sd, srcPort, destPort);
+            sendUp(udpHeader, udpPacket, sd, srcPort, destPort, latency);
         }
     }
     else {
@@ -990,13 +990,13 @@ void Udp::processUDPPacket(Packet *udpPacket)
         else {
             unsigned int i;
             for (i = 0; i < sds.size() - 1; i++) // sds.size() >= 1
-                sendUp(udpHeader, udpPacket->dup(), sds[i], srcPort, destPort); // dup() to all but the last one
-            sendUp(udpHeader, udpPacket, sds[i], srcPort, destPort); // send original to last socket
+                sendUp(udpHeader, udpPacket->dup(), sds[i], srcPort, destPort, latency); // dup() to all but the last one
+            sendUp(udpHeader, udpPacket, sds[i], srcPort, destPort, latency); // send original to last socket
         }
     }
 }
 //Usado en la recepción
-void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort)
+void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort, clocktime_t latency)
 {
     EV_INFO << "Sending payload up to socket sockId=" << sd->sockId << "\n";
 
@@ -1009,7 +1009,8 @@ void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, us
     payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
     payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
     payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
-    payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(header->getGenerationTime());
+
+    payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(latency/*header->getGenerationTime()*/);
     emit(packetSentToUpperSignal, payload);
     send(payload, "appOut");
     numPassedUp++;

@@ -80,7 +80,7 @@ simple Udp like IUdp
         @signal[packetReceivedFromLower](type=cPacket);
         @signal[packetDropped](type=inet::Packet);
         @signal[packetSent](type=cPacket);
-        @signal[packetReceived](type=cPacket);
+        @signal[packetReceived](type=cPacket);        
         @statistic[packetSent](title="packets sent"; source=packetSent; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[packetReceived](title="packets received"; source=packetReceived; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[passedUpPk](title="packets passed up"; source=packetSentToUpper; record=count,"vector(count)"; interpolationmode=none);
