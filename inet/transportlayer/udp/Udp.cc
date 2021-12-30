@@ -725,8 +725,12 @@ void Udp::handleUpperPacket(Packet *packet)
     auto addressReq = packet->addTagIfAbsent<L3AddressReq>();
     srcAddr = addressReq->getSrcAddress();
     destAddr = addressReq->getDestAddress();
-    auto time = packet->addTagIfAbsent<CreationTimeTag>();
-    clocktime_t generationTime= time->getCreationTime();
+    auto time = packet->removeTagIfPresent<CreationTimeTag>();
+    clocktime_t generationTime = time->getCreationTime();
+    clocktime_t actualLatency = simTime() - generationTime;
+    packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+    latencySending += actualLatency;
+
 
     if (srcAddr.isUnspecified())
         addressReq->setSrcAddress(srcAddr = sd->localAddr);
@@ -1343,7 +1347,7 @@ void Udp::refreshDisplay() const
     OperationalBase::refreshDisplay();
 
     char buf[80];
-    sprintf(buf, "passed up: %d pks\nsent: %d pks", numPassedUp, numSent);
+    sprintf(buf, "passed up: %d pks\nsent: %d pks\nlatencySending: %lf", numPassedUp, numSent, latencySending.dbl());
     if (numDroppedWrongPort > 0) {
         sprintf(buf + strlen(buf), "\ndropped (no app): %d pks", numDroppedWrongPort);
         getDisplayString().setTagArg("i", 1, "red");

@@ -20,6 +20,7 @@ package inet.node.rdma.base;
 import inet.common.MessageDispatcher;
 import inet.networklayer.contract.INetworkLayer;
 import inet.node.rdma.base.LinkLayerNodeBase;
+import ned.DatarateChannel;
 
 module NetworkLayerNodeBase extends LinkLayerNodeBase
 {
@@ -34,6 +35,13 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         @figure[networkLayer](type=rectangle; pos=250,306; size=1000,130; fillColor=#00ff00; lineColor=#808080; cornerRadius=5; fillOpacity=0.1);
         @figure[networkLayer.title](type=text; pos=1245,311; anchor=ne; text="network layer");
 
+	types:
+        channel cable extends DatarateChannel
+        {
+            double retardo @unit(us);
+            datarate = 40Gbps;
+            delay = this.retardo;
+        }
     submodules:
         ipv4: <default("Ipv4NetworkLayer")> like INetworkLayer if hasIpv4 {
             parameters:
@@ -53,8 +61,8 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         }
 
     connections allowunconnected:
-        ipv4.ifIn <-- nl.out++ if hasIpv4;
-        ipv4.ifOut --> nl.in++ if hasIpv4;
+        ipv4.ifIn <-- cable <-- nl.out++ if hasIpv4;
+        ipv4.ifOut --> cable --> nl.in++ if hasIpv4;
 
         ipv6.ifIn <-- nl.out++ if hasIpv6;
         ipv6.ifOut --> nl.in++ if hasIpv6;
@@ -68,7 +76,7 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         ieee8021q.upperLayerOut --> nl.in++ if exists(ieee8021q);
         nl.out++ --> ieee8021q.upperLayerIn if exists(ieee8021q);
 
-        nl.out++ --> li.in++;
-        nl.in++ <-- li.out++;
+        nl.out++ --> cable --> li.in++;
+        nl.in++ <-- cable <-- li.out++;
 }
 

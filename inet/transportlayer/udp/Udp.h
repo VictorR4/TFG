@@ -132,6 +132,7 @@ class INET_API Udp : public TransportProtocolBase
     int numDroppedWrongPort = 0;
     int numDroppedBadChecksum = 0;
     clocktime_t latency = 0;
+    clocktime_t latencySending = 0;
 
   protected:
     // utility: show current statistics above the icon

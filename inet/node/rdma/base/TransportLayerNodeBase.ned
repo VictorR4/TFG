@@ -23,6 +23,7 @@ import inet.transportlayer.contract.ISctp;
 import inet.transportlayer.contract.ITcp;
 import inet.transportlayer.contract.IUdp;
 import inet.transportlayer.contract.IRdma;
+import ned.DatarateChannel;
 
 module TransportLayerNodeBase extends NetworkLayerNodeBase
 {
@@ -30,6 +31,14 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
 		bool hasRdma = default(firstAvailableOrEmpty("Rdma") != "");
         @figure[transportLayer](type=rectangle; pos=250,156; size=1000,130; fillColor=#ff0000; lineColor=#808080; cornerRadius=5; fillOpacity=0.1);
         @figure[transportLayer.title](type=text; pos=1245,161; anchor=ne; text="transport layer");
+    
+    types:
+        channel cable extends DatarateChannel
+        {
+            double retardo @unit(us);
+            datarate = 40Gbps;
+            delay = this.retardo;
+        }    
     submodules:
 
  		rdma: <default(firstAvailableOrEmpty("Rdma"))> like IRdma if hasRdma{
@@ -42,8 +51,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         }
 
     connections allowunconnected:
-        tn.out++ --> ipv4.transportIn if hasIpv4;
-        tn.in++ <-- ipv4.transportOut if hasIpv4;
+        tn.out++ --> cable --> ipv4.transportIn if hasIpv4;
+        tn.in++ <-- cable <-- ipv4.transportOut if hasIpv4;
 
         tn.out++ --> ipv6.transportIn if hasIpv6;
         tn.in++ <-- ipv6.transportOut if hasIpv6;
@@ -54,7 +63,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         tn.out++ --> nl.in++;
         tn.in++ <-- nl.out++;
         
-        rdma.lowerLayerOut --> tn.in++ if hasRdma;
-        rdma.lowerLayerIn <-- tn.out++ if hasRdma;
+        rdma.lowerLayerOut --> cable --> tn.in++ if hasRdma;
+        rdma.lowerLayerIn <-- cable <-- tn.out++ if hasRdma;
 }
 

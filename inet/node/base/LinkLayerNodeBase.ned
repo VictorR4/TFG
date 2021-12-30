@@ -28,6 +28,7 @@ import inet.linklayer.contract.IWirelessInterface;
 import inet.linklayer.ethernet.contract.IEthernetLayer;
 import inet.linklayer.ieee8021q.IIeee8021qLayer;
 import inet.networklayer.common.InterfaceTable;
+import ned.DatarateChannel;
 
 module LinkLayerNodeBase extends NodeBase
 {
@@ -48,12 +49,19 @@ module LinkLayerNodeBase extends NodeBase
         @figure[linkLayer.title](type=text; pos=1245,461; anchor=ne; text="link layer");
         @figure[interfaceLayer](type=rectangle; pos=250,606; size=1000,210; fillColor=#00ffff; lineColor=#808080; cornerRadius=5; fillOpacity=0.1);
         @figure[interfaceLayer.title](type=text; pos=1245,611; anchor=ne; text="interface layer");
-
+		
     gates:
         input radioIn[numWlanInterfaces] @directIn;
         inout pppg[numPppInterfaces] @labels(PppFrame-conn) @allowUnconnected;
         inout ethg[numEthInterfaces] @labels(EtherFrame-conn) @allowUnconnected;
 
+    types:
+        channel cable extends DatarateChannel
+        {
+            double retardo @unit(us);
+            datarate = 40Gbps;
+            delay = this.retardo;
+        }
     submodules:
         pcapRecorder[numPcapRecorders]: PcapRecorder {
             parameters:
@@ -131,8 +139,8 @@ module LinkLayerNodeBase extends NodeBase
         }
 
         for i=0..sizeof(ethg)-1 {
-            eth[i].upperLayerOut --> li.in++;
-            eth[i].upperLayerIn <-- li.out++;
+            eth[i].upperLayerOut --> cable { @display("ls=#73D216,2"); } --> li.in++;
+            eth[i].upperLayerIn <-- cable <-- li.out++;
         }
 
         for i=0..sizeof(pppg)-1 {

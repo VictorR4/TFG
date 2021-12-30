@@ -19,6 +19,7 @@ package inet.node.rdma.base;
 
 import inet.applications.rdmaapp.IAppRdma;
 import inet.common.MessageDispatcher;
+import ned.DatarateChannel;
 
 module ApplicationLayerNodeBase extends TransportLayerNodeBase
 {
@@ -27,6 +28,13 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
         @figure[applicationLayer](type=rectangle; pos=250,6; size=1000,130; lineColor=#808080; cornerRadius=5; fillColor=#ffff00; fillOpacity=0.1);
         @figure[applicationLayer.title](type=text; pos=1245,11; anchor=ne; text="application layer");
 
+	types:
+        channel cable extends DatarateChannel
+        {
+            double retardo @unit(us);
+            datarate = 40Gbps;
+            delay = this.retardo;
+        }
     submodules:
         app[numApps]: <> like IAppRdma {
             parameters:
@@ -39,16 +47,16 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
 
     connections allowunconnected:
         for i=0..numApps-1 {
-            app[i].socketOut --> at.in++;
+            app[i].socketOut --> cable --> at.in++;
             //app[i].socketOut --> rdma.appIn if hasRdma;
             //app[i].socketIn <-- li.out++ if hasRdma;
-           	eth[0].appLayerOut --> app[i].socketIn;
+           	eth[0].appLayerOut --> cable --> app[i].socketIn;
         }
 		
         
 
 
-        at.out++ --> rdma.appIn if hasRdma;
+        at.out++ --> cable --> rdma.appIn if hasRdma;
         
         at.out++ --> tn.in++;
         at.in++ <-- tn.out++;

@@ -29,6 +29,7 @@ import inet.linklayer.contract.IWirelessInterface;
 import inet.linklayer.ethernet.contract.IEthernetLayer;
 import inet.linklayer.ieee8021q.IIeee8021qLayer;
 import inet.networklayer.common.InterfaceTable;
+import ned.DatarateChannel;
 
 
 module LinkLayerNodeBase extends NodeBase
@@ -56,6 +57,13 @@ module LinkLayerNodeBase extends NodeBase
         inout pppg[numPppInterfaces] @labels(PppFrame-conn) @allowUnconnected;
         inout ethg[numEthInterfaces] @labels(EtherFrame-conn) @allowUnconnected;
 
+	types:
+        channel cable extends DatarateChannel
+        {
+            double retardo @unit(us);
+            datarate = 40Gbps;
+            delay = this.retardo;
+        }
     submodules:
         pcapRecorder[numPcapRecorders]: PcapRecorder {
             parameters:
@@ -133,8 +141,8 @@ module LinkLayerNodeBase extends NodeBase
         }
 
         for i=0..sizeof(ethg)-1 {
-            eth[i].upperLayerOut --> li.in++;
-            eth[i].upperLayerIn <-- li.out++;
+            eth[i].upperLayerOut --> cable --> li.in++;
+            eth[i].upperLayerIn <-- cable <-- li.out++;
         }
 
         for i=0..sizeof(pppg)-1 {

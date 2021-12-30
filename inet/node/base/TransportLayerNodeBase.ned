@@ -21,6 +21,8 @@ import inet.common.MessageDispatcher;
 import inet.transportlayer.contract.ISctp;
 import inet.transportlayer.contract.ITcp;
 import inet.transportlayer.contract.IUdp;
+import ned.DatarateChannel;
+
 
 module TransportLayerNodeBase extends NetworkLayerNodeBase
 {
@@ -30,6 +32,14 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         bool hasSctp = default(false);
         @figure[transportLayer](type=rectangle; pos=250,156; size=1000,130; fillColor=#ff0000; lineColor=#808080; cornerRadius=5; fillOpacity=0.1);
         @figure[transportLayer.title](type=text; pos=1245,161; anchor=ne; text="transport layer");
+        
+	types:
+        channel cable extends DatarateChannel
+        {
+            double retardo @unit(us);
+            datarate = 40Gbps;
+            delay = this.retardo;
+        }
     submodules:
         udp: <default(firstAvailableOrEmpty("Udp"))> like IUdp if hasUdp {
             parameters:
@@ -49,8 +59,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         }
 
     connections allowunconnected:
-        udp.ipOut --> tn.in++ if hasUdp;
-        udp.ipIn <-- tn.out++ if hasUdp;
+        udp.ipOut --> cable --> tn.in++ if hasUdp;
+        udp.ipIn <-- cable { @display("ls=#EDD400,2"); } <-- tn.out++ if hasUdp;
 
         tcp.ipOut --> tn.in++ if hasTcp;
         tcp.ipIn <-- tn.out++ if hasTcp;
@@ -58,8 +68,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         sctp.ipOut --> tn.in++ if hasSctp;
         tn.out++ --> sctp.ipIn if hasSctp;
 
-        tn.out++ --> ipv4.transportIn if hasIpv4;
-        tn.in++ <-- ipv4.transportOut if hasIpv4;
+        tn.out++ --> cable { @display("ls=#3465A4,2"); } --> ipv4.transportIn if hasIpv4;
+        tn.in++ <-- cable <-- ipv4.transportOut if hasIpv4;
 
         tn.out++ --> ipv6.transportIn if hasIpv6;
         tn.in++ <-- ipv6.transportOut if hasIpv6;

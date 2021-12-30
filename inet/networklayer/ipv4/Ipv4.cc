@@ -51,6 +51,10 @@
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
 #include "inet/networklayer/ipv4/Ipv4InterfaceData.h"
 #include "inet/networklayer/ipv4/Ipv4OptionsTag_m.h"
+#include "inet/common/clock/ClockUserModuleMixin.h"
+#include "inet/common/TimeTag_m.h"
+#include "inet/common/ProtocolTag_m.h"
+#include "inet/common/Protocol.h"
 
 namespace inet {
 
@@ -150,6 +154,8 @@ void Ipv4::refreshDisplay() const
         sprintf(buf + strlen(buf), "DROP:%d ", numDropped);
     if (numUnroutable > 0)
         sprintf(buf + strlen(buf), "UNROUTABLE:%d ", numUnroutable);
+    sprintf(buf + strlen(buf), "\nlatencySending: %lf", latencySending.dbl());
+    sprintf(buf + strlen(buf), "\nlatencyReception: %lf", latencyReception.dbl());
     getDisplayString().setTagArg("t", 0, buf);
 }
 
@@ -200,7 +206,6 @@ void Ipv4::handleRequest(Request *request)
 
 void Ipv4::handleMessageWhenUp(cMessage *msg)
 {
-
     if(check_and_cast<Packet *>(msg)->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma)
         isRdma = true;
     if (msg->arrivedOn("transportIn")) { // TODO packet->getArrivalGate()->getBaseId() == transportInGateBaseId
@@ -404,6 +409,12 @@ void Ipv4::preroutingFinish(Packet *packet)
 
 void Ipv4::handlePacketFromHL(Packet *packet)
 {
+    if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
+        clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
+        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+        latencySending += actualLatency;
+    }
+
     EV_INFO << "Received " << packet << " from upper layer.\n";
     emit(packetReceivedFromUpperSignal, packet);
 
@@ -872,6 +883,12 @@ void Ipv4::insertCrc(const Ptr<Ipv4Header>& ipv4Header)
 
 void Ipv4::fragmentAndSend(Packet *packet)
 {
+    if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
+        clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
+        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+        latencyReception += actualLatency;
+    }
+
     const NetworkInterface *destIE = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
     Ipv4Address nextHopAddr = getNextHop(packet);
     if (nextHopAddr.isUnspecified()) {

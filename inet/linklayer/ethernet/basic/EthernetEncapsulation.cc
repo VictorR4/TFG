@@ -150,7 +150,7 @@ void EthernetEncapsulation::refreshDisplay() const
 {
     Ieee8022Llc::refreshDisplay();
     char buf[80];
-    sprintf(buf, "passed up: %ld\nsent: %ld", totalFromMAC, totalFromHigherLayer);
+    sprintf(buf, "passed up: %ld\nsent: %ld\nlatencySending: %lf\nlatencyReception: %lf", totalFromMAC, totalFromHigherLayer, latencySending.dbl(), latencyReception.dbl());
     getDisplayString().setTagArg("t", 0, buf);
 }
 
@@ -197,7 +197,13 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
         clocktime_t generationTime = simTime();// - time->getCreationTime();
         // set generation time of the packet
         ethHeader->setGenerationTime(generationTime);
+    }else if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
+        clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
+        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+        latencySending += actualLatency;
+        ethHeader->setGenerationTime(simTime());
     }
+
 
     auto srcAddr = macAddressReq->getSrcAddress();
     if (srcAddr.isUnspecified() && networkInterface != nullptr)
@@ -290,6 +296,9 @@ void EthernetEncapsulation::processPacketFromMac(Packet *packet)
                 packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
                 send(packet, "appLayerOut");
              }else{
+                clocktime_t actualLatency = simTime() - ethHeader->getGenerationTime();
+                packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+                latencyReception += actualLatency;
                 send(packet, "upperLayerOut");
             }
         }

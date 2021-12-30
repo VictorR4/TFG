@@ -33,6 +33,7 @@
 #include "inet/networklayer/ipv4/Icmp.h"
 #include "inet/networklayer/ipv4/Ipv4FragBuf.h"
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
+#include "inet/common/clock/ClockUserModuleMixin.h"
 
 namespace inet {
 
@@ -104,7 +105,8 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     int numDropped = 0; // forwarding off, no outgoing interface, too large but "don't fragment" is set, TTL exceeded, etc
     int numUnroutable = 0;
     int numForwarded = 0;
-
+    clocktime_t latencySending = 0;
+    clocktime_t latencyReception = 0;
     // hooks
     typedef std::list<QueuedDatagramForHook> DatagramQueueForHooks;
     DatagramQueueForHooks queuedDatagramsForHooks;
