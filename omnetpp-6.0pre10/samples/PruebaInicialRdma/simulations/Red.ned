@@ -30,24 +30,21 @@ network Red
     types:
         channel cable extends DatarateChannel
         {
+            double retardoRed @unit(us);
             datarate = 40Gbps;
-            delay = 1us;
+            delay = retardoRed;
         }
     submodules:
         hA: RdmaHost {
-            srcAddresses = 1;
             @display("p=108,38");
         }
         hB: RdmaHost {
-            srcAddresses = 2;
             @display("p=288,38");
         }
         hC: RdmaHost {
-            srcAddresses = 3;
             @display("p=108,265");
         }
         hD: RdmaHost {
-            srcAddresses = 4;
             @display("p=288,265");
         }
         switch1: EthernetSwitch {

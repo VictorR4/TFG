@@ -1,0 +1,4270 @@
+version 3
+run General-0-20211230-13:29:18-8502
+attr configname General
+attr datetime 20211230-13:29:18
+attr datetimef 20211230-132918
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Red
+attr processid 8502
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../inet/images
+config network Red
+config sim-time-limit 2s
+config **.h*.numApps 1
+config **.h*.app[0].typename RdmaBasicApp
+config **.h*.app[0].localPort 1000
+config **.h*.app[0].destPort 1000
+config **.hA.app[0].destAddresses "\"hD\""
+config **.h*.app[*].messageLength 1000B
+config **.h*.app[*].sendInterval 0.001s+uniform(-0.0001s,0.0001s)
+config **.h*.**.**.channel.retardo 1us
+config **.retardoRed 1us
+
+par Red.hA.ethg$o[0].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.hA.ethg$o[0].channel disabled false
+par Red.hA.ethg$o[0].channel delay 1e-06s
+attr unit s
+par Red.hA.ethg$o[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.ethg$o[0].channel ber 0
+par Red.hA.ethg$o[0].channel per 0
+par Red.hA.ethg$o[0].channel retardoRed 1us
+attr unit us
+par Red.switch1.ethg$o[0].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.switch1.ethg$o[0].channel disabled false
+par Red.switch1.ethg$o[0].channel delay 1e-06s
+attr unit s
+par Red.switch1.ethg$o[0].channel datarate 4e+10bps
+attr unit bps
+par Red.switch1.ethg$o[0].channel ber 0
+par Red.switch1.ethg$o[0].channel per 0
+par Red.switch1.ethg$o[0].channel retardoRed 1us
+attr unit us
+par Red.hB.ethg$o[0].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.hB.ethg$o[0].channel disabled false
+par Red.hB.ethg$o[0].channel delay 1e-06s
+attr unit s
+par Red.hB.ethg$o[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.ethg$o[0].channel ber 0
+par Red.hB.ethg$o[0].channel per 0
+par Red.hB.ethg$o[0].channel retardoRed 1us
+attr unit us
+par Red.switch1.ethg$o[1].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.switch1.ethg$o[1].channel disabled false
+par Red.switch1.ethg$o[1].channel delay 1e-06s
+attr unit s
+par Red.switch1.ethg$o[1].channel datarate 4e+10bps
+attr unit bps
+par Red.switch1.ethg$o[1].channel ber 0
+par Red.switch1.ethg$o[1].channel per 0
+par Red.switch1.ethg$o[1].channel retardoRed 1us
+attr unit us
+par Red.hC.ethg$o[0].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.hC.ethg$o[0].channel disabled false
+par Red.hC.ethg$o[0].channel delay 1e-06s
+attr unit s
+par Red.hC.ethg$o[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.ethg$o[0].channel ber 0
+par Red.hC.ethg$o[0].channel per 0
+par Red.hC.ethg$o[0].channel retardoRed 1us
+attr unit us
+par Red.switch2.ethg$o[0].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.switch2.ethg$o[0].channel disabled false
+par Red.switch2.ethg$o[0].channel delay 1e-06s
+attr unit s
+par Red.switch2.ethg$o[0].channel datarate 4e+10bps
+attr unit bps
+par Red.switch2.ethg$o[0].channel ber 0
+par Red.switch2.ethg$o[0].channel per 0
+par Red.switch2.ethg$o[0].channel retardoRed 1us
+attr unit us
+par Red.hD.ethg$o[0].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.hD.ethg$o[0].channel disabled false
+par Red.hD.ethg$o[0].channel delay 1e-06s
+attr unit s
+par Red.hD.ethg$o[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.ethg$o[0].channel ber 0
+par Red.hD.ethg$o[0].channel per 0
+par Red.hD.ethg$o[0].channel retardoRed 1us
+attr unit us
+par Red.switch2.ethg$o[1].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.switch2.ethg$o[1].channel disabled false
+par Red.switch2.ethg$o[1].channel delay 1e-06s
+attr unit s
+par Red.switch2.ethg$o[1].channel datarate 4e+10bps
+attr unit bps
+par Red.switch2.ethg$o[1].channel ber 0
+par Red.switch2.ethg$o[1].channel per 0
+par Red.switch2.ethg$o[1].channel retardoRed 1us
+attr unit us
+par Red.switch1.ethg$o[2].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.switch1.ethg$o[2].channel disabled false
+par Red.switch1.ethg$o[2].channel delay 1e-06s
+attr unit s
+par Red.switch1.ethg$o[2].channel datarate 4e+10bps
+attr unit bps
+par Red.switch1.ethg$o[2].channel ber 0
+par Red.switch1.ethg$o[2].channel per 0
+par Red.switch1.ethg$o[2].channel retardoRed 1us
+attr unit us
+par Red.switch2.ethg$o[2].channel typename "\"pruebainicialrdma.simulations.Red.cable\""
+par Red.switch2.ethg$o[2].channel disabled false
+par Red.switch2.ethg$o[2].channel delay 1e-06s
+attr unit s
+par Red.switch2.ethg$o[2].channel datarate 4e+10bps
+attr unit bps
+par Red.switch2.ethg$o[2].channel ber 0
+par Red.switch2.ethg$o[2].channel per 0
+par Red.switch2.ethg$o[2].channel retardoRed 1us
+attr unit us
+par Red.hA.ethg$i[0].channel typename "\"ned.IdealChannel\""
+par Red.hA.eth[0].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hA.eth[0].upperLayerOut.channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hA.eth[0].upperLayerOut.channel disabled false
+par Red.hA.eth[0].upperLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hA.eth[0].upperLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hA.eth[0].upperLayerOut.channel ber 0
+par Red.hA.eth[0].upperLayerOut.channel per 0
+par Red.hA.eth[0].upperLayerOut.channel retardo 1us
+attr unit us
+par Red.hA.li.out[1].channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hA.li.out[1].channel disabled false
+par Red.hA.li.out[1].channel delay 1e-06s
+attr unit s
+par Red.hA.li.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.li.out[1].channel ber 0
+par Red.hA.li.out[1].channel per 0
+par Red.hA.li.out[1].channel retardo 1us
+attr unit us
+par Red.hA.nl.out[0].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hA.nl.out[0].channel disabled false
+par Red.hA.nl.out[0].channel delay 1e-06s
+attr unit s
+par Red.hA.nl.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.nl.out[0].channel ber 0
+par Red.hA.nl.out[0].channel per 0
+par Red.hA.nl.out[0].channel retardo 1us
+attr unit us
+par Red.hA.ipv4.ifOut.channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hA.ipv4.ifOut.channel disabled false
+par Red.hA.ipv4.ifOut.channel delay 1e-06s
+attr unit s
+par Red.hA.ipv4.ifOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hA.ipv4.ifOut.channel ber 0
+par Red.hA.ipv4.ifOut.channel per 0
+par Red.hA.ipv4.ifOut.channel retardo 1us
+attr unit us
+par Red.hA.nl.out[1].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hA.nl.out[1].channel disabled false
+par Red.hA.nl.out[1].channel delay 1e-06s
+attr unit s
+par Red.hA.nl.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.nl.out[1].channel ber 0
+par Red.hA.nl.out[1].channel per 0
+par Red.hA.nl.out[1].channel retardo 1us
+attr unit us
+par Red.hA.li.out[2].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hA.li.out[2].channel disabled false
+par Red.hA.li.out[2].channel delay 1e-06s
+attr unit s
+par Red.hA.li.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.li.out[2].channel ber 0
+par Red.hA.li.out[2].channel per 0
+par Red.hA.li.out[2].channel retardo 1us
+attr unit us
+par Red.hA.tn.out[0].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hA.tn.out[0].channel disabled false
+par Red.hA.tn.out[0].channel delay 1e-06s
+attr unit s
+par Red.hA.tn.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.tn.out[0].channel ber 0
+par Red.hA.tn.out[0].channel per 0
+par Red.hA.tn.out[0].channel retardo 1us
+attr unit us
+par Red.hA.ipv4.transportOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hA.ipv4.transportOut.channel disabled false
+par Red.hA.ipv4.transportOut.channel delay 1e-06s
+attr unit s
+par Red.hA.ipv4.transportOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hA.ipv4.transportOut.channel ber 0
+par Red.hA.ipv4.transportOut.channel per 0
+par Red.hA.ipv4.transportOut.channel retardo 1us
+attr unit us
+par Red.hA.rdma.lowerLayerOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hA.rdma.lowerLayerOut.channel disabled false
+par Red.hA.rdma.lowerLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hA.rdma.lowerLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hA.rdma.lowerLayerOut.channel ber 0
+par Red.hA.rdma.lowerLayerOut.channel per 0
+par Red.hA.rdma.lowerLayerOut.channel retardo 1us
+attr unit us
+par Red.hA.tn.out[2].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hA.tn.out[2].channel disabled false
+par Red.hA.tn.out[2].channel delay 1e-06s
+attr unit s
+par Red.hA.tn.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.tn.out[2].channel ber 0
+par Red.hA.tn.out[2].channel per 0
+par Red.hA.tn.out[2].channel retardo 1us
+attr unit us
+par Red.hA.app[0].socketOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hA.app[0].socketOut.channel disabled false
+par Red.hA.app[0].socketOut.channel delay 1e-06s
+attr unit s
+par Red.hA.app[0].socketOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hA.app[0].socketOut.channel ber 0
+par Red.hA.app[0].socketOut.channel per 0
+par Red.hA.app[0].socketOut.channel retardo 1us
+attr unit us
+par Red.hA.eth[0].appLayerOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hA.eth[0].appLayerOut.channel disabled false
+par Red.hA.eth[0].appLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hA.eth[0].appLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hA.eth[0].appLayerOut.channel ber 0
+par Red.hA.eth[0].appLayerOut.channel per 0
+par Red.hA.eth[0].appLayerOut.channel retardo 1us
+attr unit us
+par Red.hA.at.out[0].channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hA.at.out[0].channel disabled false
+par Red.hA.at.out[0].channel delay 1e-06s
+attr unit s
+par Red.hA.at.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hA.at.out[0].channel ber 0
+par Red.hA.at.out[0].channel per 0
+par Red.hA.at.out[0].channel retardo 1us
+attr unit us
+par Red.hA.interfaceTable typename "\"inet.networklayer.common.InterfaceTable\""
+par Red.hA.interfaceTable displayAddresses false
+par Red.hA.li typename "\"inet.common.MessageDispatcher\""
+par Red.hA.li displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hA.lo[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hA.lo[0].lo.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hA.lo[0].lo typename "\"inet.linklayer.loopback.Loopback\""
+par Red.hA.lo[0].lo interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.lo[0].lo mtu 4470B
+attr unit B
+scalar Red.hA.lo[0].lo rcvdPkFromHl:count 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Red.hA.lo[0].lo rcvdPkFromHl:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Red.hA.lo[0].lo passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hA.lo[0].lo passedUpPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+par Red.hA.lo[0] typename "\"inet.linklayer.loopback.LoopbackInterface\""
+par Red.hA.lo[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hA.lo[0] recordPcap false
+par Red.hA.lo[0] numPcapRecorders 0
+par Red.hA.lo[0] interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.eth[0].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hA.eth[0].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.hA.eth[0].encap.appLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hA.eth[0].encap.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hA.eth[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hA.eth[0].encap typename "\"inet.linklayer.contract.rdma.EthernetEncapsulation\""
+par Red.hA.eth[0].encap interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.eth[0].encap useSNAP false
+par Red.hA.eth[0].encap fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hA.eth[0].encap registerProtocol false
+par Red.hA.eth[0].encap stopOperationExtraTime -1s
+attr unit s
+par Red.hA.eth[0].encap stopOperationTimeout 2s
+attr unit s
+scalar Red.hA.eth[0].encap pauseSent:count 0
+attr title "pause sent, count"
+scalar Red.hA.eth[0].encap pauseSent:sum 0
+attr title "pause sent, sum"
+scalar Red.hA.eth[0].encap decapPk:count 1
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, count"
+scalar Red.hA.eth[0].encap decapPk:sum(packetBytes) 46
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, sum(packetBytes)"
+scalar Red.hA.eth[0].encap encapPk:count 1999
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, count"
+scalar Red.hA.eth[0].encap encapPk:sum(packetBytes) 2053972
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, sum(packetBytes)"
+par Red.hA.eth[0].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.hA.eth[0].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.hA.eth[0].mac.queue packetCapacity 10000
+par Red.hA.eth[0].mac.queue dataCapacity -1b
+attr unit b
+par Red.hA.eth[0].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.hA.eth[0].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.hA.eth[0].mac.queue bufferModule "\"\""
+scalar Red.hA.eth[0].mac.queue packetPulled:count 1999
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.hA.eth[0].mac.queue packetPulled:sum(packetBytes) 2089954
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.hA.eth[0].mac.queue queueingTime:histogram
+field count 1999
+field mean 0
+field stddev 0
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1999
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.hA.eth[0].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.hA.eth[0].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.hA.eth[0].mac.queue packetPushed:count 1999
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.hA.eth[0].mac.queue packetPushed:sum(packetBytes) 2089954
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.hA.eth[0].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.hA.eth[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.hA.eth[0].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.hA.eth[0].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.hA.eth[0].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.hA.eth[0].mac interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.eth[0].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.hA.eth[0].mac sendRawBytes false
+par Red.hA.eth[0].mac promiscuous false
+par Red.hA.eth[0].mac duplexMode true
+par Red.hA.eth[0].mac mtu 1500B
+attr unit B
+par Red.hA.eth[0].mac stopOperationExtraTime -1s
+attr unit s
+par Red.hA.eth[0].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.hA.eth[0].mac "simulated time" 2
+scalar Red.hA.eth[0].mac full-duplex 1
+scalar Red.hA.eth[0].mac "frames/sec sent" 999.5
+scalar Red.hA.eth[0].mac "frames/sec rcvd" 0.5
+scalar Red.hA.eth[0].mac "bits/sec sent" 8359888
+scalar Red.hA.eth[0].mac "bits/sec rcvd" 256
+scalar Red.hA.eth[0].mac "rx channel idle (%)" 99.99999928
+scalar Red.hA.eth[0].mac "rx channel utilization (%)" 7.2e-07
+scalar Red.hA.eth[0].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.hA.eth[0].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.hA.eth[0].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.hA.eth[0].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.hA.eth[0].mac rxPkOk:count 1
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.hA.eth[0].mac rxPkOk:sum(packetBytes) 64
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.hA.eth[0].mac txPk:count 1999
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.hA.eth[0].mac txPk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.hA.eth[0].mac packetReceivedFromUpper:count 1999
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.hA.eth[0].mac packetReceivedFromUpper:sum(packetBytes) 2089954
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.hA.eth[0].mac passedUpPk:count 1
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hA.eth[0].mac passedUpPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.hA.eth[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.hA.eth[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.hA.eth[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.hA.eth[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.hA.eth[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.hA.eth[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.hA.eth[0] typename "\"inet.linklayer.contract.rdma.EthernetInterface\""
+par Red.hA.eth[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hA.eth[0] recordPcap false
+par Red.hA.eth[0] numPcapRecorders 0
+par Red.hA.eth[0] interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.eth[0] address "\"0A-AA-00-00-00-01\""
+par Red.hA.eth[0] duplexMode true
+par Red.hA.eth[0] csmacdSupport false
+par Red.hA.eth[0] bitrate 0bps
+attr unit bps
+par Red.hA.eth[0] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hA.ipv4.transportIn.channel typename "\"ned.IdealChannel\""
+par Red.hA.ipv4.up.out[0].channel typename "\"ned.IdealChannel\""
+par Red.hA.ipv4.lp.out[2].channel typename "\"ned.IdealChannel\""
+par Red.hA.ipv4.ifIn.channel typename "\"ned.IdealChannel\""
+par Red.hA.ipv4.configurator typename "\"inet.networklayer.configurator.ipv4.Ipv4NodeConfigurator\""
+par Red.hA.ipv4.configurator interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.ipv4.configurator routingTableModule "\"Red.hA.ipv4.routingTable\""
+par Red.hA.ipv4.configurator networkConfiguratorModule "\"configurator\""
+par Red.hA.ipv4.configurator configureRoutingTable true
+par Red.hA.ipv4.routingTable typename "\"inet.networklayer.ipv4.Ipv4RoutingTable\""
+par Red.hA.ipv4.routingTable interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.ipv4.routingTable routerId "\"auto\""
+par Red.hA.ipv4.routingTable netmaskRoutes "\"*\""
+par Red.hA.ipv4.routingTable forwarding false
+par Red.hA.ipv4.routingTable multicastForwarding false
+par Red.hA.ipv4.routingTable useAdminDist false
+par Red.hA.ipv4.routingTable routingFile "\"\""
+par Red.hA.ipv4.natTable typename "\"inet.networklayer.ipv4.Ipv4NatTable\""
+par Red.hA.ipv4.natTable networkProtocolModule "\"^.ip\""
+par Red.hA.ipv4.natTable config "<config/> at content:1"
+par Red.hA.ipv4.up typename "\"inet.common.MessageDispatcher\""
+par Red.hA.ipv4.up displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hA.ipv4.igmp typename "\"inet.networklayer.ipv4.Igmpv2\""
+par Red.hA.ipv4.igmp interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.ipv4.igmp routingTableModule "\"Red.hA.ipv4.routingTable\""
+par Red.hA.ipv4.igmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hA.ipv4.igmp enabled true
+par Red.hA.ipv4.igmp robustnessVariable 2
+par Red.hA.ipv4.igmp queryInterval 125s
+attr unit s
+par Red.hA.ipv4.igmp queryResponseInterval 10s
+attr unit s
+par Red.hA.ipv4.igmp groupMembershipInterval 260s
+attr unit s
+par Red.hA.ipv4.igmp otherQuerierPresentInterval 255s
+attr unit s
+par Red.hA.ipv4.igmp startupQueryInterval 31.25s
+attr unit s
+par Red.hA.ipv4.igmp startupQueryCount 2
+par Red.hA.ipv4.igmp lastMemberQueryInterval 1s
+attr unit s
+par Red.hA.ipv4.igmp lastMemberQueryCount 2
+par Red.hA.ipv4.igmp unsolicitedReportInterval 10s
+attr unit s
+par Red.hA.ipv4.icmp typename "\"inet.networklayer.ipv4.Icmp\""
+par Red.hA.ipv4.icmp interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.ipv4.icmp routingTableModule "\"Red.hA.ipv4.routingTable\""
+par Red.hA.ipv4.icmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hA.ipv4.icmp quoteLength 8B
+attr unit B
+par Red.hA.ipv4.mp typename "\"inet.common.MessageDispatcher\""
+par Red.hA.ipv4.mp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hA.ipv4.ip typename "\"inet.networklayer.ipv4.Ipv4\""
+par Red.hA.ipv4.ip interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.ipv4.ip routingTableModule "\"Red.hA.ipv4.routingTable\""
+par Red.hA.ipv4.ip arpModule "\"Red.hA.ipv4.arp\""
+par Red.hA.ipv4.ip icmpModule "\"Red.hA.ipv4.icmp\""
+par Red.hA.ipv4.ip crcMode "\"declared\""
+attr enum declared,computed
+par Red.hA.ipv4.ip timeToLive 32
+par Red.hA.ipv4.ip multicastTimeToLive 32
+par Red.hA.ipv4.ip fragmentTimeout 60s
+attr unit s
+par Red.hA.ipv4.ip limitedBroadcast false
+par Red.hA.ipv4.ip directBroadcastInterfaces "\"\""
+scalar Red.hA.ipv4.ip packetDropAddressResolutionFailed:count 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, count"
+scalar Red.hA.ipv4.ip packetDropAddressResolutionFailed:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, sum(packetBytes)"
+scalar Red.hA.ipv4.ip packetDropHopLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, count"
+scalar Red.hA.ipv4.ip packetDropHopLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, sum(packetBytes)"
+scalar Red.hA.ipv4.ip packetDropForwardingDisabled:count 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, count"
+scalar Red.hA.ipv4.ip packetDropForwardingDisabled:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, sum(packetBytes)"
+scalar Red.hA.ipv4.ip packetDropNoInterfaceFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, count"
+scalar Red.hA.ipv4.ip packetDropNoInterfaceFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, sum(packetBytes)"
+scalar Red.hA.ipv4.ip packetDropNoRouteFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, count"
+scalar Red.hA.ipv4.ip packetDropNoRouteFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, sum(packetBytes)"
+scalar Red.hA.ipv4.ip packetDropUndefined:count 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, count"
+scalar Red.hA.ipv4.ip packetDropUndefined:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, sum(packetBytes)"
+par Red.hA.ipv4.arp typename "\"inet.networklayer.arp.ipv4.Arp\""
+par Red.hA.ipv4.arp interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.ipv4.arp routingTableModule "\"Red.hA.ipv4.routingTable\""
+par Red.hA.ipv4.arp retryTimeout 1s
+attr unit s
+par Red.hA.ipv4.arp retryCount 3
+par Red.hA.ipv4.arp cacheTimeout 120s
+attr unit s
+par Red.hA.ipv4.arp proxyArpInterfaces "\"*\""
+scalar Red.hA.ipv4.arp arpResolutionFailed:count 0
+attr title "ARP failed resolutions, count"
+scalar Red.hA.ipv4.arp arpResolutionCompleted:count 1
+attr title "ARP completed resolutions, count"
+scalar Red.hA.ipv4.arp arpResolutionInitiated:count 1
+attr title "ARP initiated resolutions, count"
+scalar Red.hA.ipv4.arp arpReplySent:count 0
+attr source arpReplySent
+attr title "ARP replies sent, count"
+scalar Red.hA.ipv4.arp arpReplySent:sum(packetBytes) 0
+attr source arpReplySent
+attr title "ARP replies sent, sum(packetBytes)"
+scalar Red.hA.ipv4.arp arpRequestSent:count 1
+attr source arpRequestSent
+attr title "ARP request sent, count"
+scalar Red.hA.ipv4.arp arpRequestSent:sum(packetBytes) 28
+attr source arpRequestSent
+attr title "ARP request sent, sum(packetBytes)"
+par Red.hA.ipv4.lp typename "\"inet.common.MessageDispatcher\""
+par Red.hA.ipv4.lp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hA.ipv4 typename "\"inet.networklayer.ipv4.Ipv4NetworkLayer\""
+par Red.hA.ipv4 forwarding false
+par Red.hA.ipv4 multicastForwarding false
+par Red.hA.ipv4 interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.ipv4 displayStringTextFormat "\"%i\""
+par Red.hA.nl typename "\"inet.common.MessageDispatcher\""
+par Red.hA.nl displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hA.rdma typename "\"inet.transportlayer.rdma.Rdma\""
+par Red.hA.rdma interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.rdma crcMode "\"declared\""
+attr enum disabled,declared,computed
+scalar Red.hA.rdma packetReceived:count 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hA.rdma packetReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+scalar Red.hA.rdma packetSent:count 1998
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hA.rdma packetSent:sum(packetBytes) 2013984
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+scalar Red.hA.rdma passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, count"
+scalar Red.hA.rdma droppedPkWrongPort:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+scalar Red.hA.rdma droppedPkBadChecksum:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+par Red.hA.tn typename "\"inet.common.MessageDispatcher\""
+par Red.hA.tn displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hA.app[0] typename "\"inet.applications.rdmaapp.RdmaBasicApp\""
+par Red.hA.app[0] interfaceTableModule "\"Red.hA.interfaceTable\""
+par Red.hA.app[0] clockModule "\"\""
+par Red.hA.app[0] localPort 1000
+par Red.hA.app[0] destAddresses "\"hD\""
+par Red.hA.app[0] localAddress "\"\""
+par Red.hA.app[0] packetName "\"RdmaBasicAppData\""
+par Red.hA.app[0] destPort 1000
+par Red.hA.app[0] messageLength 1000B
+attr unit B
+par Red.hA.app[0] startTime 0.00100976s
+attr unit s
+par Red.hA.app[0] stopTime -1s
+attr unit s
+par Red.hA.app[0] sendInterval "0.001s+uniform(-0.0001s, 0.0001s)"
+attr unit s
+par Red.hA.app[0] dontFragment false
+par Red.hA.app[0] stopOperationExtraTime -1s
+attr unit s
+par Red.hA.app[0] stopOperationTimeout 2s
+attr unit s
+scalar Red.hA.app[0] "packets sent" 1998
+scalar Red.hA.app[0] "packets received" 0
+scalar Red.hA.app[0] latency 0
+scalar Red.hA.app[0] meanLatency -nan
+scalar Red.hA.app[0] latency:count 0
+attr interpolationmode none
+attr source latency
+attr title "latency, count"
+attr unit s
+scalar Red.hA.app[0] packetReceived:count 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hA.app[0] packetReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+statistic Red.hA.app[0] rcvdPkLifetime:stats
+field count 0
+field mean -nan
+field stddev -nan
+field min -nan
+field max -nan
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, stats"
+attr unit s
+scalar Red.hA.app[0] packetSent:count 1998
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hA.app[0] packetSent:sum(packetBytes) 1998000
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+par Red.hA.at typename "\"inet.common.MessageDispatcher\""
+par Red.hA.at displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hA typename "\"inet.node.rdma.RdmaHost\""
+par Red.hA hasStatus false
+par Red.hA osgModel "\"\""
+par Red.hA osgModelColor "\"\""
+par Red.hA canvasImage "\"\""
+par Red.hA canvasImageColor "\"\""
+par Red.hA recordPcap false
+par Red.hA numPcapRecorders 0
+par Red.hA numLoInterfaces 1
+par Red.hA numWlanInterfaces 0
+par Red.hA numEthInterfaces 0
+par Red.hA numPppInterfaces 0
+par Red.hA numTunInterfaces 0
+par Red.hA numVirtInterfaces 0
+par Red.hA hasIpv4 true
+par Red.hA hasIpv6 false
+par Red.hA hasGn false
+par Red.hA forwarding false
+par Red.hA multicastForwarding false
+par Red.hA hasRdma true
+par Red.hA numApps 1
+par Red.hB.ethg$i[0].channel typename "\"ned.IdealChannel\""
+par Red.hB.eth[0].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hB.eth[0].upperLayerOut.channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hB.eth[0].upperLayerOut.channel disabled false
+par Red.hB.eth[0].upperLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hB.eth[0].upperLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hB.eth[0].upperLayerOut.channel ber 0
+par Red.hB.eth[0].upperLayerOut.channel per 0
+par Red.hB.eth[0].upperLayerOut.channel retardo 1us
+attr unit us
+par Red.hB.li.out[1].channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hB.li.out[1].channel disabled false
+par Red.hB.li.out[1].channel delay 1e-06s
+attr unit s
+par Red.hB.li.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.li.out[1].channel ber 0
+par Red.hB.li.out[1].channel per 0
+par Red.hB.li.out[1].channel retardo 1us
+attr unit us
+par Red.hB.nl.out[0].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hB.nl.out[0].channel disabled false
+par Red.hB.nl.out[0].channel delay 1e-06s
+attr unit s
+par Red.hB.nl.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.nl.out[0].channel ber 0
+par Red.hB.nl.out[0].channel per 0
+par Red.hB.nl.out[0].channel retardo 1us
+attr unit us
+par Red.hB.ipv4.ifOut.channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hB.ipv4.ifOut.channel disabled false
+par Red.hB.ipv4.ifOut.channel delay 1e-06s
+attr unit s
+par Red.hB.ipv4.ifOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hB.ipv4.ifOut.channel ber 0
+par Red.hB.ipv4.ifOut.channel per 0
+par Red.hB.ipv4.ifOut.channel retardo 1us
+attr unit us
+par Red.hB.nl.out[1].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hB.nl.out[1].channel disabled false
+par Red.hB.nl.out[1].channel delay 1e-06s
+attr unit s
+par Red.hB.nl.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.nl.out[1].channel ber 0
+par Red.hB.nl.out[1].channel per 0
+par Red.hB.nl.out[1].channel retardo 1us
+attr unit us
+par Red.hB.li.out[2].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hB.li.out[2].channel disabled false
+par Red.hB.li.out[2].channel delay 1e-06s
+attr unit s
+par Red.hB.li.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.li.out[2].channel ber 0
+par Red.hB.li.out[2].channel per 0
+par Red.hB.li.out[2].channel retardo 1us
+attr unit us
+par Red.hB.tn.out[0].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hB.tn.out[0].channel disabled false
+par Red.hB.tn.out[0].channel delay 1e-06s
+attr unit s
+par Red.hB.tn.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.tn.out[0].channel ber 0
+par Red.hB.tn.out[0].channel per 0
+par Red.hB.tn.out[0].channel retardo 1us
+attr unit us
+par Red.hB.ipv4.transportOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hB.ipv4.transportOut.channel disabled false
+par Red.hB.ipv4.transportOut.channel delay 1e-06s
+attr unit s
+par Red.hB.ipv4.transportOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hB.ipv4.transportOut.channel ber 0
+par Red.hB.ipv4.transportOut.channel per 0
+par Red.hB.ipv4.transportOut.channel retardo 1us
+attr unit us
+par Red.hB.rdma.lowerLayerOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hB.rdma.lowerLayerOut.channel disabled false
+par Red.hB.rdma.lowerLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hB.rdma.lowerLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hB.rdma.lowerLayerOut.channel ber 0
+par Red.hB.rdma.lowerLayerOut.channel per 0
+par Red.hB.rdma.lowerLayerOut.channel retardo 1us
+attr unit us
+par Red.hB.tn.out[2].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hB.tn.out[2].channel disabled false
+par Red.hB.tn.out[2].channel delay 1e-06s
+attr unit s
+par Red.hB.tn.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.tn.out[2].channel ber 0
+par Red.hB.tn.out[2].channel per 0
+par Red.hB.tn.out[2].channel retardo 1us
+attr unit us
+par Red.hB.app[0].socketOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hB.app[0].socketOut.channel disabled false
+par Red.hB.app[0].socketOut.channel delay 1e-06s
+attr unit s
+par Red.hB.app[0].socketOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hB.app[0].socketOut.channel ber 0
+par Red.hB.app[0].socketOut.channel per 0
+par Red.hB.app[0].socketOut.channel retardo 1us
+attr unit us
+par Red.hB.eth[0].appLayerOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hB.eth[0].appLayerOut.channel disabled false
+par Red.hB.eth[0].appLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hB.eth[0].appLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hB.eth[0].appLayerOut.channel ber 0
+par Red.hB.eth[0].appLayerOut.channel per 0
+par Red.hB.eth[0].appLayerOut.channel retardo 1us
+attr unit us
+par Red.hB.at.out[0].channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hB.at.out[0].channel disabled false
+par Red.hB.at.out[0].channel delay 1e-06s
+attr unit s
+par Red.hB.at.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hB.at.out[0].channel ber 0
+par Red.hB.at.out[0].channel per 0
+par Red.hB.at.out[0].channel retardo 1us
+attr unit us
+par Red.hB.interfaceTable typename "\"inet.networklayer.common.InterfaceTable\""
+par Red.hB.interfaceTable displayAddresses false
+par Red.hB.li typename "\"inet.common.MessageDispatcher\""
+par Red.hB.li displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hB.lo[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hB.lo[0].lo.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hB.lo[0].lo typename "\"inet.linklayer.loopback.Loopback\""
+par Red.hB.lo[0].lo interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.lo[0].lo mtu 4470B
+attr unit B
+scalar Red.hB.lo[0].lo rcvdPkFromHl:count 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Red.hB.lo[0].lo rcvdPkFromHl:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Red.hB.lo[0].lo passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hB.lo[0].lo passedUpPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+par Red.hB.lo[0] typename "\"inet.linklayer.loopback.LoopbackInterface\""
+par Red.hB.lo[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hB.lo[0] recordPcap false
+par Red.hB.lo[0] numPcapRecorders 0
+par Red.hB.lo[0] interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.eth[0].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hB.eth[0].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.hB.eth[0].encap.appLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hB.eth[0].encap.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hB.eth[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hB.eth[0].encap typename "\"inet.linklayer.contract.rdma.EthernetEncapsulation\""
+par Red.hB.eth[0].encap interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.eth[0].encap useSNAP false
+par Red.hB.eth[0].encap fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hB.eth[0].encap registerProtocol false
+par Red.hB.eth[0].encap stopOperationExtraTime -1s
+attr unit s
+par Red.hB.eth[0].encap stopOperationTimeout 2s
+attr unit s
+scalar Red.hB.eth[0].encap pauseSent:count 0
+attr title "pause sent, count"
+scalar Red.hB.eth[0].encap pauseSent:sum 0
+attr title "pause sent, sum"
+scalar Red.hB.eth[0].encap decapPk:count 1
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, count"
+scalar Red.hB.eth[0].encap decapPk:sum(packetBytes) 46
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, sum(packetBytes)"
+scalar Red.hB.eth[0].encap encapPk:count 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, count"
+scalar Red.hB.eth[0].encap encapPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, sum(packetBytes)"
+par Red.hB.eth[0].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.hB.eth[0].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.hB.eth[0].mac.queue packetCapacity 10000
+par Red.hB.eth[0].mac.queue dataCapacity -1b
+attr unit b
+par Red.hB.eth[0].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.hB.eth[0].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.hB.eth[0].mac.queue bufferModule "\"\""
+scalar Red.hB.eth[0].mac.queue packetPulled:count 0
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.hB.eth[0].mac.queue packetPulled:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.hB.eth[0].mac.queue queueingTime:histogram
+field count 0
+field mean -nan
+field stddev -nan
+field min -nan
+field max -nan
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	0	0
+bin	1	0
+scalar Red.hB.eth[0].mac.queue queueLength:max -nan
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.hB.eth[0].mac.queue queueLength:timeavg -nan
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.hB.eth[0].mac.queue packetPushed:count 0
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.hB.eth[0].mac.queue packetPushed:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.hB.eth[0].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.hB.eth[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.hB.eth[0].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.hB.eth[0].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.hB.eth[0].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.hB.eth[0].mac interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.eth[0].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.hB.eth[0].mac sendRawBytes false
+par Red.hB.eth[0].mac promiscuous false
+par Red.hB.eth[0].mac duplexMode true
+par Red.hB.eth[0].mac mtu 1500B
+attr unit B
+par Red.hB.eth[0].mac stopOperationExtraTime -1s
+attr unit s
+par Red.hB.eth[0].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.hB.eth[0].mac "simulated time" 2
+scalar Red.hB.eth[0].mac full-duplex 1
+scalar Red.hB.eth[0].mac "frames/sec sent" 0
+scalar Red.hB.eth[0].mac "frames/sec rcvd" 0.5
+scalar Red.hB.eth[0].mac "bits/sec sent" 0
+scalar Red.hB.eth[0].mac "bits/sec rcvd" 256
+scalar Red.hB.eth[0].mac "rx channel idle (%)" 99.99999928
+scalar Red.hB.eth[0].mac "rx channel utilization (%)" 7.2e-07
+scalar Red.hB.eth[0].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.hB.eth[0].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.hB.eth[0].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.hB.eth[0].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.hB.eth[0].mac rxPkOk:count 1
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.hB.eth[0].mac rxPkOk:sum(packetBytes) 64
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.hB.eth[0].mac txPk:count 0
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.hB.eth[0].mac txPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.hB.eth[0].mac packetReceivedFromUpper:count 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.hB.eth[0].mac packetReceivedFromUpper:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.hB.eth[0].mac passedUpPk:count 1
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hB.eth[0].mac passedUpPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.hB.eth[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.hB.eth[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.hB.eth[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.hB.eth[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.hB.eth[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.hB.eth[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.hB.eth[0] typename "\"inet.linklayer.contract.rdma.EthernetInterface\""
+par Red.hB.eth[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hB.eth[0] recordPcap false
+par Red.hB.eth[0] numPcapRecorders 0
+par Red.hB.eth[0] interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.eth[0] address "\"0A-AA-00-00-00-02\""
+par Red.hB.eth[0] duplexMode true
+par Red.hB.eth[0] csmacdSupport false
+par Red.hB.eth[0] bitrate 0bps
+attr unit bps
+par Red.hB.eth[0] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hB.ipv4.transportIn.channel typename "\"ned.IdealChannel\""
+par Red.hB.ipv4.up.out[0].channel typename "\"ned.IdealChannel\""
+par Red.hB.ipv4.lp.out[2].channel typename "\"ned.IdealChannel\""
+par Red.hB.ipv4.ifIn.channel typename "\"ned.IdealChannel\""
+par Red.hB.ipv4.configurator typename "\"inet.networklayer.configurator.ipv4.Ipv4NodeConfigurator\""
+par Red.hB.ipv4.configurator interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.ipv4.configurator routingTableModule "\"Red.hB.ipv4.routingTable\""
+par Red.hB.ipv4.configurator networkConfiguratorModule "\"configurator\""
+par Red.hB.ipv4.configurator configureRoutingTable true
+par Red.hB.ipv4.routingTable typename "\"inet.networklayer.ipv4.Ipv4RoutingTable\""
+par Red.hB.ipv4.routingTable interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.ipv4.routingTable routerId "\"auto\""
+par Red.hB.ipv4.routingTable netmaskRoutes "\"*\""
+par Red.hB.ipv4.routingTable forwarding false
+par Red.hB.ipv4.routingTable multicastForwarding false
+par Red.hB.ipv4.routingTable useAdminDist false
+par Red.hB.ipv4.routingTable routingFile "\"\""
+par Red.hB.ipv4.natTable typename "\"inet.networklayer.ipv4.Ipv4NatTable\""
+par Red.hB.ipv4.natTable networkProtocolModule "\"^.ip\""
+par Red.hB.ipv4.natTable config "<config/> at content:1"
+par Red.hB.ipv4.up typename "\"inet.common.MessageDispatcher\""
+par Red.hB.ipv4.up displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hB.ipv4.igmp typename "\"inet.networklayer.ipv4.Igmpv2\""
+par Red.hB.ipv4.igmp interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.ipv4.igmp routingTableModule "\"Red.hB.ipv4.routingTable\""
+par Red.hB.ipv4.igmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hB.ipv4.igmp enabled true
+par Red.hB.ipv4.igmp robustnessVariable 2
+par Red.hB.ipv4.igmp queryInterval 125s
+attr unit s
+par Red.hB.ipv4.igmp queryResponseInterval 10s
+attr unit s
+par Red.hB.ipv4.igmp groupMembershipInterval 260s
+attr unit s
+par Red.hB.ipv4.igmp otherQuerierPresentInterval 255s
+attr unit s
+par Red.hB.ipv4.igmp startupQueryInterval 31.25s
+attr unit s
+par Red.hB.ipv4.igmp startupQueryCount 2
+par Red.hB.ipv4.igmp lastMemberQueryInterval 1s
+attr unit s
+par Red.hB.ipv4.igmp lastMemberQueryCount 2
+par Red.hB.ipv4.igmp unsolicitedReportInterval 10s
+attr unit s
+par Red.hB.ipv4.icmp typename "\"inet.networklayer.ipv4.Icmp\""
+par Red.hB.ipv4.icmp interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.ipv4.icmp routingTableModule "\"Red.hB.ipv4.routingTable\""
+par Red.hB.ipv4.icmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hB.ipv4.icmp quoteLength 8B
+attr unit B
+par Red.hB.ipv4.mp typename "\"inet.common.MessageDispatcher\""
+par Red.hB.ipv4.mp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hB.ipv4.ip typename "\"inet.networklayer.ipv4.Ipv4\""
+par Red.hB.ipv4.ip interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.ipv4.ip routingTableModule "\"Red.hB.ipv4.routingTable\""
+par Red.hB.ipv4.ip arpModule "\"Red.hB.ipv4.arp\""
+par Red.hB.ipv4.ip icmpModule "\"Red.hB.ipv4.icmp\""
+par Red.hB.ipv4.ip crcMode "\"declared\""
+attr enum declared,computed
+par Red.hB.ipv4.ip timeToLive 32
+par Red.hB.ipv4.ip multicastTimeToLive 32
+par Red.hB.ipv4.ip fragmentTimeout 60s
+attr unit s
+par Red.hB.ipv4.ip limitedBroadcast false
+par Red.hB.ipv4.ip directBroadcastInterfaces "\"\""
+scalar Red.hB.ipv4.ip packetDropAddressResolutionFailed:count 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, count"
+scalar Red.hB.ipv4.ip packetDropAddressResolutionFailed:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, sum(packetBytes)"
+scalar Red.hB.ipv4.ip packetDropHopLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, count"
+scalar Red.hB.ipv4.ip packetDropHopLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, sum(packetBytes)"
+scalar Red.hB.ipv4.ip packetDropForwardingDisabled:count 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, count"
+scalar Red.hB.ipv4.ip packetDropForwardingDisabled:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, sum(packetBytes)"
+scalar Red.hB.ipv4.ip packetDropNoInterfaceFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, count"
+scalar Red.hB.ipv4.ip packetDropNoInterfaceFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, sum(packetBytes)"
+scalar Red.hB.ipv4.ip packetDropNoRouteFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, count"
+scalar Red.hB.ipv4.ip packetDropNoRouteFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, sum(packetBytes)"
+scalar Red.hB.ipv4.ip packetDropUndefined:count 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, count"
+scalar Red.hB.ipv4.ip packetDropUndefined:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, sum(packetBytes)"
+par Red.hB.ipv4.arp typename "\"inet.networklayer.arp.ipv4.Arp\""
+par Red.hB.ipv4.arp interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.ipv4.arp routingTableModule "\"Red.hB.ipv4.routingTable\""
+par Red.hB.ipv4.arp retryTimeout 1s
+attr unit s
+par Red.hB.ipv4.arp retryCount 3
+par Red.hB.ipv4.arp cacheTimeout 120s
+attr unit s
+par Red.hB.ipv4.arp proxyArpInterfaces "\"*\""
+scalar Red.hB.ipv4.arp arpResolutionFailed:count 0
+attr title "ARP failed resolutions, count"
+scalar Red.hB.ipv4.arp arpResolutionCompleted:count 0
+attr title "ARP completed resolutions, count"
+scalar Red.hB.ipv4.arp arpResolutionInitiated:count 0
+attr title "ARP initiated resolutions, count"
+scalar Red.hB.ipv4.arp arpReplySent:count 0
+attr source arpReplySent
+attr title "ARP replies sent, count"
+scalar Red.hB.ipv4.arp arpReplySent:sum(packetBytes) 0
+attr source arpReplySent
+attr title "ARP replies sent, sum(packetBytes)"
+scalar Red.hB.ipv4.arp arpRequestSent:count 0
+attr source arpRequestSent
+attr title "ARP request sent, count"
+scalar Red.hB.ipv4.arp arpRequestSent:sum(packetBytes) 0
+attr source arpRequestSent
+attr title "ARP request sent, sum(packetBytes)"
+par Red.hB.ipv4.lp typename "\"inet.common.MessageDispatcher\""
+par Red.hB.ipv4.lp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hB.ipv4 typename "\"inet.networklayer.ipv4.Ipv4NetworkLayer\""
+par Red.hB.ipv4 forwarding false
+par Red.hB.ipv4 multicastForwarding false
+par Red.hB.ipv4 interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.ipv4 displayStringTextFormat "\"%i\""
+par Red.hB.nl typename "\"inet.common.MessageDispatcher\""
+par Red.hB.nl displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hB.rdma typename "\"inet.transportlayer.rdma.Rdma\""
+par Red.hB.rdma interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.rdma crcMode "\"declared\""
+attr enum disabled,declared,computed
+scalar Red.hB.rdma packetReceived:count 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hB.rdma packetReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+scalar Red.hB.rdma packetSent:count 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hB.rdma packetSent:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+scalar Red.hB.rdma passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, count"
+scalar Red.hB.rdma droppedPkWrongPort:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+scalar Red.hB.rdma droppedPkBadChecksum:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+par Red.hB.tn typename "\"inet.common.MessageDispatcher\""
+par Red.hB.tn displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hB.app[0] typename "\"inet.applications.rdmaapp.RdmaBasicApp\""
+par Red.hB.app[0] interfaceTableModule "\"Red.hB.interfaceTable\""
+par Red.hB.app[0] clockModule "\"\""
+par Red.hB.app[0] localPort 1000
+par Red.hB.app[0] destAddresses "\"\""
+par Red.hB.app[0] localAddress "\"\""
+par Red.hB.app[0] packetName "\"RdmaBasicAppData\""
+par Red.hB.app[0] destPort 1000
+par Red.hB.app[0] messageLength 1000B
+attr unit B
+par Red.hB.app[0] startTime 0.00101857s
+attr unit s
+par Red.hB.app[0] stopTime -1s
+attr unit s
+par Red.hB.app[0] sendInterval "0.001s+uniform(-0.0001s, 0.0001s)"
+attr unit s
+par Red.hB.app[0] dontFragment false
+par Red.hB.app[0] stopOperationExtraTime -1s
+attr unit s
+par Red.hB.app[0] stopOperationTimeout 2s
+attr unit s
+scalar Red.hB.app[0] "packets sent" 0
+scalar Red.hB.app[0] "packets received" 0
+scalar Red.hB.app[0] latency 0
+scalar Red.hB.app[0] meanLatency -nan
+scalar Red.hB.app[0] latency:count 0
+attr interpolationmode none
+attr source latency
+attr title "latency, count"
+attr unit s
+scalar Red.hB.app[0] packetReceived:count 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hB.app[0] packetReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+statistic Red.hB.app[0] rcvdPkLifetime:stats
+field count 0
+field mean -nan
+field stddev -nan
+field min -nan
+field max -nan
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, stats"
+attr unit s
+scalar Red.hB.app[0] packetSent:count 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hB.app[0] packetSent:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+par Red.hB.at typename "\"inet.common.MessageDispatcher\""
+par Red.hB.at displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hB typename "\"inet.node.rdma.RdmaHost\""
+par Red.hB hasStatus false
+par Red.hB osgModel "\"\""
+par Red.hB osgModelColor "\"\""
+par Red.hB canvasImage "\"\""
+par Red.hB canvasImageColor "\"\""
+par Red.hB recordPcap false
+par Red.hB numPcapRecorders 0
+par Red.hB numLoInterfaces 1
+par Red.hB numWlanInterfaces 0
+par Red.hB numEthInterfaces 0
+par Red.hB numPppInterfaces 0
+par Red.hB numTunInterfaces 0
+par Red.hB numVirtInterfaces 0
+par Red.hB hasIpv4 true
+par Red.hB hasIpv6 false
+par Red.hB hasGn false
+par Red.hB forwarding false
+par Red.hB multicastForwarding false
+par Red.hB hasRdma true
+par Red.hB numApps 1
+par Red.hC.ethg$i[0].channel typename "\"ned.IdealChannel\""
+par Red.hC.eth[0].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hC.eth[0].upperLayerOut.channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hC.eth[0].upperLayerOut.channel disabled false
+par Red.hC.eth[0].upperLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hC.eth[0].upperLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hC.eth[0].upperLayerOut.channel ber 0
+par Red.hC.eth[0].upperLayerOut.channel per 0
+par Red.hC.eth[0].upperLayerOut.channel retardo 1us
+attr unit us
+par Red.hC.li.out[1].channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hC.li.out[1].channel disabled false
+par Red.hC.li.out[1].channel delay 1e-06s
+attr unit s
+par Red.hC.li.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.li.out[1].channel ber 0
+par Red.hC.li.out[1].channel per 0
+par Red.hC.li.out[1].channel retardo 1us
+attr unit us
+par Red.hC.nl.out[0].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hC.nl.out[0].channel disabled false
+par Red.hC.nl.out[0].channel delay 1e-06s
+attr unit s
+par Red.hC.nl.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.nl.out[0].channel ber 0
+par Red.hC.nl.out[0].channel per 0
+par Red.hC.nl.out[0].channel retardo 1us
+attr unit us
+par Red.hC.ipv4.ifOut.channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hC.ipv4.ifOut.channel disabled false
+par Red.hC.ipv4.ifOut.channel delay 1e-06s
+attr unit s
+par Red.hC.ipv4.ifOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hC.ipv4.ifOut.channel ber 0
+par Red.hC.ipv4.ifOut.channel per 0
+par Red.hC.ipv4.ifOut.channel retardo 1us
+attr unit us
+par Red.hC.nl.out[1].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hC.nl.out[1].channel disabled false
+par Red.hC.nl.out[1].channel delay 1e-06s
+attr unit s
+par Red.hC.nl.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.nl.out[1].channel ber 0
+par Red.hC.nl.out[1].channel per 0
+par Red.hC.nl.out[1].channel retardo 1us
+attr unit us
+par Red.hC.li.out[2].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hC.li.out[2].channel disabled false
+par Red.hC.li.out[2].channel delay 1e-06s
+attr unit s
+par Red.hC.li.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.li.out[2].channel ber 0
+par Red.hC.li.out[2].channel per 0
+par Red.hC.li.out[2].channel retardo 1us
+attr unit us
+par Red.hC.tn.out[0].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hC.tn.out[0].channel disabled false
+par Red.hC.tn.out[0].channel delay 1e-06s
+attr unit s
+par Red.hC.tn.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.tn.out[0].channel ber 0
+par Red.hC.tn.out[0].channel per 0
+par Red.hC.tn.out[0].channel retardo 1us
+attr unit us
+par Red.hC.ipv4.transportOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hC.ipv4.transportOut.channel disabled false
+par Red.hC.ipv4.transportOut.channel delay 1e-06s
+attr unit s
+par Red.hC.ipv4.transportOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hC.ipv4.transportOut.channel ber 0
+par Red.hC.ipv4.transportOut.channel per 0
+par Red.hC.ipv4.transportOut.channel retardo 1us
+attr unit us
+par Red.hC.rdma.lowerLayerOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hC.rdma.lowerLayerOut.channel disabled false
+par Red.hC.rdma.lowerLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hC.rdma.lowerLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hC.rdma.lowerLayerOut.channel ber 0
+par Red.hC.rdma.lowerLayerOut.channel per 0
+par Red.hC.rdma.lowerLayerOut.channel retardo 1us
+attr unit us
+par Red.hC.tn.out[2].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hC.tn.out[2].channel disabled false
+par Red.hC.tn.out[2].channel delay 1e-06s
+attr unit s
+par Red.hC.tn.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.tn.out[2].channel ber 0
+par Red.hC.tn.out[2].channel per 0
+par Red.hC.tn.out[2].channel retardo 1us
+attr unit us
+par Red.hC.app[0].socketOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hC.app[0].socketOut.channel disabled false
+par Red.hC.app[0].socketOut.channel delay 1e-06s
+attr unit s
+par Red.hC.app[0].socketOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hC.app[0].socketOut.channel ber 0
+par Red.hC.app[0].socketOut.channel per 0
+par Red.hC.app[0].socketOut.channel retardo 1us
+attr unit us
+par Red.hC.eth[0].appLayerOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hC.eth[0].appLayerOut.channel disabled false
+par Red.hC.eth[0].appLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hC.eth[0].appLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hC.eth[0].appLayerOut.channel ber 0
+par Red.hC.eth[0].appLayerOut.channel per 0
+par Red.hC.eth[0].appLayerOut.channel retardo 1us
+attr unit us
+par Red.hC.at.out[0].channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hC.at.out[0].channel disabled false
+par Red.hC.at.out[0].channel delay 1e-06s
+attr unit s
+par Red.hC.at.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hC.at.out[0].channel ber 0
+par Red.hC.at.out[0].channel per 0
+par Red.hC.at.out[0].channel retardo 1us
+attr unit us
+par Red.hC.interfaceTable typename "\"inet.networklayer.common.InterfaceTable\""
+par Red.hC.interfaceTable displayAddresses false
+par Red.hC.li typename "\"inet.common.MessageDispatcher\""
+par Red.hC.li displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hC.lo[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hC.lo[0].lo.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hC.lo[0].lo typename "\"inet.linklayer.loopback.Loopback\""
+par Red.hC.lo[0].lo interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.lo[0].lo mtu 4470B
+attr unit B
+scalar Red.hC.lo[0].lo rcvdPkFromHl:count 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Red.hC.lo[0].lo rcvdPkFromHl:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Red.hC.lo[0].lo passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hC.lo[0].lo passedUpPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+par Red.hC.lo[0] typename "\"inet.linklayer.loopback.LoopbackInterface\""
+par Red.hC.lo[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hC.lo[0] recordPcap false
+par Red.hC.lo[0] numPcapRecorders 0
+par Red.hC.lo[0] interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.eth[0].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hC.eth[0].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.hC.eth[0].encap.appLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hC.eth[0].encap.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hC.eth[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hC.eth[0].encap typename "\"inet.linklayer.contract.rdma.EthernetEncapsulation\""
+par Red.hC.eth[0].encap interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.eth[0].encap useSNAP false
+par Red.hC.eth[0].encap fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hC.eth[0].encap registerProtocol false
+par Red.hC.eth[0].encap stopOperationExtraTime -1s
+attr unit s
+par Red.hC.eth[0].encap stopOperationTimeout 2s
+attr unit s
+scalar Red.hC.eth[0].encap pauseSent:count 0
+attr title "pause sent, count"
+scalar Red.hC.eth[0].encap pauseSent:sum 0
+attr title "pause sent, sum"
+scalar Red.hC.eth[0].encap decapPk:count 1
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, count"
+scalar Red.hC.eth[0].encap decapPk:sum(packetBytes) 46
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, sum(packetBytes)"
+scalar Red.hC.eth[0].encap encapPk:count 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, count"
+scalar Red.hC.eth[0].encap encapPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, sum(packetBytes)"
+par Red.hC.eth[0].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.hC.eth[0].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.hC.eth[0].mac.queue packetCapacity 10000
+par Red.hC.eth[0].mac.queue dataCapacity -1b
+attr unit b
+par Red.hC.eth[0].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.hC.eth[0].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.hC.eth[0].mac.queue bufferModule "\"\""
+scalar Red.hC.eth[0].mac.queue packetPulled:count 0
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.hC.eth[0].mac.queue packetPulled:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.hC.eth[0].mac.queue queueingTime:histogram
+field count 0
+field mean -nan
+field stddev -nan
+field min -nan
+field max -nan
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	0	0
+bin	1	0
+scalar Red.hC.eth[0].mac.queue queueLength:max -nan
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.hC.eth[0].mac.queue queueLength:timeavg -nan
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.hC.eth[0].mac.queue packetPushed:count 0
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.hC.eth[0].mac.queue packetPushed:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.hC.eth[0].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.hC.eth[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.hC.eth[0].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.hC.eth[0].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.hC.eth[0].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.hC.eth[0].mac interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.eth[0].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.hC.eth[0].mac sendRawBytes false
+par Red.hC.eth[0].mac promiscuous false
+par Red.hC.eth[0].mac duplexMode true
+par Red.hC.eth[0].mac mtu 1500B
+attr unit B
+par Red.hC.eth[0].mac stopOperationExtraTime -1s
+attr unit s
+par Red.hC.eth[0].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.hC.eth[0].mac "simulated time" 2
+scalar Red.hC.eth[0].mac full-duplex 1
+scalar Red.hC.eth[0].mac "frames/sec sent" 0
+scalar Red.hC.eth[0].mac "frames/sec rcvd" 0.5
+scalar Red.hC.eth[0].mac "bits/sec sent" 0
+scalar Red.hC.eth[0].mac "bits/sec rcvd" 256
+scalar Red.hC.eth[0].mac "rx channel idle (%)" 99.99999928
+scalar Red.hC.eth[0].mac "rx channel utilization (%)" 7.2e-07
+scalar Red.hC.eth[0].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.hC.eth[0].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.hC.eth[0].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.hC.eth[0].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.hC.eth[0].mac rxPkOk:count 1
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.hC.eth[0].mac rxPkOk:sum(packetBytes) 64
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.hC.eth[0].mac txPk:count 0
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.hC.eth[0].mac txPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.hC.eth[0].mac packetReceivedFromUpper:count 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.hC.eth[0].mac packetReceivedFromUpper:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.hC.eth[0].mac passedUpPk:count 1
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hC.eth[0].mac passedUpPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.hC.eth[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.hC.eth[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.hC.eth[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.hC.eth[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.hC.eth[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.hC.eth[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.hC.eth[0] typename "\"inet.linklayer.contract.rdma.EthernetInterface\""
+par Red.hC.eth[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hC.eth[0] recordPcap false
+par Red.hC.eth[0] numPcapRecorders 0
+par Red.hC.eth[0] interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.eth[0] address "\"0A-AA-00-00-00-03\""
+par Red.hC.eth[0] duplexMode true
+par Red.hC.eth[0] csmacdSupport false
+par Red.hC.eth[0] bitrate 0bps
+attr unit bps
+par Red.hC.eth[0] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hC.ipv4.transportIn.channel typename "\"ned.IdealChannel\""
+par Red.hC.ipv4.up.out[0].channel typename "\"ned.IdealChannel\""
+par Red.hC.ipv4.lp.out[2].channel typename "\"ned.IdealChannel\""
+par Red.hC.ipv4.ifIn.channel typename "\"ned.IdealChannel\""
+par Red.hC.ipv4.configurator typename "\"inet.networklayer.configurator.ipv4.Ipv4NodeConfigurator\""
+par Red.hC.ipv4.configurator interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.ipv4.configurator routingTableModule "\"Red.hC.ipv4.routingTable\""
+par Red.hC.ipv4.configurator networkConfiguratorModule "\"configurator\""
+par Red.hC.ipv4.configurator configureRoutingTable true
+par Red.hC.ipv4.routingTable typename "\"inet.networklayer.ipv4.Ipv4RoutingTable\""
+par Red.hC.ipv4.routingTable interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.ipv4.routingTable routerId "\"auto\""
+par Red.hC.ipv4.routingTable netmaskRoutes "\"*\""
+par Red.hC.ipv4.routingTable forwarding false
+par Red.hC.ipv4.routingTable multicastForwarding false
+par Red.hC.ipv4.routingTable useAdminDist false
+par Red.hC.ipv4.routingTable routingFile "\"\""
+par Red.hC.ipv4.natTable typename "\"inet.networklayer.ipv4.Ipv4NatTable\""
+par Red.hC.ipv4.natTable networkProtocolModule "\"^.ip\""
+par Red.hC.ipv4.natTable config "<config/> at content:1"
+par Red.hC.ipv4.up typename "\"inet.common.MessageDispatcher\""
+par Red.hC.ipv4.up displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hC.ipv4.igmp typename "\"inet.networklayer.ipv4.Igmpv2\""
+par Red.hC.ipv4.igmp interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.ipv4.igmp routingTableModule "\"Red.hC.ipv4.routingTable\""
+par Red.hC.ipv4.igmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hC.ipv4.igmp enabled true
+par Red.hC.ipv4.igmp robustnessVariable 2
+par Red.hC.ipv4.igmp queryInterval 125s
+attr unit s
+par Red.hC.ipv4.igmp queryResponseInterval 10s
+attr unit s
+par Red.hC.ipv4.igmp groupMembershipInterval 260s
+attr unit s
+par Red.hC.ipv4.igmp otherQuerierPresentInterval 255s
+attr unit s
+par Red.hC.ipv4.igmp startupQueryInterval 31.25s
+attr unit s
+par Red.hC.ipv4.igmp startupQueryCount 2
+par Red.hC.ipv4.igmp lastMemberQueryInterval 1s
+attr unit s
+par Red.hC.ipv4.igmp lastMemberQueryCount 2
+par Red.hC.ipv4.igmp unsolicitedReportInterval 10s
+attr unit s
+par Red.hC.ipv4.icmp typename "\"inet.networklayer.ipv4.Icmp\""
+par Red.hC.ipv4.icmp interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.ipv4.icmp routingTableModule "\"Red.hC.ipv4.routingTable\""
+par Red.hC.ipv4.icmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hC.ipv4.icmp quoteLength 8B
+attr unit B
+par Red.hC.ipv4.mp typename "\"inet.common.MessageDispatcher\""
+par Red.hC.ipv4.mp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hC.ipv4.ip typename "\"inet.networklayer.ipv4.Ipv4\""
+par Red.hC.ipv4.ip interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.ipv4.ip routingTableModule "\"Red.hC.ipv4.routingTable\""
+par Red.hC.ipv4.ip arpModule "\"Red.hC.ipv4.arp\""
+par Red.hC.ipv4.ip icmpModule "\"Red.hC.ipv4.icmp\""
+par Red.hC.ipv4.ip crcMode "\"declared\""
+attr enum declared,computed
+par Red.hC.ipv4.ip timeToLive 32
+par Red.hC.ipv4.ip multicastTimeToLive 32
+par Red.hC.ipv4.ip fragmentTimeout 60s
+attr unit s
+par Red.hC.ipv4.ip limitedBroadcast false
+par Red.hC.ipv4.ip directBroadcastInterfaces "\"\""
+scalar Red.hC.ipv4.ip packetDropAddressResolutionFailed:count 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, count"
+scalar Red.hC.ipv4.ip packetDropAddressResolutionFailed:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, sum(packetBytes)"
+scalar Red.hC.ipv4.ip packetDropHopLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, count"
+scalar Red.hC.ipv4.ip packetDropHopLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, sum(packetBytes)"
+scalar Red.hC.ipv4.ip packetDropForwardingDisabled:count 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, count"
+scalar Red.hC.ipv4.ip packetDropForwardingDisabled:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, sum(packetBytes)"
+scalar Red.hC.ipv4.ip packetDropNoInterfaceFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, count"
+scalar Red.hC.ipv4.ip packetDropNoInterfaceFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, sum(packetBytes)"
+scalar Red.hC.ipv4.ip packetDropNoRouteFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, count"
+scalar Red.hC.ipv4.ip packetDropNoRouteFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, sum(packetBytes)"
+scalar Red.hC.ipv4.ip packetDropUndefined:count 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, count"
+scalar Red.hC.ipv4.ip packetDropUndefined:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, sum(packetBytes)"
+par Red.hC.ipv4.arp typename "\"inet.networklayer.arp.ipv4.Arp\""
+par Red.hC.ipv4.arp interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.ipv4.arp routingTableModule "\"Red.hC.ipv4.routingTable\""
+par Red.hC.ipv4.arp retryTimeout 1s
+attr unit s
+par Red.hC.ipv4.arp retryCount 3
+par Red.hC.ipv4.arp cacheTimeout 120s
+attr unit s
+par Red.hC.ipv4.arp proxyArpInterfaces "\"*\""
+scalar Red.hC.ipv4.arp arpResolutionFailed:count 0
+attr title "ARP failed resolutions, count"
+scalar Red.hC.ipv4.arp arpResolutionCompleted:count 0
+attr title "ARP completed resolutions, count"
+scalar Red.hC.ipv4.arp arpResolutionInitiated:count 0
+attr title "ARP initiated resolutions, count"
+scalar Red.hC.ipv4.arp arpReplySent:count 0
+attr source arpReplySent
+attr title "ARP replies sent, count"
+scalar Red.hC.ipv4.arp arpReplySent:sum(packetBytes) 0
+attr source arpReplySent
+attr title "ARP replies sent, sum(packetBytes)"
+scalar Red.hC.ipv4.arp arpRequestSent:count 0
+attr source arpRequestSent
+attr title "ARP request sent, count"
+scalar Red.hC.ipv4.arp arpRequestSent:sum(packetBytes) 0
+attr source arpRequestSent
+attr title "ARP request sent, sum(packetBytes)"
+par Red.hC.ipv4.lp typename "\"inet.common.MessageDispatcher\""
+par Red.hC.ipv4.lp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hC.ipv4 typename "\"inet.networklayer.ipv4.Ipv4NetworkLayer\""
+par Red.hC.ipv4 forwarding false
+par Red.hC.ipv4 multicastForwarding false
+par Red.hC.ipv4 interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.ipv4 displayStringTextFormat "\"%i\""
+par Red.hC.nl typename "\"inet.common.MessageDispatcher\""
+par Red.hC.nl displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hC.rdma typename "\"inet.transportlayer.rdma.Rdma\""
+par Red.hC.rdma interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.rdma crcMode "\"declared\""
+attr enum disabled,declared,computed
+scalar Red.hC.rdma packetReceived:count 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hC.rdma packetReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+scalar Red.hC.rdma packetSent:count 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hC.rdma packetSent:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+scalar Red.hC.rdma passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, count"
+scalar Red.hC.rdma droppedPkWrongPort:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+scalar Red.hC.rdma droppedPkBadChecksum:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+par Red.hC.tn typename "\"inet.common.MessageDispatcher\""
+par Red.hC.tn displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hC.app[0] typename "\"inet.applications.rdmaapp.RdmaBasicApp\""
+par Red.hC.app[0] interfaceTableModule "\"Red.hC.interfaceTable\""
+par Red.hC.app[0] clockModule "\"\""
+par Red.hC.app[0] localPort 1000
+par Red.hC.app[0] destAddresses "\"\""
+par Red.hC.app[0] localAddress "\"\""
+par Red.hC.app[0] packetName "\"RdmaBasicAppData\""
+par Red.hC.app[0] destPort 1000
+par Red.hC.app[0] messageLength 1000B
+attr unit B
+par Red.hC.app[0] startTime 0.00104304s
+attr unit s
+par Red.hC.app[0] stopTime -1s
+attr unit s
+par Red.hC.app[0] sendInterval "0.001s+uniform(-0.0001s, 0.0001s)"
+attr unit s
+par Red.hC.app[0] dontFragment false
+par Red.hC.app[0] stopOperationExtraTime -1s
+attr unit s
+par Red.hC.app[0] stopOperationTimeout 2s
+attr unit s
+scalar Red.hC.app[0] "packets sent" 0
+scalar Red.hC.app[0] "packets received" 0
+scalar Red.hC.app[0] latency 0
+scalar Red.hC.app[0] meanLatency -nan
+scalar Red.hC.app[0] latency:count 0
+attr interpolationmode none
+attr source latency
+attr title "latency, count"
+attr unit s
+scalar Red.hC.app[0] packetReceived:count 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hC.app[0] packetReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+statistic Red.hC.app[0] rcvdPkLifetime:stats
+field count 0
+field mean -nan
+field stddev -nan
+field min -nan
+field max -nan
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, stats"
+attr unit s
+scalar Red.hC.app[0] packetSent:count 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hC.app[0] packetSent:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+par Red.hC.at typename "\"inet.common.MessageDispatcher\""
+par Red.hC.at displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hC typename "\"inet.node.rdma.RdmaHost\""
+par Red.hC hasStatus false
+par Red.hC osgModel "\"\""
+par Red.hC osgModelColor "\"\""
+par Red.hC canvasImage "\"\""
+par Red.hC canvasImageColor "\"\""
+par Red.hC recordPcap false
+par Red.hC numPcapRecorders 0
+par Red.hC numLoInterfaces 1
+par Red.hC numWlanInterfaces 0
+par Red.hC numEthInterfaces 0
+par Red.hC numPppInterfaces 0
+par Red.hC numTunInterfaces 0
+par Red.hC numVirtInterfaces 0
+par Red.hC hasIpv4 true
+par Red.hC hasIpv6 false
+par Red.hC hasGn false
+par Red.hC forwarding false
+par Red.hC multicastForwarding false
+par Red.hC hasRdma true
+par Red.hC numApps 1
+par Red.hD.ethg$i[0].channel typename "\"ned.IdealChannel\""
+par Red.hD.eth[0].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hD.eth[0].upperLayerOut.channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hD.eth[0].upperLayerOut.channel disabled false
+par Red.hD.eth[0].upperLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hD.eth[0].upperLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hD.eth[0].upperLayerOut.channel ber 0
+par Red.hD.eth[0].upperLayerOut.channel per 0
+par Red.hD.eth[0].upperLayerOut.channel retardo 1us
+attr unit us
+par Red.hD.li.out[1].channel typename "\"inet.node.rdma.base.LinkLayerNodeBase.cable\""
+par Red.hD.li.out[1].channel disabled false
+par Red.hD.li.out[1].channel delay 1e-06s
+attr unit s
+par Red.hD.li.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.li.out[1].channel ber 0
+par Red.hD.li.out[1].channel per 0
+par Red.hD.li.out[1].channel retardo 1us
+attr unit us
+par Red.hD.nl.out[0].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hD.nl.out[0].channel disabled false
+par Red.hD.nl.out[0].channel delay 1e-06s
+attr unit s
+par Red.hD.nl.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.nl.out[0].channel ber 0
+par Red.hD.nl.out[0].channel per 0
+par Red.hD.nl.out[0].channel retardo 1us
+attr unit us
+par Red.hD.ipv4.ifOut.channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hD.ipv4.ifOut.channel disabled false
+par Red.hD.ipv4.ifOut.channel delay 1e-06s
+attr unit s
+par Red.hD.ipv4.ifOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hD.ipv4.ifOut.channel ber 0
+par Red.hD.ipv4.ifOut.channel per 0
+par Red.hD.ipv4.ifOut.channel retardo 1us
+attr unit us
+par Red.hD.nl.out[1].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hD.nl.out[1].channel disabled false
+par Red.hD.nl.out[1].channel delay 1e-06s
+attr unit s
+par Red.hD.nl.out[1].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.nl.out[1].channel ber 0
+par Red.hD.nl.out[1].channel per 0
+par Red.hD.nl.out[1].channel retardo 1us
+attr unit us
+par Red.hD.li.out[2].channel typename "\"inet.node.rdma.base.NetworkLayerNodeBase.cable\""
+par Red.hD.li.out[2].channel disabled false
+par Red.hD.li.out[2].channel delay 1e-06s
+attr unit s
+par Red.hD.li.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.li.out[2].channel ber 0
+par Red.hD.li.out[2].channel per 0
+par Red.hD.li.out[2].channel retardo 1us
+attr unit us
+par Red.hD.tn.out[0].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hD.tn.out[0].channel disabled false
+par Red.hD.tn.out[0].channel delay 1e-06s
+attr unit s
+par Red.hD.tn.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.tn.out[0].channel ber 0
+par Red.hD.tn.out[0].channel per 0
+par Red.hD.tn.out[0].channel retardo 1us
+attr unit us
+par Red.hD.ipv4.transportOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hD.ipv4.transportOut.channel disabled false
+par Red.hD.ipv4.transportOut.channel delay 1e-06s
+attr unit s
+par Red.hD.ipv4.transportOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hD.ipv4.transportOut.channel ber 0
+par Red.hD.ipv4.transportOut.channel per 0
+par Red.hD.ipv4.transportOut.channel retardo 1us
+attr unit us
+par Red.hD.rdma.lowerLayerOut.channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hD.rdma.lowerLayerOut.channel disabled false
+par Red.hD.rdma.lowerLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hD.rdma.lowerLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hD.rdma.lowerLayerOut.channel ber 0
+par Red.hD.rdma.lowerLayerOut.channel per 0
+par Red.hD.rdma.lowerLayerOut.channel retardo 1us
+attr unit us
+par Red.hD.tn.out[2].channel typename "\"inet.node.rdma.base.TransportLayerNodeBase.cable\""
+par Red.hD.tn.out[2].channel disabled false
+par Red.hD.tn.out[2].channel delay 1e-06s
+attr unit s
+par Red.hD.tn.out[2].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.tn.out[2].channel ber 0
+par Red.hD.tn.out[2].channel per 0
+par Red.hD.tn.out[2].channel retardo 1us
+attr unit us
+par Red.hD.app[0].socketOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hD.app[0].socketOut.channel disabled false
+par Red.hD.app[0].socketOut.channel delay 1e-06s
+attr unit s
+par Red.hD.app[0].socketOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hD.app[0].socketOut.channel ber 0
+par Red.hD.app[0].socketOut.channel per 0
+par Red.hD.app[0].socketOut.channel retardo 1us
+attr unit us
+par Red.hD.eth[0].appLayerOut.channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hD.eth[0].appLayerOut.channel disabled false
+par Red.hD.eth[0].appLayerOut.channel delay 1e-06s
+attr unit s
+par Red.hD.eth[0].appLayerOut.channel datarate 4e+10bps
+attr unit bps
+par Red.hD.eth[0].appLayerOut.channel ber 0
+par Red.hD.eth[0].appLayerOut.channel per 0
+par Red.hD.eth[0].appLayerOut.channel retardo 1us
+attr unit us
+par Red.hD.at.out[0].channel typename "\"inet.node.rdma.base.ApplicationLayerNodeBase.cable\""
+par Red.hD.at.out[0].channel disabled false
+par Red.hD.at.out[0].channel delay 1e-06s
+attr unit s
+par Red.hD.at.out[0].channel datarate 4e+10bps
+attr unit bps
+par Red.hD.at.out[0].channel ber 0
+par Red.hD.at.out[0].channel per 0
+par Red.hD.at.out[0].channel retardo 1us
+attr unit us
+par Red.hD.interfaceTable typename "\"inet.networklayer.common.InterfaceTable\""
+par Red.hD.interfaceTable displayAddresses false
+par Red.hD.li typename "\"inet.common.MessageDispatcher\""
+par Red.hD.li displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hD.lo[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hD.lo[0].lo.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hD.lo[0].lo typename "\"inet.linklayer.loopback.Loopback\""
+par Red.hD.lo[0].lo interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.lo[0].lo mtu 4470B
+attr unit B
+scalar Red.hD.lo[0].lo rcvdPkFromHl:count 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Red.hD.lo[0].lo rcvdPkFromHl:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Red.hD.lo[0].lo passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hD.lo[0].lo passedUpPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+par Red.hD.lo[0] typename "\"inet.linklayer.loopback.LoopbackInterface\""
+par Red.hD.lo[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hD.lo[0] recordPcap false
+par Red.hD.lo[0] numPcapRecorders 0
+par Red.hD.lo[0] interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.eth[0].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.hD.eth[0].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.hD.eth[0].encap.appLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hD.eth[0].encap.upperLayerOut.channel typename "\"ned.IdealChannel\""
+par Red.hD.eth[0].upperLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.hD.eth[0].encap typename "\"inet.linklayer.contract.rdma.EthernetEncapsulation\""
+par Red.hD.eth[0].encap interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.eth[0].encap useSNAP false
+par Red.hD.eth[0].encap fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hD.eth[0].encap registerProtocol false
+par Red.hD.eth[0].encap stopOperationExtraTime -1s
+attr unit s
+par Red.hD.eth[0].encap stopOperationTimeout 2s
+attr unit s
+scalar Red.hD.eth[0].encap pauseSent:count 0
+attr title "pause sent, count"
+scalar Red.hD.eth[0].encap pauseSent:sum 0
+attr title "pause sent, sum"
+scalar Red.hD.eth[0].encap decapPk:count 1999
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, count"
+scalar Red.hD.eth[0].encap decapPk:sum(packetBytes) 2053990
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, sum(packetBytes)"
+scalar Red.hD.eth[0].encap encapPk:count 1
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, count"
+scalar Red.hD.eth[0].encap encapPk:sum(packetBytes) 28
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, sum(packetBytes)"
+par Red.hD.eth[0].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.hD.eth[0].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.hD.eth[0].mac.queue packetCapacity 10000
+par Red.hD.eth[0].mac.queue dataCapacity -1b
+attr unit b
+par Red.hD.eth[0].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.hD.eth[0].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.hD.eth[0].mac.queue bufferModule "\"\""
+scalar Red.hD.eth[0].mac.queue packetPulled:count 1
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.hD.eth[0].mac.queue packetPulled:sum(packetBytes) 46
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.hD.eth[0].mac.queue queueingTime:histogram
+field count 1
+field mean 0
+field stddev -nan
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.hD.eth[0].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.hD.eth[0].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.hD.eth[0].mac.queue packetPushed:count 1
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.hD.eth[0].mac.queue packetPushed:sum(packetBytes) 46
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.hD.eth[0].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.hD.eth[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.hD.eth[0].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.hD.eth[0].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.hD.eth[0].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.hD.eth[0].mac interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.eth[0].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.hD.eth[0].mac sendRawBytes false
+par Red.hD.eth[0].mac promiscuous false
+par Red.hD.eth[0].mac duplexMode true
+par Red.hD.eth[0].mac mtu 1500B
+attr unit B
+par Red.hD.eth[0].mac stopOperationExtraTime -1s
+attr unit s
+par Red.hD.eth[0].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.hD.eth[0].mac "simulated time" 2
+scalar Red.hD.eth[0].mac full-duplex 1
+scalar Red.hD.eth[0].mac "frames/sec sent" 0.5
+scalar Red.hD.eth[0].mac "frames/sec rcvd" 999.5
+scalar Red.hD.eth[0].mac "bits/sec sent" 256
+scalar Red.hD.eth[0].mac "bits/sec rcvd" 8359888
+scalar Red.hD.eth[0].mac "rx channel idle (%)" 99.97894036
+scalar Red.hD.eth[0].mac "rx channel utilization (%)" 0.02105964
+scalar Red.hD.eth[0].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.hD.eth[0].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.hD.eth[0].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.hD.eth[0].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.hD.eth[0].mac rxPkOk:count 1999
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.hD.eth[0].mac rxPkOk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.hD.eth[0].mac txPk:count 1
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.hD.eth[0].mac txPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.hD.eth[0].mac packetReceivedFromUpper:count 1
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.hD.eth[0].mac packetReceivedFromUpper:sum(packetBytes) 46
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.hD.eth[0].mac passedUpPk:count 1999
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.hD.eth[0].mac passedUpPk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.hD.eth[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.hD.eth[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.hD.eth[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.hD.eth[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.hD.eth[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.hD.eth[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.hD.eth[0] typename "\"inet.linklayer.contract.rdma.EthernetInterface\""
+par Red.hD.eth[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.hD.eth[0] recordPcap false
+par Red.hD.eth[0] numPcapRecorders 0
+par Red.hD.eth[0] interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.eth[0] address "\"0A-AA-00-00-00-04\""
+par Red.hD.eth[0] duplexMode true
+par Red.hD.eth[0] csmacdSupport false
+par Red.hD.eth[0] bitrate 0bps
+attr unit bps
+par Red.hD.eth[0] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.hD.ipv4.transportIn.channel typename "\"ned.IdealChannel\""
+par Red.hD.ipv4.up.out[0].channel typename "\"ned.IdealChannel\""
+par Red.hD.ipv4.lp.out[2].channel typename "\"ned.IdealChannel\""
+par Red.hD.ipv4.ifIn.channel typename "\"ned.IdealChannel\""
+par Red.hD.ipv4.configurator typename "\"inet.networklayer.configurator.ipv4.Ipv4NodeConfigurator\""
+par Red.hD.ipv4.configurator interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.ipv4.configurator routingTableModule "\"Red.hD.ipv4.routingTable\""
+par Red.hD.ipv4.configurator networkConfiguratorModule "\"configurator\""
+par Red.hD.ipv4.configurator configureRoutingTable true
+par Red.hD.ipv4.routingTable typename "\"inet.networklayer.ipv4.Ipv4RoutingTable\""
+par Red.hD.ipv4.routingTable interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.ipv4.routingTable routerId "\"auto\""
+par Red.hD.ipv4.routingTable netmaskRoutes "\"*\""
+par Red.hD.ipv4.routingTable forwarding false
+par Red.hD.ipv4.routingTable multicastForwarding false
+par Red.hD.ipv4.routingTable useAdminDist false
+par Red.hD.ipv4.routingTable routingFile "\"\""
+par Red.hD.ipv4.natTable typename "\"inet.networklayer.ipv4.Ipv4NatTable\""
+par Red.hD.ipv4.natTable networkProtocolModule "\"^.ip\""
+par Red.hD.ipv4.natTable config "<config/> at content:1"
+par Red.hD.ipv4.up typename "\"inet.common.MessageDispatcher\""
+par Red.hD.ipv4.up displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hD.ipv4.igmp typename "\"inet.networklayer.ipv4.Igmpv2\""
+par Red.hD.ipv4.igmp interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.ipv4.igmp routingTableModule "\"Red.hD.ipv4.routingTable\""
+par Red.hD.ipv4.igmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hD.ipv4.igmp enabled true
+par Red.hD.ipv4.igmp robustnessVariable 2
+par Red.hD.ipv4.igmp queryInterval 125s
+attr unit s
+par Red.hD.ipv4.igmp queryResponseInterval 10s
+attr unit s
+par Red.hD.ipv4.igmp groupMembershipInterval 260s
+attr unit s
+par Red.hD.ipv4.igmp otherQuerierPresentInterval 255s
+attr unit s
+par Red.hD.ipv4.igmp startupQueryInterval 31.25s
+attr unit s
+par Red.hD.ipv4.igmp startupQueryCount 2
+par Red.hD.ipv4.igmp lastMemberQueryInterval 1s
+attr unit s
+par Red.hD.ipv4.igmp lastMemberQueryCount 2
+par Red.hD.ipv4.igmp unsolicitedReportInterval 10s
+attr unit s
+par Red.hD.ipv4.icmp typename "\"inet.networklayer.ipv4.Icmp\""
+par Red.hD.ipv4.icmp interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.ipv4.icmp routingTableModule "\"Red.hD.ipv4.routingTable\""
+par Red.hD.ipv4.icmp crcMode "\"declared\""
+attr enum declared,computed
+par Red.hD.ipv4.icmp quoteLength 8B
+attr unit B
+par Red.hD.ipv4.mp typename "\"inet.common.MessageDispatcher\""
+par Red.hD.ipv4.mp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hD.ipv4.ip typename "\"inet.networklayer.ipv4.Ipv4\""
+par Red.hD.ipv4.ip interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.ipv4.ip routingTableModule "\"Red.hD.ipv4.routingTable\""
+par Red.hD.ipv4.ip arpModule "\"Red.hD.ipv4.arp\""
+par Red.hD.ipv4.ip icmpModule "\"Red.hD.ipv4.icmp\""
+par Red.hD.ipv4.ip crcMode "\"declared\""
+attr enum declared,computed
+par Red.hD.ipv4.ip timeToLive 32
+par Red.hD.ipv4.ip multicastTimeToLive 32
+par Red.hD.ipv4.ip fragmentTimeout 60s
+attr unit s
+par Red.hD.ipv4.ip limitedBroadcast false
+par Red.hD.ipv4.ip directBroadcastInterfaces "\"\""
+scalar Red.hD.ipv4.ip packetDropAddressResolutionFailed:count 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, count"
+scalar Red.hD.ipv4.ip packetDropAddressResolutionFailed:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
+attr title "packet drop: address resolution failed, sum(packetBytes)"
+scalar Red.hD.ipv4.ip packetDropHopLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, count"
+scalar Red.hD.ipv4.ip packetDropHopLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, sum(packetBytes)"
+scalar Red.hD.ipv4.ip packetDropForwardingDisabled:count 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, count"
+scalar Red.hD.ipv4.ip packetDropForwardingDisabled:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsForwardingDisabled(packetDropped)
+attr title "packet drop: forwarding disabled, sum(packetBytes)"
+scalar Red.hD.ipv4.ip packetDropNoInterfaceFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, count"
+scalar Red.hD.ipv4.ip packetDropNoInterfaceFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoInterfaceFound(packetDropped)
+attr title "packet drop: no interface found, sum(packetBytes)"
+scalar Red.hD.ipv4.ip packetDropNoRouteFound:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, count"
+scalar Red.hD.ipv4.ip packetDropNoRouteFound:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, sum(packetBytes)"
+scalar Red.hD.ipv4.ip packetDropUndefined:count 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, count"
+scalar Red.hD.ipv4.ip packetDropUndefined:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsUndefined(packetDropped)
+attr title "packet drop: undefined, sum(packetBytes)"
+par Red.hD.ipv4.arp typename "\"inet.networklayer.arp.ipv4.Arp\""
+par Red.hD.ipv4.arp interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.ipv4.arp routingTableModule "\"Red.hD.ipv4.routingTable\""
+par Red.hD.ipv4.arp retryTimeout 1s
+attr unit s
+par Red.hD.ipv4.arp retryCount 3
+par Red.hD.ipv4.arp cacheTimeout 120s
+attr unit s
+par Red.hD.ipv4.arp proxyArpInterfaces "\"*\""
+scalar Red.hD.ipv4.arp arpResolutionFailed:count 0
+attr title "ARP failed resolutions, count"
+scalar Red.hD.ipv4.arp arpResolutionCompleted:count 1
+attr title "ARP completed resolutions, count"
+scalar Red.hD.ipv4.arp arpResolutionInitiated:count 0
+attr title "ARP initiated resolutions, count"
+scalar Red.hD.ipv4.arp arpReplySent:count 1
+attr source arpReplySent
+attr title "ARP replies sent, count"
+scalar Red.hD.ipv4.arp arpReplySent:sum(packetBytes) 28
+attr source arpReplySent
+attr title "ARP replies sent, sum(packetBytes)"
+scalar Red.hD.ipv4.arp arpRequestSent:count 0
+attr source arpRequestSent
+attr title "ARP request sent, count"
+scalar Red.hD.ipv4.arp arpRequestSent:sum(packetBytes) 0
+attr source arpRequestSent
+attr title "ARP request sent, sum(packetBytes)"
+par Red.hD.ipv4.lp typename "\"inet.common.MessageDispatcher\""
+par Red.hD.ipv4.lp displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hD.ipv4 typename "\"inet.networklayer.ipv4.Ipv4NetworkLayer\""
+par Red.hD.ipv4 forwarding false
+par Red.hD.ipv4 multicastForwarding false
+par Red.hD.ipv4 interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.ipv4 displayStringTextFormat "\"%i\""
+par Red.hD.nl typename "\"inet.common.MessageDispatcher\""
+par Red.hD.nl displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hD.rdma typename "\"inet.transportlayer.rdma.Rdma\""
+par Red.hD.rdma interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.rdma crcMode "\"declared\""
+attr enum disabled,declared,computed
+scalar Red.hD.rdma packetReceived:count 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hD.rdma packetReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+scalar Red.hD.rdma packetSent:count 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hD.rdma packetSent:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+scalar Red.hD.rdma passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, count"
+scalar Red.hD.rdma droppedPkWrongPort:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNoPortFound(packetDropped)
+attr title "packets dropped (wrong port), count"
+scalar Red.hD.rdma droppedPkBadChecksum:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packets dropped (checksum error), count"
+par Red.hD.tn typename "\"inet.common.MessageDispatcher\""
+par Red.hD.tn displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hD.app[0] typename "\"inet.applications.rdmaapp.RdmaBasicApp\""
+par Red.hD.app[0] interfaceTableModule "\"Red.hD.interfaceTable\""
+par Red.hD.app[0] clockModule "\"\""
+par Red.hD.app[0] localPort 1000
+par Red.hD.app[0] destAddresses "\"\""
+par Red.hD.app[0] localAddress "\"\""
+par Red.hD.app[0] packetName "\"RdmaBasicAppData\""
+par Red.hD.app[0] destPort 1000
+par Red.hD.app[0] messageLength 1000B
+attr unit B
+par Red.hD.app[0] startTime 0.00106885s
+attr unit s
+par Red.hD.app[0] stopTime -1s
+attr unit s
+par Red.hD.app[0] sendInterval "0.001s+uniform(-0.0001s, 0.0001s)"
+attr unit s
+par Red.hD.app[0] dontFragment false
+par Red.hD.app[0] stopOperationExtraTime -1s
+attr unit s
+par Red.hD.app[0] stopOperationTimeout 2s
+attr unit s
+scalar Red.hD.app[0] "packets sent" 0
+scalar Red.hD.app[0] "packets received" 1998
+scalar Red.hD.app[0] latency 0.009666324
+scalar Red.hD.app[0] meanLatency 4.838e-06
+scalar Red.hD.app[0] latency:count 0
+attr interpolationmode none
+attr source latency
+attr title "latency, count"
+attr unit s
+scalar Red.hD.app[0] packetReceived:count 1998
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, count"
+scalar Red.hD.app[0] packetReceived:sum(packetBytes) 2053944
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+statistic Red.hD.app[0] rcvdPkLifetime:stats
+field count 1998
+field mean 1.2454267067067e-05
+field stddev 4.0528876987364e-07
+field min 1.24452e-05
+field max 3.05612e-05
+field sum 0.0248836256
+field sqrsum 3.1023534401631e-07
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, stats"
+attr unit s
+scalar Red.hD.app[0] packetSent:count 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Red.hD.app[0] packetSent:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
+par Red.hD.at typename "\"inet.common.MessageDispatcher\""
+par Red.hD.at displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.hD typename "\"inet.node.rdma.RdmaHost\""
+par Red.hD hasStatus false
+par Red.hD osgModel "\"\""
+par Red.hD osgModelColor "\"\""
+par Red.hD canvasImage "\"\""
+par Red.hD canvasImageColor "\"\""
+par Red.hD recordPcap false
+par Red.hD numPcapRecorders 0
+par Red.hD numLoInterfaces 1
+par Red.hD numWlanInterfaces 0
+par Red.hD numEthInterfaces 0
+par Red.hD numPppInterfaces 0
+par Red.hD numTunInterfaces 0
+par Red.hD numVirtInterfaces 0
+par Red.hD hasIpv4 true
+par Red.hD hasIpv6 false
+par Red.hD hasGn false
+par Red.hD forwarding false
+par Red.hD multicastForwarding false
+par Red.hD hasRdma true
+par Red.hD numApps 1
+par Red.switch1.eth[0].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch1.ethg$i[0].channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[1].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch1.ethg$i[1].channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[2].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch1.ethg$i[2].channel typename "\"ned.IdealChannel\""
+par Red.switch1.interfaceTable typename "\"inet.networklayer.common.InterfaceTable\""
+par Red.switch1.interfaceTable displayAddresses false
+par Red.switch1.macTable typename "\"inet.linklayer.ethernet.common.MacAddressTable\""
+par Red.switch1.macTable agingTime 120s
+attr unit s
+par Red.switch1.macTable addressTableFile "\"\""
+par Red.switch1.macTable interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.macTable displayStringTextFormat "\"addr: %a\\nvlan: %v\""
+par Red.switch1.relayUnit typename "\"inet.linklayer.ieee8021d.relay.Ieee8021dRelay\""
+par Red.switch1.relayUnit macTableModule "\"Red.switch1.macTable\""
+par Red.switch1.relayUnit interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.relayUnit displayStringTextFormat "\"proc: %p\\ndisc: %d\""
+par Red.switch1.relayUnit hasStp false
+scalar Red.switch1.relayUnit "processed frames" 0
+scalar Red.switch1.relayUnit "discarded frames" 0
+scalar Red.switch1.relayUnit "number of received BPDUs from STP module" 0
+scalar Red.switch1.relayUnit "number of received frames from network (including BPDUs)" 2000
+scalar Red.switch1.relayUnit "number of dropped frames (including BPDUs)" 0
+scalar Red.switch1.relayUnit "number of delivered BPDUs to the STP module" 0
+scalar Red.switch1.relayUnit "number of dispatched BPDU frames to the network" 0
+scalar Red.switch1.relayUnit "number of dispatched non-BDPU frames to the network" 0
+scalar Red.switch1.relayUnit packetDropped:count 0
+attr interpolationmode none
+attr title "packets dropped, count"
+scalar Red.switch1.relayUnit packetDropped:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets dropped, sum(packetBytes)"
+par Red.switch1.nr typename "\"inet.common.MessageDispatcher\""
+par Red.switch1.nr displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch1.li typename "\"inet.common.MessageDispatcher\""
+par Red.switch1.li displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch1.eth[0].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[0].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[0].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.switch1.eth[0].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.switch1.eth[0].mac.queue packetCapacity 10000
+par Red.switch1.eth[0].mac.queue dataCapacity -1b
+attr unit b
+par Red.switch1.eth[0].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.switch1.eth[0].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.switch1.eth[0].mac.queue bufferModule "\"\""
+scalar Red.switch1.eth[0].mac.queue packetPulled:count 1
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.switch1.eth[0].mac.queue packetPulled:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.switch1.eth[0].mac.queue queueingTime:histogram
+field count 1
+field mean 0
+field stddev -nan
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.switch1.eth[0].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.switch1.eth[0].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.switch1.eth[0].mac.queue packetPushed:count 1
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.switch1.eth[0].mac.queue packetPushed:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.switch1.eth[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.switch1.eth[0].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.switch1.eth[0].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.switch1.eth[0].mac interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.eth[0].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.switch1.eth[0].mac sendRawBytes false
+par Red.switch1.eth[0].mac promiscuous true
+par Red.switch1.eth[0].mac duplexMode true
+par Red.switch1.eth[0].mac mtu 1500B
+attr unit B
+par Red.switch1.eth[0].mac stopOperationExtraTime -1s
+attr unit s
+par Red.switch1.eth[0].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.switch1.eth[0].mac "simulated time" 2
+scalar Red.switch1.eth[0].mac full-duplex 1
+scalar Red.switch1.eth[0].mac "frames/sec sent" 0.5
+scalar Red.switch1.eth[0].mac "frames/sec rcvd" 999.5
+scalar Red.switch1.eth[0].mac "bits/sec sent" 256
+scalar Red.switch1.eth[0].mac "bits/sec rcvd" 8359888
+scalar Red.switch1.eth[0].mac "rx channel idle (%)" 99.97894036
+scalar Red.switch1.eth[0].mac "rx channel utilization (%)" 0.02105964
+scalar Red.switch1.eth[0].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.switch1.eth[0].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.switch1.eth[0].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.switch1.eth[0].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.switch1.eth[0].mac rxPkOk:count 1999
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.switch1.eth[0].mac rxPkOk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac txPk:count 1
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.switch1.eth[0].mac txPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac packetReceivedFromUpper:count 1
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.switch1.eth[0].mac packetReceivedFromUpper:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac passedUpPk:count 1999
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.switch1.eth[0].mac passedUpPk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.switch1.eth[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.switch1.eth[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.switch1.eth[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.switch1.eth[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.switch1.eth[0] typename "\"inet.linklayer.ethernet.EthernetInterface\""
+par Red.switch1.eth[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.switch1.eth[0] recordPcap false
+par Red.switch1.eth[0] numPcapRecorders 0
+par Red.switch1.eth[0] interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.eth[0] address "\"0A-AA-00-00-00-05\""
+par Red.switch1.eth[0] duplexMode true
+par Red.switch1.eth[0] csmacdSupport false
+par Red.switch1.eth[0] bitrate 0bps
+attr unit bps
+par Red.switch1.eth[0] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch1.eth[1].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[1].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[1].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.switch1.eth[1].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.switch1.eth[1].mac.queue packetCapacity 10000
+par Red.switch1.eth[1].mac.queue dataCapacity -1b
+attr unit b
+par Red.switch1.eth[1].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.switch1.eth[1].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.switch1.eth[1].mac.queue bufferModule "\"\""
+scalar Red.switch1.eth[1].mac.queue packetPulled:count 1
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.switch1.eth[1].mac.queue packetPulled:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.switch1.eth[1].mac.queue queueingTime:histogram
+field count 1
+field mean 0
+field stddev -nan
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.switch1.eth[1].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.switch1.eth[1].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.switch1.eth[1].mac.queue packetPushed:count 1
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.switch1.eth[1].mac.queue packetPushed:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.switch1.eth[1].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.switch1.eth[1].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.switch1.eth[1].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.switch1.eth[1].mac interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.eth[1].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.switch1.eth[1].mac sendRawBytes false
+par Red.switch1.eth[1].mac promiscuous true
+par Red.switch1.eth[1].mac duplexMode true
+par Red.switch1.eth[1].mac mtu 1500B
+attr unit B
+par Red.switch1.eth[1].mac stopOperationExtraTime -1s
+attr unit s
+par Red.switch1.eth[1].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.switch1.eth[1].mac "simulated time" 2
+scalar Red.switch1.eth[1].mac full-duplex 1
+scalar Red.switch1.eth[1].mac "frames/sec sent" 0.5
+scalar Red.switch1.eth[1].mac "frames/sec rcvd" 0
+scalar Red.switch1.eth[1].mac "bits/sec sent" 256
+scalar Red.switch1.eth[1].mac "bits/sec rcvd" 0
+scalar Red.switch1.eth[1].mac "rx channel idle (%)" 100
+scalar Red.switch1.eth[1].mac "rx channel utilization (%)" 0
+scalar Red.switch1.eth[1].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.switch1.eth[1].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.switch1.eth[1].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.switch1.eth[1].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.switch1.eth[1].mac rxPkOk:count 0
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.switch1.eth[1].mac rxPkOk:sum(packetBytes) 0
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac txPk:count 1
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.switch1.eth[1].mac txPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac packetReceivedFromUpper:count 1
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.switch1.eth[1].mac packetReceivedFromUpper:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.switch1.eth[1].mac passedUpPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.switch1.eth[1].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.switch1.eth[1].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.switch1.eth[1].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.switch1.eth[1].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.switch1.eth[1] typename "\"inet.linklayer.ethernet.EthernetInterface\""
+par Red.switch1.eth[1] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.switch1.eth[1] recordPcap false
+par Red.switch1.eth[1] numPcapRecorders 0
+par Red.switch1.eth[1] interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.eth[1] address "\"0A-AA-00-00-00-06\""
+par Red.switch1.eth[1] duplexMode true
+par Red.switch1.eth[1] csmacdSupport false
+par Red.switch1.eth[1] bitrate 0bps
+attr unit bps
+par Red.switch1.eth[1] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch1.eth[2].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[2].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.switch1.eth[2].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.switch1.eth[2].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.switch1.eth[2].mac.queue packetCapacity 10000
+par Red.switch1.eth[2].mac.queue dataCapacity -1b
+attr unit b
+par Red.switch1.eth[2].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.switch1.eth[2].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.switch1.eth[2].mac.queue bufferModule "\"\""
+scalar Red.switch1.eth[2].mac.queue packetPulled:count 1999
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.switch1.eth[2].mac.queue packetPulled:sum(packetBytes) 2089972
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.switch1.eth[2].mac.queue queueingTime:histogram
+field count 1999
+field mean 0
+field stddev 0
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1999
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.switch1.eth[2].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.switch1.eth[2].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.switch1.eth[2].mac.queue packetPushed:count 1999
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.switch1.eth[2].mac.queue packetPushed:sum(packetBytes) 2089972
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.switch1.eth[2].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.switch1.eth[2].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.switch1.eth[2].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.switch1.eth[2].mac interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.eth[2].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.switch1.eth[2].mac sendRawBytes false
+par Red.switch1.eth[2].mac promiscuous true
+par Red.switch1.eth[2].mac duplexMode true
+par Red.switch1.eth[2].mac mtu 1500B
+attr unit B
+par Red.switch1.eth[2].mac stopOperationExtraTime -1s
+attr unit s
+par Red.switch1.eth[2].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.switch1.eth[2].mac "simulated time" 2
+scalar Red.switch1.eth[2].mac full-duplex 1
+scalar Red.switch1.eth[2].mac "frames/sec sent" 999.5
+scalar Red.switch1.eth[2].mac "frames/sec rcvd" 0.5
+scalar Red.switch1.eth[2].mac "bits/sec sent" 8359888
+scalar Red.switch1.eth[2].mac "bits/sec rcvd" 256
+scalar Red.switch1.eth[2].mac "rx channel idle (%)" 99.99999928
+scalar Red.switch1.eth[2].mac "rx channel utilization (%)" 7.2e-07
+scalar Red.switch1.eth[2].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.switch1.eth[2].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.switch1.eth[2].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.switch1.eth[2].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.switch1.eth[2].mac rxPkOk:count 1
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.switch1.eth[2].mac rxPkOk:sum(packetBytes) 64
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac txPk:count 1999
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.switch1.eth[2].mac txPk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac packetReceivedFromUpper:count 1999
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.switch1.eth[2].mac packetReceivedFromUpper:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac passedUpPk:count 1
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.switch1.eth[2].mac passedUpPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.switch1.eth[2].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.switch1.eth[2].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.switch1.eth[2].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.switch1.eth[2].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.switch1.eth[2] typename "\"inet.linklayer.ethernet.EthernetInterface\""
+par Red.switch1.eth[2] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.switch1.eth[2] recordPcap false
+par Red.switch1.eth[2] numPcapRecorders 0
+par Red.switch1.eth[2] interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.eth[2] address "\"0A-AA-00-00-00-07\""
+par Red.switch1.eth[2] duplexMode true
+par Red.switch1.eth[2] csmacdSupport false
+par Red.switch1.eth[2] bitrate 0bps
+attr unit bps
+par Red.switch1.eth[2] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch1.encap typename "\"inet.linklayer.ethernet.basic.EthernetEncapsulation\""
+par Red.switch1.encap interfaceTableModule "\"Red.switch1.interfaceTable\""
+par Red.switch1.encap useSNAP false
+par Red.switch1.encap fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch1.encap registerProtocol true
+par Red.switch1.encap stopOperationExtraTime -1s
+attr unit s
+par Red.switch1.encap stopOperationTimeout 2s
+attr unit s
+scalar Red.switch1.encap pauseSent:count 0
+attr title "pause sent, count"
+scalar Red.switch1.encap pauseSent:sum 0
+attr title "pause sent, sum"
+scalar Red.switch1.encap decapPk:count 0
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, count"
+scalar Red.switch1.encap decapPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, sum(packetBytes)"
+scalar Red.switch1.encap encapPk:count 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, count"
+scalar Red.switch1.encap encapPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, sum(packetBytes)"
+par Red.switch1.rl typename "\"inet.common.MessageDispatcher\""
+par Red.switch1.rl displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch1.ieee8021q.qTagHeaderInserter.out.channel typename "\"ned.IdealChannel\""
+par Red.switch1.ieee8021q.lowerLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.switch1.ieee8021q.qTagHeaderInserter typename "\"inet.linklayer.ieee8021q.Ieee8021qTagEpdHeaderInserter\""
+par Red.switch1.ieee8021q.qTagHeaderInserter displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch1.ieee8021q.qTagHeaderInserter vlanTagType "\"c\""
+attr enum c,s
+par Red.switch1.ieee8021q.qTagHeaderInserter nextProtocol "\"ethernetmac\""
+par Red.switch1.ieee8021q.qTagHeaderInserter defaultVlanId -1
+par Red.switch1.ieee8021q.qTagHeaderInserter defaultUserPriority -1
+scalar Red.switch1.ieee8021q.qTagHeaderInserter packetPulled:count 0
+attr interpolationmode none
+attr title "packets pulled, count"
+scalar Red.switch1.ieee8021q.qTagHeaderInserter packetPulled:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pulled, sum(packetBytes)"
+scalar Red.switch1.ieee8021q.qTagHeaderInserter packetPushed:count 0
+attr interpolationmode none
+attr title "packets pushed, count"
+scalar Red.switch1.ieee8021q.qTagHeaderInserter packetPushed:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pushed, sum(packetBytes)"
+par Red.switch1.ieee8021q.qTagHeaderChecker typename "\"inet.linklayer.ieee8021q.Ieee8021qTagEpdHeaderChecker\""
+par Red.switch1.ieee8021q.qTagHeaderChecker displayStringTextFormat "\"dropped %d/%p pk (%k/%l)\""
+par Red.switch1.ieee8021q.qTagHeaderChecker vlanTagType "\"c\""
+attr enum c,s
+par Red.switch1.ieee8021q.qTagHeaderChecker vlanIdFilter "\"\""
+scalar Red.switch1.ieee8021q.qTagHeaderChecker packetPulled:count 0
+attr interpolationmode none
+attr title "packets pulled, count"
+scalar Red.switch1.ieee8021q.qTagHeaderChecker packetPulled:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pulled, sum(packetBytes)"
+scalar Red.switch1.ieee8021q.qTagHeaderChecker packetPushed:count 0
+attr interpolationmode none
+attr title "packets pushed, count"
+scalar Red.switch1.ieee8021q.qTagHeaderChecker packetPushed:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pushed, sum(packetBytes)"
+scalar Red.switch1.ieee8021q.qTagHeaderChecker packetDropped:count 0
+attr interpolationmode none
+attr title "packets dropped, count"
+scalar Red.switch1.ieee8021q.qTagHeaderChecker packetDropped:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets dropped, sum(packetBytes)"
+par Red.switch1.ieee8021q typename "\"inet.linklayer.ieee8021q.Ieee8021qLayer\""
+par Red.switch1.ieee8021q vlanTagType "\"c\""
+par Red.switch1.ieee8021q hasSocketSupport false
+par Red.switch1 typename "\"inet.node.ethernet.EthernetSwitch\""
+par Red.switch1 numPcapRecorders 0
+par Red.switch1 hasStatus false
+par Red.switch1 hasStp false
+par Red.switch1 enableCutthrough false
+par Red.switch1 fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch1 spanningTreeProtocol "\"Stp\""
+par Red.switch1 numEthInterfaces 0
+par Red.switch2.eth[0].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch2.ethg$i[0].channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[1].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch2.ethg$i[1].channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[2].phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch2.ethg$i[2].channel typename "\"ned.IdealChannel\""
+par Red.switch2.interfaceTable typename "\"inet.networklayer.common.InterfaceTable\""
+par Red.switch2.interfaceTable displayAddresses false
+par Red.switch2.macTable typename "\"inet.linklayer.ethernet.common.MacAddressTable\""
+par Red.switch2.macTable agingTime 120s
+attr unit s
+par Red.switch2.macTable addressTableFile "\"\""
+par Red.switch2.macTable interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.macTable displayStringTextFormat "\"addr: %a\\nvlan: %v\""
+par Red.switch2.relayUnit typename "\"inet.linklayer.ieee8021d.relay.Ieee8021dRelay\""
+par Red.switch2.relayUnit macTableModule "\"Red.switch2.macTable\""
+par Red.switch2.relayUnit interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.relayUnit displayStringTextFormat "\"proc: %p\\ndisc: %d\""
+par Red.switch2.relayUnit hasStp false
+scalar Red.switch2.relayUnit "processed frames" 0
+scalar Red.switch2.relayUnit "discarded frames" 0
+scalar Red.switch2.relayUnit "number of received BPDUs from STP module" 0
+scalar Red.switch2.relayUnit "number of received frames from network (including BPDUs)" 2000
+scalar Red.switch2.relayUnit "number of dropped frames (including BPDUs)" 0
+scalar Red.switch2.relayUnit "number of delivered BPDUs to the STP module" 0
+scalar Red.switch2.relayUnit "number of dispatched BPDU frames to the network" 0
+scalar Red.switch2.relayUnit "number of dispatched non-BDPU frames to the network" 0
+scalar Red.switch2.relayUnit packetDropped:count 0
+attr interpolationmode none
+attr title "packets dropped, count"
+scalar Red.switch2.relayUnit packetDropped:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets dropped, sum(packetBytes)"
+par Red.switch2.nr typename "\"inet.common.MessageDispatcher\""
+par Red.switch2.nr displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch2.li typename "\"inet.common.MessageDispatcher\""
+par Red.switch2.li displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch2.eth[0].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[0].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[0].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.switch2.eth[0].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.switch2.eth[0].mac.queue packetCapacity 10000
+par Red.switch2.eth[0].mac.queue dataCapacity -1b
+attr unit b
+par Red.switch2.eth[0].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.switch2.eth[0].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.switch2.eth[0].mac.queue bufferModule "\"\""
+scalar Red.switch2.eth[0].mac.queue packetPulled:count 1
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.switch2.eth[0].mac.queue packetPulled:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.switch2.eth[0].mac.queue queueingTime:histogram
+field count 1
+field mean 0
+field stddev -nan
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.switch2.eth[0].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.switch2.eth[0].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.switch2.eth[0].mac.queue packetPushed:count 1
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.switch2.eth[0].mac.queue packetPushed:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.switch2.eth[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.switch2.eth[0].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.switch2.eth[0].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.switch2.eth[0].mac interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.eth[0].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.switch2.eth[0].mac sendRawBytes false
+par Red.switch2.eth[0].mac promiscuous true
+par Red.switch2.eth[0].mac duplexMode true
+par Red.switch2.eth[0].mac mtu 1500B
+attr unit B
+par Red.switch2.eth[0].mac stopOperationExtraTime -1s
+attr unit s
+par Red.switch2.eth[0].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.switch2.eth[0].mac "simulated time" 2
+scalar Red.switch2.eth[0].mac full-duplex 1
+scalar Red.switch2.eth[0].mac "frames/sec sent" 0.5
+scalar Red.switch2.eth[0].mac "frames/sec rcvd" 0
+scalar Red.switch2.eth[0].mac "bits/sec sent" 256
+scalar Red.switch2.eth[0].mac "bits/sec rcvd" 0
+scalar Red.switch2.eth[0].mac "rx channel idle (%)" 100
+scalar Red.switch2.eth[0].mac "rx channel utilization (%)" 0
+scalar Red.switch2.eth[0].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.switch2.eth[0].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.switch2.eth[0].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.switch2.eth[0].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.switch2.eth[0].mac rxPkOk:count 0
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.switch2.eth[0].mac rxPkOk:sum(packetBytes) 0
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac txPk:count 1
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.switch2.eth[0].mac txPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac packetReceivedFromUpper:count 1
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.switch2.eth[0].mac packetReceivedFromUpper:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac passedUpPk:count 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.switch2.eth[0].mac passedUpPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.switch2.eth[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.switch2.eth[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.switch2.eth[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.switch2.eth[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.switch2.eth[0] typename "\"inet.linklayer.ethernet.EthernetInterface\""
+par Red.switch2.eth[0] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.switch2.eth[0] recordPcap false
+par Red.switch2.eth[0] numPcapRecorders 0
+par Red.switch2.eth[0] interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.eth[0] address "\"0A-AA-00-00-00-08\""
+par Red.switch2.eth[0] duplexMode true
+par Red.switch2.eth[0] csmacdSupport false
+par Red.switch2.eth[0] bitrate 0bps
+attr unit bps
+par Red.switch2.eth[0] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch2.eth[1].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[1].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[1].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.switch2.eth[1].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.switch2.eth[1].mac.queue packetCapacity 10000
+par Red.switch2.eth[1].mac.queue dataCapacity -1b
+attr unit b
+par Red.switch2.eth[1].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.switch2.eth[1].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.switch2.eth[1].mac.queue bufferModule "\"\""
+scalar Red.switch2.eth[1].mac.queue packetPulled:count 1999
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.switch2.eth[1].mac.queue packetPulled:sum(packetBytes) 2089972
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.switch2.eth[1].mac.queue queueingTime:histogram
+field count 1999
+field mean 0
+field stddev 0
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1999
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.switch2.eth[1].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.switch2.eth[1].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.switch2.eth[1].mac.queue packetPushed:count 1999
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.switch2.eth[1].mac.queue packetPushed:sum(packetBytes) 2089972
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.switch2.eth[1].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.switch2.eth[1].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.switch2.eth[1].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.switch2.eth[1].mac interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.eth[1].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.switch2.eth[1].mac sendRawBytes false
+par Red.switch2.eth[1].mac promiscuous true
+par Red.switch2.eth[1].mac duplexMode true
+par Red.switch2.eth[1].mac mtu 1500B
+attr unit B
+par Red.switch2.eth[1].mac stopOperationExtraTime -1s
+attr unit s
+par Red.switch2.eth[1].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.switch2.eth[1].mac "simulated time" 2
+scalar Red.switch2.eth[1].mac full-duplex 1
+scalar Red.switch2.eth[1].mac "frames/sec sent" 999.5
+scalar Red.switch2.eth[1].mac "frames/sec rcvd" 0.5
+scalar Red.switch2.eth[1].mac "bits/sec sent" 8359888
+scalar Red.switch2.eth[1].mac "bits/sec rcvd" 256
+scalar Red.switch2.eth[1].mac "rx channel idle (%)" 99.99999928
+scalar Red.switch2.eth[1].mac "rx channel utilization (%)" 7.2e-07
+scalar Red.switch2.eth[1].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.switch2.eth[1].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.switch2.eth[1].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.switch2.eth[1].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.switch2.eth[1].mac rxPkOk:count 1
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.switch2.eth[1].mac rxPkOk:sum(packetBytes) 64
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac txPk:count 1999
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.switch2.eth[1].mac txPk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac packetReceivedFromUpper:count 1999
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.switch2.eth[1].mac packetReceivedFromUpper:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac passedUpPk:count 1
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.switch2.eth[1].mac passedUpPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.switch2.eth[1].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.switch2.eth[1].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.switch2.eth[1].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.switch2.eth[1].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.switch2.eth[1] typename "\"inet.linklayer.ethernet.EthernetInterface\""
+par Red.switch2.eth[1] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.switch2.eth[1] recordPcap false
+par Red.switch2.eth[1] numPcapRecorders 0
+par Red.switch2.eth[1] interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.eth[1] address "\"0A-AA-00-00-00-09\""
+par Red.switch2.eth[1] duplexMode true
+par Red.switch2.eth[1] csmacdSupport false
+par Red.switch2.eth[1] bitrate 0bps
+attr unit bps
+par Red.switch2.eth[1] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch2.eth[2].mac.phys$o.channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[2].phys$i.channel typename "\"ned.IdealChannel\""
+par Red.switch2.eth[2].mac.queue typename "\"inet.linklayer.ethernet.common.EthernetQueue\""
+par Red.switch2.eth[2].mac.queue displayStringTextFormat "\"contains %p pk (%l) pushed %u\\npulled %o removed %r dropped %d\""
+par Red.switch2.eth[2].mac.queue packetCapacity 10000
+par Red.switch2.eth[2].mac.queue dataCapacity -1b
+attr unit b
+par Red.switch2.eth[2].mac.queue dropperClass "\"inet::queueing::PacketAtCollectionEndDropper\""
+par Red.switch2.eth[2].mac.queue comparatorClass "\"inet::EthernetFrameTypeComparator\""
+par Red.switch2.eth[2].mac.queue bufferModule "\"\""
+scalar Red.switch2.eth[2].mac.queue packetPulled:count 1
+attr interpolationmode none
+attr title "packet pulled, count"
+scalar Red.switch2.eth[2].mac.queue packetPulled:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pulled, sum(packetBytes)"
+statistic Red.switch2.eth[2].mac.queue queueingTime:histogram
+field count 1
+field mean 0
+field stddev -nan
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar Red.switch2.eth[2].mac.queue queueLength:max 1
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, max"
+attr type int
+scalar Red.switch2.eth[2].mac.queue queueLength:timeavg 0
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, timeavg"
+attr type int
+scalar Red.switch2.eth[2].mac.queue packetPushed:count 1
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar Red.switch2.eth[2].mac.queue packetPushed:sum(packetBytes) 64
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac.queue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar Red.switch2.eth[2].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac.queue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar Red.switch2.eth[2].mac.queue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+par Red.switch2.eth[2].mac typename "\"inet.linklayer.ethernet.basic.EthernetMac\""
+par Red.switch2.eth[2].mac interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.eth[2].mac displayStringTextFormat "\"rate: %b\\nsent: %s, rcvd: %r\\nqueue: %q, drop: %d\""
+par Red.switch2.eth[2].mac sendRawBytes false
+par Red.switch2.eth[2].mac promiscuous true
+par Red.switch2.eth[2].mac duplexMode true
+par Red.switch2.eth[2].mac mtu 1500B
+attr unit B
+par Red.switch2.eth[2].mac stopOperationExtraTime -1s
+attr unit s
+par Red.switch2.eth[2].mac stopOperationTimeout 2s
+attr unit s
+scalar Red.switch2.eth[2].mac "simulated time" 2
+scalar Red.switch2.eth[2].mac full-duplex 1
+scalar Red.switch2.eth[2].mac "frames/sec sent" 0.5
+scalar Red.switch2.eth[2].mac "frames/sec rcvd" 999.5
+scalar Red.switch2.eth[2].mac "bits/sec sent" 256
+scalar Red.switch2.eth[2].mac "bits/sec rcvd" 8359888
+scalar Red.switch2.eth[2].mac "rx channel idle (%)" 99.97894036
+scalar Red.switch2.eth[2].mac "rx channel utilization (%)" 0.02105964
+scalar Red.switch2.eth[2].mac rxPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units received, count"
+scalar Red.switch2.eth[2].mac rxPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units received, sum"
+scalar Red.switch2.eth[2].mac txPausePkUnits:count 0
+attr interpolationmode none
+attr title "pause units sent, count"
+scalar Red.switch2.eth[2].mac txPausePkUnits:sum 0
+attr interpolationmode none
+attr title "pause units sent, sum"
+scalar Red.switch2.eth[2].mac rxPkOk:count 1999
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, count"
+scalar Red.switch2.eth[2].mac rxPkOk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac txPk:count 1
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, count"
+scalar Red.switch2.eth[2].mac txPk:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac packetReceivedFromUpper:count 1
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, count"
+scalar Red.switch2.eth[2].mac packetReceivedFromUpper:sum(packetBytes) 64
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac passedUpPk:count 1999
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Red.switch2.eth[2].mac passedUpPk:sum(packetBytes) 2089972
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, count"
+scalar Red.switch2.eth[2].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Red.switch2.eth[2].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
+scalar Red.switch2.eth[2].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, count"
+scalar Red.switch2.eth[2].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+par Red.switch2.eth[2] typename "\"inet.linklayer.ethernet.EthernetInterface\""
+par Red.switch2.eth[2] displayStringTextFormat "\"%a (%i)\\n%m\""
+par Red.switch2.eth[2] recordPcap false
+par Red.switch2.eth[2] numPcapRecorders 0
+par Red.switch2.eth[2] interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.eth[2] address "\"0A-AA-00-00-00-0A\""
+par Red.switch2.eth[2] duplexMode true
+par Red.switch2.eth[2] csmacdSupport false
+par Red.switch2.eth[2] bitrate 0bps
+attr unit bps
+par Red.switch2.eth[2] fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch2.encap typename "\"inet.linklayer.ethernet.basic.EthernetEncapsulation\""
+par Red.switch2.encap interfaceTableModule "\"Red.switch2.interfaceTable\""
+par Red.switch2.encap useSNAP false
+par Red.switch2.encap fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch2.encap registerProtocol true
+par Red.switch2.encap stopOperationExtraTime -1s
+attr unit s
+par Red.switch2.encap stopOperationTimeout 2s
+attr unit s
+scalar Red.switch2.encap pauseSent:count 0
+attr title "pause sent, count"
+scalar Red.switch2.encap pauseSent:sum 0
+attr title "pause sent, sum"
+scalar Red.switch2.encap decapPk:count 0
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, count"
+scalar Red.switch2.encap decapPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, sum(packetBytes)"
+scalar Red.switch2.encap encapPk:count 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, count"
+scalar Red.switch2.encap encapPk:sum(packetBytes) 0
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, sum(packetBytes)"
+par Red.switch2.rl typename "\"inet.common.MessageDispatcher\""
+par Red.switch2.rl displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch2.ieee8021q.qTagHeaderInserter.out.channel typename "\"ned.IdealChannel\""
+par Red.switch2.ieee8021q.lowerLayerIn.channel typename "\"ned.IdealChannel\""
+par Red.switch2.ieee8021q.qTagHeaderInserter typename "\"inet.linklayer.ieee8021q.Ieee8021qTagEpdHeaderInserter\""
+par Red.switch2.ieee8021q.qTagHeaderInserter displayStringTextFormat "\"processed %p pk (%l)\""
+par Red.switch2.ieee8021q.qTagHeaderInserter vlanTagType "\"c\""
+attr enum c,s
+par Red.switch2.ieee8021q.qTagHeaderInserter nextProtocol "\"ethernetmac\""
+par Red.switch2.ieee8021q.qTagHeaderInserter defaultVlanId -1
+par Red.switch2.ieee8021q.qTagHeaderInserter defaultUserPriority -1
+scalar Red.switch2.ieee8021q.qTagHeaderInserter packetPulled:count 0
+attr interpolationmode none
+attr title "packets pulled, count"
+scalar Red.switch2.ieee8021q.qTagHeaderInserter packetPulled:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pulled, sum(packetBytes)"
+scalar Red.switch2.ieee8021q.qTagHeaderInserter packetPushed:count 0
+attr interpolationmode none
+attr title "packets pushed, count"
+scalar Red.switch2.ieee8021q.qTagHeaderInserter packetPushed:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pushed, sum(packetBytes)"
+par Red.switch2.ieee8021q.qTagHeaderChecker typename "\"inet.linklayer.ieee8021q.Ieee8021qTagEpdHeaderChecker\""
+par Red.switch2.ieee8021q.qTagHeaderChecker displayStringTextFormat "\"dropped %d/%p pk (%k/%l)\""
+par Red.switch2.ieee8021q.qTagHeaderChecker vlanTagType "\"c\""
+attr enum c,s
+par Red.switch2.ieee8021q.qTagHeaderChecker vlanIdFilter "\"\""
+scalar Red.switch2.ieee8021q.qTagHeaderChecker packetPulled:count 0
+attr interpolationmode none
+attr title "packets pulled, count"
+scalar Red.switch2.ieee8021q.qTagHeaderChecker packetPulled:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pulled, sum(packetBytes)"
+scalar Red.switch2.ieee8021q.qTagHeaderChecker packetPushed:count 0
+attr interpolationmode none
+attr title "packets pushed, count"
+scalar Red.switch2.ieee8021q.qTagHeaderChecker packetPushed:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets pushed, sum(packetBytes)"
+scalar Red.switch2.ieee8021q.qTagHeaderChecker packetDropped:count 0
+attr interpolationmode none
+attr title "packets dropped, count"
+scalar Red.switch2.ieee8021q.qTagHeaderChecker packetDropped:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets dropped, sum(packetBytes)"
+par Red.switch2.ieee8021q typename "\"inet.linklayer.ieee8021q.Ieee8021qLayer\""
+par Red.switch2.ieee8021q vlanTagType "\"c\""
+par Red.switch2.ieee8021q hasSocketSupport false
+par Red.switch2 typename "\"inet.node.ethernet.EthernetSwitch\""
+par Red.switch2 numPcapRecorders 0
+par Red.switch2 hasStatus false
+par Red.switch2 hasStp false
+par Red.switch2 enableCutthrough false
+par Red.switch2 fcsMode "\"declared\""
+attr enum declared,computed
+par Red.switch2 spanningTreeProtocol "\"Stp\""
+par Red.switch2 numEthInterfaces 0
+par Red.configurator typename "\"inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator\""
+par Red.configurator minLinkWeight 0.001
+par Red.configurator configureIsolatedNetworksSeparatly false
+par Red.configurator config "<config>...</config> at content:1"
+par Red.configurator assignAddresses true
+par Red.configurator assignUniqueAddresses true
+par Red.configurator assignDisjunctSubnetAddresses true
+par Red.configurator addStaticRoutes true
+par Red.configurator addDefaultRoutes true
+par Red.configurator addSubnetRoutes true
+par Red.configurator addDirectRoutes true
+par Red.configurator optimizeRoutes true
+par Red.configurator dumpTopology false
+par Red.configurator dumpLinks false
+par Red.configurator dumpAddresses false
+par Red.configurator dumpRoutes false
+par Red.configurator dumpConfig "\"\""
+par Red typename "\"pruebainicialrdma.simulations.Red\""
+
