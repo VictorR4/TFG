@@ -23,8 +23,9 @@ host_nivel = host_switch*num_switches_externos*2
 print('types:')
 print('        channel cable extends DatarateChannel')
 print('        {')
+print('		   double retardoRed @unit(us);')
 print('            datarate = 40Gbps;')
-print('            delay = 1us;')
+print('            delay = retardoRed;')
 print('        }')
 
 print('submodules:')
