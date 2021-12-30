@@ -30,8 +30,9 @@ network Red
     types:
         channel cable extends DatarateChannel
         {
+            double retardoRed @unit(us);
             datarate = 40Gbps;
-            delay = 1us;
+            delay = retardoRed;
         }
     submodules:
         hA: StandardHost {
