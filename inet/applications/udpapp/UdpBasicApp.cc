@@ -238,7 +238,8 @@ void UdpBasicApp::refreshDisplay() const
 void UdpBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
-    latency = pk->getTag<CreationTimeTag>()->getCreationTime();
+    latency += simTime() - pk->getTag<CreationTimeTag>()->getCreationTime();
+
     EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
     delete pk;
     numReceived++;

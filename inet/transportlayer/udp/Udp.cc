@@ -726,10 +726,10 @@ void Udp::handleUpperPacket(Packet *packet)
     srcAddr = addressReq->getSrcAddress();
     destAddr = addressReq->getDestAddress();
     auto time = packet->removeTagIfPresent<CreationTimeTag>();
-    clocktime_t generationTime = time->getCreationTime();
-    clocktime_t actualLatency = simTime() - generationTime;
+    clocktime_t generationTime = time->getCreationTime(); //Time when app sent the packet
+    clocktime_t actualLatency = simTime() - generationTime; //Latency since the packet has been sent by app
     packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
-    latencySending += actualLatency;
+    latencySending += actualLatency;// Latency acumulate in this layer
 
 
     if (srcAddr.isUnspecified())
@@ -794,7 +794,7 @@ void Udp::handleUpperPacket(Packet *packet)
     udpHeader->setSourcePort(srcPort);
     udpHeader->setDestinationPort(destPort);
 
-    // set generation time of the packet
+    //Generation time of the packet (Time when app sent the packet)
     udpHeader->setGenerationTime(generationTime);
 
     B totalLength = udpHeader->getChunkLength() + packet->getTotalLength();
@@ -951,7 +951,11 @@ void Udp::processUDPPacket(Packet *udpPacket)
     auto totalLength = B(udpHeader->getTotalLengthField());
     auto hasIncorrectLength = totalLength<udpHeader->getChunkLength() || totalLength> udpHeader->getChunkLength() + udpPacket->getDataLength();
     auto networkProtocol = udpPacket->getTag<NetworkProtocolInd>()->getProtocol();
-    latency += (simTime() - udpHeader->getGenerationTime());
+    if(undeliverablePacket == false){
+        latency = (simTime() - udpHeader->getGenerationTime());
+        undeliverablePacket = true;
+    }
+
     if (hasIncorrectLength || !verifyCrc(networkProtocol, udpHeader, udpPacket)) {
         EV_WARN << "Packet has bit error, discarding\n";
         PacketDropDetails details;
@@ -1014,7 +1018,15 @@ void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, us
     payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
     payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
 
-    payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(latency/*header->getGenerationTime()*/);
+    //The first packet sent will not reach the app layer so, the latency is the latency here
+    //The second packet sent will reach the app layer and it's necessary send the latency of the previous packet
+    //and add it to the new latency got in the app layer
+    if(numPassedUp == 0){
+        payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(header->getGenerationTime() - latency);
+    }else{
+        payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(header->getGenerationTime());
+    }
+
     emit(packetSentToUpperSignal, payload);
     send(payload, "appOut");
     numPassedUp++;

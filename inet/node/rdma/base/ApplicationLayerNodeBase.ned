@@ -48,14 +48,10 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
     connections allowunconnected:
         for i=0..numApps-1 {
             app[i].socketOut --> cable --> at.in++;
-            //app[i].socketOut --> rdma.appIn if hasRdma;
-            //app[i].socketIn <-- li.out++ if hasRdma;
            	eth[0].appLayerOut --> cable --> app[i].socketIn;
         }
 		
-        
-
-
+		
         at.out++ --> cable --> rdma.appIn if hasRdma;
         
         at.out++ --> tn.in++;

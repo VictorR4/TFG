@@ -126,6 +126,8 @@ class INET_API Udp : public TransportProtocolBase
     Icmp *icmp = nullptr;
     Icmpv6 *icmpv6 = nullptr;
 
+    //Necessary
+    bool undeliverablePacket = false;
     // statistics
     int numSent = 0;
     int numPassedUp = 0;
