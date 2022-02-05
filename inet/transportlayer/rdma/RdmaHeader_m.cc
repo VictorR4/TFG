@@ -339,6 +339,27 @@ void RdmaHeader::setGenerationTime(clocktime_t generationTime)
     this->generationTime = generationTime;
 }
 
+bool RdmaHeader::getMoreFragments() const
+{
+    return this->moreFragments;
+}
+
+void RdmaHeader::setMoreFragments(bool moreFragments)
+{
+    handleChange();
+    this->moreFragments = moreFragments;
+}
+
+uint16_t RdmaHeader::getFragmentOffset() const
+{
+    return this->fragmentOffset;
+}
+
+void RdmaHeader::setFragmentOffset(uint16_t fragmentOffset)
+{
+    handleChange();
+    this->fragmentOffset = fragmentOffset;
+}
 class RdmaHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:

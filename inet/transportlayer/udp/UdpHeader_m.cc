@@ -329,6 +329,29 @@ void UdpHeader::setGenerationTime(clocktime_t generationTime)
     handleChange();
     this->generationTime = generationTime;
 }
+
+bool UdpHeader::getMoreFragments() const
+{
+    return this->moreFragments;
+}
+
+void UdpHeader::setMoreFragments(bool moreFragments)
+{
+    handleChange();
+    this->moreFragments = moreFragments;
+}
+
+uint16_t UdpHeader::getFragmentOffset() const
+{
+    return this->fragmentOffset;
+}
+
+void UdpHeader::setFragmentOffset(uint16_t fragmentOffset)
+{
+    handleChange();
+    this->fragmentOffset = fragmentOffset;
+}
+
 class UdpHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:

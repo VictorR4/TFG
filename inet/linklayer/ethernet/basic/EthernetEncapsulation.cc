@@ -197,7 +197,8 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
         clocktime_t generationTime = simTime();// - time->getCreationTime();
         // set generation time of the packet
         ethHeader->setGenerationTime(generationTime);
-    }else if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
+    }else if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::ipv4){
+        ethHeader->setIsRdma(0);
         clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
         packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
         latencySending += actualLatency;

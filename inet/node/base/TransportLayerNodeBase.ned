@@ -22,6 +22,7 @@ import inet.transportlayer.contract.ISctp;
 import inet.transportlayer.contract.ITcp;
 import inet.transportlayer.contract.IUdp;
 import ned.DatarateChannel;
+import inet.node.ethernet.Eth1G;
 
 
 module TransportLayerNodeBase extends NetworkLayerNodeBase
@@ -37,7 +38,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         channel cable extends DatarateChannel
         {
             double retardo @unit(us);
-            datarate = 40Gbps;
+            datarate = 1Gbps;
             delay = this.retardo;
         }
     submodules:
@@ -59,8 +60,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         }
 
     connections allowunconnected:
-        udp.ipOut --> cable --> tn.in++ if hasUdp;
-        udp.ipIn <-- cable { @display("ls=#EDD400,2"); } <-- tn.out++ if hasUdp;
+        udp.ipOut --> tn.in++ if hasUdp;//
+        udp.ipIn <-- tn.out++ if hasUdp;//
 
         tcp.ipOut --> tn.in++ if hasTcp;
         tcp.ipIn <-- tn.out++ if hasTcp;
@@ -68,8 +69,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         sctp.ipOut --> tn.in++ if hasSctp;
         tn.out++ --> sctp.ipIn if hasSctp;
 
-        tn.out++ --> cable { @display("ls=#3465A4,2"); } --> ipv4.transportIn if hasIpv4;
-        tn.in++ <-- cable <-- ipv4.transportOut if hasIpv4;
+        tn.out++  --> ipv4.transportIn if hasIpv4;//
+        tn.in++ <-- ipv4.transportOut if hasIpv4;//
 
         tn.out++ --> ipv6.transportIn if hasIpv6;
         tn.in++ <-- ipv6.transportOut if hasIpv6;
@@ -77,7 +78,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         tn.out++ --> generic.transportIn if hasGn;
         tn.in++ <-- generic.transportOut if hasGn;
 
-        tn.out++ --> nl.in++;
-        tn.in++ <-- nl.out++;
+        tn.out++ --> nl.in++;//
+        tn.in++  <-- nl.out++;//
 }
 

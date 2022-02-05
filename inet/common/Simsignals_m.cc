@@ -374,7 +374,7 @@ unsigned int PacketDropDetailsDescriptor::getFieldTypeFlags(int field) const
         field -= basedesc->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        0,    // FIELD_reason
+        FD_ISEDITABLE,    // FIELD_reason
         FD_ISEDITABLE,    // FIELD_limit
     };
     return (field >= 0 && field < 2) ? fieldTypeFlags[field] : 0;
@@ -524,6 +524,7 @@ void PacketDropDetailsDescriptor::setFieldValueAsString(void *object, int field,
     }
     PacketDropDetails *pp = (PacketDropDetails *)object; (void)pp;
     switch (field) {
+        case FIELD_reason: pp->setReason((inet::PacketDropReason)string2enum(value, "inet::PacketDropReason")); break;
         case FIELD_limit: pp->setLimit(string2long(value)); break;
         default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'PacketDropDetails'", field);
     }

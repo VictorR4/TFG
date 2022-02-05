@@ -82,6 +82,8 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
     clocktime_t generationTime;
     clocktime_t receptionTime;
+    bool moreFragments = false;
+    uint16_t fragmentOffset = 0;
 
   private:
     void copy(const RdmaHeader& other);
@@ -111,6 +113,10 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     virtual void setCrcMode(inet::CrcMode crcMode);
     virtual clocktime_t getGenerationTime() const;
     virtual void setGenerationTime(clocktime_t generationtime);
+    virtual bool getMoreFragments() const;
+    virtual void setMoreFragments(bool moreFragments);
+    virtual uint16_t getFragmentOffset() const;
+    virtual void setFragmentOffset(uint16_t fragmentOffset);
 
   public:
     virtual unsigned int getSourcePort() const override { return getSrcPort(); }

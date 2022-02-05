@@ -24,6 +24,7 @@ import inet.transportlayer.contract.ITcp;
 import inet.transportlayer.contract.IUdp;
 import inet.transportlayer.contract.IRdma;
 import ned.DatarateChannel;
+import inet.node.ethernet.Eth1G;
 
 module TransportLayerNodeBase extends NetworkLayerNodeBase
 {
@@ -36,7 +37,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         channel cable extends DatarateChannel
         {
             double retardo @unit(us);
-            datarate = 40Gbps;
+            datarate = 1Gbps;
             delay = this.retardo;
         }    
     submodules:
@@ -51,8 +52,8 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         }
 
     connections allowunconnected:
-        tn.out++ --> cable --> ipv4.transportIn if hasIpv4;
-        tn.in++ <-- cable <-- ipv4.transportOut if hasIpv4;
+        tn.out++ --> ipv4.transportIn if hasIpv4;
+        tn.in++ <-- ipv4.transportOut if hasIpv4;
 
         tn.out++ --> ipv6.transportIn if hasIpv6;
         tn.in++ <-- ipv6.transportOut if hasIpv6;
@@ -63,7 +64,7 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         tn.out++ --> nl.in++;
         tn.in++ <-- nl.out++;
         
-        rdma.lowerLayerOut --> cable --> tn.in++ if hasRdma;
-        rdma.lowerLayerIn <-- cable <-- tn.out++ if hasRdma;
+        rdma.lowerLayerOut --> tn.in++ if hasRdma;
+        rdma.lowerLayerIn <-- tn.out++ if hasRdma;
 }
 

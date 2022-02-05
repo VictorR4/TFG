@@ -43,7 +43,7 @@ class INET_API UdpBasicApp : public ClockUserModuleMixin<ApplicationBase>, publi
     clocktime_t stopTime;
     bool dontFragment = false;
     const char *packetName = nullptr;
-    //bool reached = 0; //The packet reaches this layer and begin to collect the time
+    B messageLength = B(0);
 
     // state
     UdpSocket socket;

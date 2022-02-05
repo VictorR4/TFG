@@ -20,7 +20,7 @@ package inet.node.base;
 import inet.applications.contract.IApp;
 import inet.common.MessageDispatcher;
 import ned.DatarateChannel;
-
+import inet.node.ethernet.Eth1G;
 
 module ApplicationLayerNodeBase extends TransportLayerNodeBase
 {
@@ -32,9 +32,8 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
     types:
         channel cable extends DatarateChannel
         {
-            double retardo @unit(us);
-            datarate = 40Gbps;
-            delay = this.retardo;
+            datarate = 1Gbps;
+            delay = 0.0000125s;
         }
         
     submodules:
@@ -49,13 +48,13 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
 
     connections allowunconnected:
         for i=0..numApps-1 {
-            app[i].socketOut --> cable --> at.in++;
-            app[i].socketIn <-- cable { @display("ls=#AD7FA8,2"); } <-- at.out++;
+            app[i].socketOut --> cable --> at.in++;//Poner cable
+            app[i].socketIn <-- at.out++;//
 
         }
 
-        at.out++ --> cable --> udp.appIn if hasUdp;
-        at.in++ <-- cable <-- udp.appOut if hasUdp;
+        at.out++  --> cable--> udp.appIn if hasUdp;//
+        at.in++ <-- udp.appOut if hasUdp;//
 
         at.out++ --> tcp.appIn if hasTcp;
         at.in++ <-- tcp.appOut if hasTcp;
@@ -64,7 +63,7 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
         at.in++ <-- sctp.appOut if hasSctp;
 
         at.out++ --> tn.in++;
-        at.in++ <-- tn.out++;
+        at.in++  <-- tn.out++;
 
 
 }

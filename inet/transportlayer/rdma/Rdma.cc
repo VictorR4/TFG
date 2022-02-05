@@ -192,30 +192,99 @@ void Rdma::handleUpperPacket(Packet *packet)//Cambiado
     //rdmaHeader->setGenerationTime(generationTime);
 
     B totalLength = rdmaHeader->getChunkLength() + packet->getTotalLength();//Cambiado
-    if (totalLength.get() > RDMA_MAX_MESSAGE_SIZE)
-        throw cRuntimeError("send: total RDMA message size exceeds %u", RDMA_MAX_MESSAGE_SIZE);
+//    if (totalLength.get() > RDMA_MAX_MESSAGE_SIZE)
+//        throw cRuntimeError("send: total RDMA message size exceeds %u", RDMA_MAX_MESSAGE_SIZE);
 
-    rdmaHeader->setTotalLengthField(totalLength);//Cambiado
-    if (crcMode == CRC_COMPUTED) {
-        rdmaHeader->setCrcMode(CRC_COMPUTED);//Cambiado
-        rdmaHeader->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook -- //Cambiado
+    if (totalLength.get() <= RDMA_MAX_MESSAGE_SIZE) {
+        rdmaHeader->setTotalLengthField(totalLength);    //Cambiado
+        if (crcMode == CRC_COMPUTED) {
+            rdmaHeader->setCrcMode(CRC_COMPUTED);    //Cambiado
+            rdmaHeader->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook -- //Cambiado
+        } else {
+            rdmaHeader->setCrcMode(crcMode); //Cambiado
+            insertCrc(l3Protocol, srcAddr, destAddr, rdmaHeader, packet);
+        }
+
+        insertTransportProtocolHeader(packet, Protocol::rdma, rdmaHeader); //Cambiado
+        packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
+        packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
+        packet->setKind(0);
+
+        EV_INFO << "Sending app packet " << packet->getName() << " over " << l3Protocol->getName() << ".\n";
+        emit(packetSentSignal, packet); //emit a signal indicating the sending of a msg
+        emit(packetSentToLowerSignal, packet); //emit a signal indicating the sending of a msg to lower layer
+
+        send(packet, "lowerLayerOut");
+        numSent++;
+    }else{
+        // FIXME some IP options should not be copied into each fragment, check their COPY bit
+        int headerLength = RDMA_HEADER_LENGTH.get();
+        int payloadLength = B(packet->getDataLength()).get() - headerLength;
+        int fragmentLength = ((RDMA_MAX_MESSAGE_SIZE - headerLength) / 8) * 8; // payload only (without header)
+        int offsetBase = rdmaHeader->getFragmentOffset();
+        if (fragmentLength <= 0)
+            throw cRuntimeError("Cannot fragment datagram: RDMA_MAX_MESSAGE_SIZE=%d too small for header size (%d bytes)", RDMA_MAX_MESSAGE_SIZE, headerLength); // exception and not ICMP because this is likely a simulation configuration error, not something one wants to simulate
+
+        int noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
+        EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
+
+        // create and send fragments
+        std::string fragMsgName = packet->getName();
+        fragMsgName += "-frag-";
+
+        int offset = 0;
+        while (offset < payloadLength) {
+            bool lastFragment = (offset + fragmentLength >= payloadLength);
+            // length equal to fragmentLength, except for last fragment;
+            int thisFragmentLength =
+                    lastFragment ? payloadLength - offset : fragmentLength;
+
+            std::string curFragName = fragMsgName + std::to_string(offset);
+            if (lastFragment)
+                curFragName += "-last";
+            Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
+
+            // copy Tags from packet to fragment
+            fragment->copyTags(*packet);
+
+            ASSERT(fragment->getByteLength() == 0);
+            auto fraghdr = staticPtrCast<RdmaHeader>(rdmaHeader->dupShared());
+            const auto &fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+            ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
+            fragment->insertAtBack(fragData);
+
+            // "more fragments" bit is unchanged in the last fragment, otherwise true
+            if (!lastFragment)
+                fraghdr->setMoreFragments(true);
+
+            fraghdr->setFragmentOffset(offsetBase + offset);
+            fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
+
+            if (crcMode == CRC_COMPUTED) {
+                fraghdr->setCrcMode(CRC_COMPUTED);
+                fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
+            } else {
+                fraghdr->setCrcMode(crcMode);
+                insertCrc(l3Protocol, srcAddr, destAddr, fraghdr, fragment);
+            }
+
+            insertTransportProtocolHeader(fragment, Protocol::rdma, fraghdr);
+            fragment->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
+            fragment->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
+            fragment->setKind(0);
+
+            fragment->insertAtFront(fraghdr);
+            ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+
+            EV_INFO << "Sending app packet " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
+            emit(packetSentSignal, fragment);
+            emit(packetSentToLowerSignal, fragment);
+            send(fragment, "lowerLayerOut");
+            offset += thisFragmentLength;
+        }
+        numSent++;
     }
-    else {
-        rdmaHeader->setCrcMode(crcMode);//Cambiado
-        insertCrc(l3Protocol, srcAddr, destAddr, rdmaHeader, packet);
-    }
 
-    insertTransportProtocolHeader(packet, Protocol::rdma, rdmaHeader);//Cambiado
-    packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
-    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
-    packet->setKind(0);
-
-    EV_INFO << "Sending app packet " << packet->getName() << " over " << l3Protocol->getName() << ".\n";
-    emit(packetSentSignal, packet); //emit a signal indicating the sending of a msg
-    emit(packetSentToLowerSignal, packet); //emit a signal indicating the sending of a msg to lower layer
-
-    send(packet, "lowerLayerOut");
-    numSent++;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Rdma::insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<RdmaHeader>& rdmaHeader, Packet *packet)//Cambiado

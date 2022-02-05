@@ -237,12 +237,17 @@ void UdpBasicApp::refreshDisplay() const
 
 void UdpBasicApp::processPacket(Packet *pk)
 {
-    emit(packetReceivedSignal, pk);
-    latency += simTime() - pk->getTag<CreationTimeTag>()->getCreationTime();
+    int totalMessageLength = par("messageLength");
+    messageLength += pk->getTotalLength();
+    if (messageLength.get() >= totalMessageLength) {
+        emit(packetReceivedSignal, pk);
+        latency += simTime() - pk->getTag<CreationTimeTag>()->getCreationTime();
+        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+        delete pk;
+        numReceived++;
+        messageLength = B(0);
+    }
 
-    EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
-    delete pk;
-    numReceived++;
 }
 
 void UdpBasicApp::handleStartOperation(LifecycleOperation *operation)

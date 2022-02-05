@@ -204,13 +204,19 @@ void RdmaBasicApp::refreshDisplay() const
 
 void RdmaBasicApp::processPacket(Packet *pk)
 {
-    emit(packetReceivedSignal, pk);
-    //clocktime_t generationTime = payload->getGenerationTime();
-    clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
-    //EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
-    delete pk;
-    latency += (simTime() - generationTime);
-    numReceived++;
+    int totalMessageLength = par("messageLength");
+    messageLength += pk->getTotalLength();
+    if(messageLength.get() >= totalMessageLength){
+        emit(packetReceivedSignal, pk);
+        //clocktime_t generationTime = payload->getGenerationTime();
+        clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
+        //EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
+        delete pk;
+        latency += (simTime() - generationTime);
+        numReceived++;
+        messageLength = B(0);
+    }
+
 }
 
 std::string RdmaBasicApp::getReceivedPacketInfo(Packet *pk)

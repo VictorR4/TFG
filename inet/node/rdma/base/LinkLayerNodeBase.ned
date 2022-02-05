@@ -61,7 +61,7 @@ module LinkLayerNodeBase extends NodeBase
         channel cable extends DatarateChannel
         {
             double retardo @unit(us);
-            datarate = 40Gbps;
+            datarate = 1Gbps;
             delay = this.retardo;
         }
     submodules:
@@ -141,8 +141,8 @@ module LinkLayerNodeBase extends NodeBase
         }
 
         for i=0..sizeof(ethg)-1 {
-            eth[i].upperLayerOut --> cable --> li.in++;
-            eth[i].upperLayerIn <-- cable <-- li.out++;
+            eth[i].upperLayerOut --> li.in++;
+            eth[i].upperLayerIn  <-- li.out++;
         }
 
         for i=0..sizeof(pppg)-1 {

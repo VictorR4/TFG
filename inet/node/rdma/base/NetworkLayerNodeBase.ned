@@ -39,7 +39,7 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         channel cable extends DatarateChannel
         {
             double retardo @unit(us);
-            datarate = 40Gbps;
+            datarate = 1Gbps;
             delay = this.retardo;
         }
     submodules:
@@ -61,8 +61,8 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         }
 
     connections allowunconnected:
-        ipv4.ifIn <-- cable <-- nl.out++ if hasIpv4;
-        ipv4.ifOut --> cable --> nl.in++ if hasIpv4;
+        ipv4.ifIn  <-- nl.out++ if hasIpv4;
+        ipv4.ifOut --> nl.in++ if hasIpv4;
 
         ipv6.ifIn <-- nl.out++ if hasIpv6;
         ipv6.ifOut --> nl.in++ if hasIpv6;
@@ -76,7 +76,7 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         ieee8021q.upperLayerOut --> nl.in++ if exists(ieee8021q);
         nl.out++ --> ieee8021q.upperLayerIn if exists(ieee8021q);
 
-        nl.out++ --> cable --> li.in++;
-        nl.in++ <-- cable <-- li.out++;
+        nl.out++  --> li.in++;
+        nl.in++  <-- li.out++;
 }
 

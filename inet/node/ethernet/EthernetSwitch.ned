@@ -120,7 +120,7 @@ module EthernetSwitch
             @display("p=800,600;b=1200,5");
         }
     connections:
-        ethernet.lowerLayerOut --> li.in++ if exists(ethernet);
+        ethernet.lowerLayerOut  --> li.in++ if exists(ethernet);
         li.out++ --> ethernet.lowerLayerIn if exists(ethernet);
 
         ieee8021q.lowerLayerOut --> li.in++ if exists(ieee8021q);
@@ -128,7 +128,7 @@ module EthernetSwitch
 
         for i=0..sizeof(ethg)-1 {
             eth[i].cutthroughOut --> cutthrough.in++ if enableCutthrough;
-            eth[i].cutthroughIn <-- cutthrough.out++ if enableCutthrough;
+            eth[i].cutthroughIn  <-- cutthrough.out++ if enableCutthrough;
         }
 
         relayUnit.ifOut --> policy.upperLayerIn if exists(policy);

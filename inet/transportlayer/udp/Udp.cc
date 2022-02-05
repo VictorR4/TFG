@@ -798,28 +798,96 @@ void Udp::handleUpperPacket(Packet *packet)
     udpHeader->setGenerationTime(generationTime);
 
     B totalLength = udpHeader->getChunkLength() + packet->getTotalLength();
-    if (totalLength.get() > UDP_MAX_MESSAGE_SIZE)
-        throw cRuntimeError("send: total UDP message size exceeds %u", UDP_MAX_MESSAGE_SIZE);
+//    if (totalLength.get() > UDP_MAX_MESSAGE_SIZE)
+//        throw cRuntimeError("send: total UDP message size exceeds %u", UDP_MAX_MESSAGE_SIZE);
 
-    udpHeader->setTotalLengthField(totalLength);
-    if (crcMode == CRC_COMPUTED) {
-        udpHeader->setCrcMode(CRC_COMPUTED);
-        udpHeader->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
+    if (totalLength.get() <= UDP_MAX_MESSAGE_SIZE) {
+        udpHeader->setTotalLengthField(totalLength);
+        if (crcMode == CRC_COMPUTED) {
+            udpHeader->setCrcMode(CRC_COMPUTED);
+            udpHeader->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
+        } else {
+            udpHeader->setCrcMode(crcMode);
+            insertCrc(l3Protocol, srcAddr, destAddr, udpHeader, packet);
+        }
+
+        insertTransportProtocolHeader(packet, Protocol::udp, udpHeader);
+        packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
+        packet->setKind(0);
+
+        EV_INFO << "Sending app packet " << packet->getName() << " over "<< l3Protocol->getName() << ".\n";
+        emit(packetSentSignal, packet);
+        emit(packetSentToLowerSignal, packet);
+        send(packet, "ipOut");
+        numSent++;
+    }else{
+        // FIXME some IP options should not be copied into each fragment, check their COPY bit
+        int headerLength = UDP_HEADER_LENGTH.get();
+        int payloadLength = B(packet->getDataLength()).get() - headerLength;
+        int fragmentLength = ((UDP_MAX_MESSAGE_SIZE - headerLength) / 8) * 8; // payload only (without header)
+        int offsetBase = udpHeader->getFragmentOffset();
+        if (fragmentLength <= 0)
+            throw cRuntimeError("Cannot fragment datagram: UDP_MAX_MESSAGE_SIZE=%d too small for header size (%d bytes)",UDP_MAX_MESSAGE_SIZE, headerLength); // exception and not ICMP because this is likely a simulation configuration error, not something one wants to simulate
+
+        int noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
+        EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
+
+        // create and send fragments
+        std::string fragMsgName = packet->getName();
+        fragMsgName += "-frag-";
+
+        int offset = 0;
+        while (offset < payloadLength) {
+            bool lastFragment = (offset + fragmentLength >= payloadLength);
+            // length equal to fragmentLength, except for last fragment;
+            int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
+
+            std::string curFragName = fragMsgName + std::to_string(offset);
+            if (lastFragment)
+                curFragName += "-last";
+            Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
+
+            // copy Tags from packet to fragment
+            fragment->copyTags(*packet);
+
+            ASSERT(fragment->getByteLength() == 0);
+            auto fraghdr = staticPtrCast<UdpHeader>(udpHeader->dupShared());
+            const auto &fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+            ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
+            fragment->insertAtBack(fragData);
+
+            // "more fragments" bit is unchanged in the last fragment, otherwise true
+            if (!lastFragment)
+                fraghdr->setMoreFragments(true);
+
+            fraghdr->setFragmentOffset(offsetBase + offset);
+            fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
+
+            if (crcMode == CRC_COMPUTED) {
+                fraghdr->setCrcMode(CRC_COMPUTED);
+                fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
+            } else {
+                fraghdr->setCrcMode(crcMode);
+                insertCrc(l3Protocol, srcAddr, destAddr, fraghdr, fragment);
+            }
+
+            insertTransportProtocolHeader(fragment, Protocol::udp, fraghdr);
+            fragment->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
+            fragment->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::udp);
+            fragment->setKind(0);
+
+            fragment->insertAtFront(fraghdr);
+            ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+
+            EV_INFO << "Sending app packet " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
+            emit(packetSentSignal, fragment);
+            emit(packetSentToLowerSignal, fragment);
+            send(fragment, "ipOut");
+            offset += thisFragmentLength;
+        }
+        numSent++;
     }
-    else {
-        udpHeader->setCrcMode(crcMode);
-        insertCrc(l3Protocol, srcAddr, destAddr, udpHeader, packet);
-    }
 
-    insertTransportProtocolHeader(packet, Protocol::udp, udpHeader);
-    packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
-    packet->setKind(0);
-
-    EV_INFO << "Sending app packet " << packet->getName() << " over " << l3Protocol->getName() << ".\n";
-    emit(packetSentSignal, packet);
-    emit(packetSentToLowerSignal, packet);
-    send(packet, "ipOut");
-    numSent++;
 }
 
 void Udp::insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<UdpHeader>& udpHeader, Packet *packet)

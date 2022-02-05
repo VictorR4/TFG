@@ -46,7 +46,7 @@ class RdmaHeader;
 class NetworkInterface;
 
 const bool DEFAULT_MULTICAST_LOOP = true;
-const uint16_t RDMA_MAX_MESSAGE_SIZE = 1500; // bytes
+const uint16_t RDMA_MAX_MESSAGE_SIZE = 4096; // bytes
 
 /**
  * Implements the Rdma protocol: encapsulates/decapsulates user data into/from Rdma.

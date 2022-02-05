@@ -23,6 +23,7 @@ import inet.common.MessageDispatcher;
 import inet.networklayer.configurator.contract.IIpv4NodeConfigurator;
 import inet.networklayer.contract.IArp;
 import inet.networklayer.contract.INetworkLayer;
+import inet.node.ethernet.Eth1G;
 
 //
 // Network layer of an IPv4 node.
@@ -114,11 +115,11 @@ module Ipv4NetworkLayer like INetworkLayer
         mp.out++ --> ip.transportIn;
         mp.in++ <-- ip.transportOut;
 
-        arp.ifOut --> lp.in++;
+        arp.ifOut  --> lp.in++;
         arp.ifIn <-- lp.out++;
 
         ip.queueOut --> lp.in++;
-        ip.queueIn <-- lp.out++;
+        ip.queueIn<-- lp.out++;
 
         lp.out++ --> { @display("m=s"); } --> ifOut;
         lp.in++ <-- { @display("m=s"); } <-- ifIn;

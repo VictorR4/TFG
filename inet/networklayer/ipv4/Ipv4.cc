@@ -982,6 +982,8 @@ void Ipv4::fragmentAndSend(Packet *packet)
         ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
         sendDatagramToOutput(fragment);
         offset += thisFragmentLength;
+
+
     }
 
     delete packet;
