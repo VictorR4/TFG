@@ -21,7 +21,7 @@ import inet.node.base.NodeBase;
 import inet.common.MessageDispatcher;
 import inet.common.packet.recorder.PcapRecorder;
 import inet.linklayer.contract.rdma.IEthernetInterface;
-import inet.linklayer.contract.ILoopbackInterface;
+import inet.linklayer.contract.rdma.ILoopbackInterface;
 import inet.linklayer.contract.IPppInterface;
 import inet.linklayer.contract.ITunnelInterface;
 import inet.linklayer.contract.IVirtualInterface;
@@ -30,6 +30,8 @@ import inet.linklayer.ethernet.contract.IEthernetLayer;
 import inet.linklayer.ieee8021q.IIeee8021qLayer;
 import inet.networklayer.common.InterfaceTable;
 import ned.DatarateChannel;
+import inet.node.ethernet.Eth1G;
+
 
 
 module LinkLayerNodeBase extends NodeBase
@@ -142,7 +144,7 @@ module LinkLayerNodeBase extends NodeBase
 
         for i=0..sizeof(ethg)-1 {
             eth[i].upperLayerOut --> li.in++;
-            eth[i].upperLayerIn  <-- li.out++;
+            eth[i].upperLayerIn <-- li.out++;
         }
 
         for i=0..sizeof(pppg)-1 {

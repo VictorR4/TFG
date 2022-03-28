@@ -87,6 +87,22 @@ class INET_API Rdma: public TransportProtocolBase
     int numDroppedWrongPort = 0;
     int numDroppedBadChecksum = 0;
 
+    //Owns
+    cMessage *endTxTimer = nullptr;
+    int offset = 0;
+    int headerLength;
+    int payloadLength;
+    int fragmentLength; // payload only (without header)
+    int offsetBase;
+
+    std::string fragMsgName;
+    L3Address srcAddr, destAddr;
+    const Protocol *l3Protocol = nullptr;
+    Ptr<RdmaHeader> rdmaHeader = nullptr;
+    Packet *packet;
+
+    cGate *lowerLayerOut = nullptr;
+    cChannel *transmissionChannel = nullptr;
   protected:
     // utility: show current statistics above the icon
     virtual void refreshDisplay() const override;
@@ -109,6 +125,11 @@ class INET_API Rdma: public TransportProtocolBase
 
     // process packets from link layer
     virtual void handleLowerPacket(Packet *appData) override;
+
+    virtual void handleMessageWhenUp(cMessage *msg) override;
+    //Process an own message
+    virtual void handleSelfMessage(cMessage *msg) override;
+    virtual void handleEndTxPeriod();
 
     // process commands from application
     //virtual void handleUpperCommand(cMessage *msg) override;

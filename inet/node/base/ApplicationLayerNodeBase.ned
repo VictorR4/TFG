@@ -20,7 +20,7 @@ package inet.node.base;
 import inet.applications.contract.IApp;
 import inet.common.MessageDispatcher;
 import ned.DatarateChannel;
-import inet.node.ethernet.Eth1G;
+import inet.node.ethernet.Eth40G;
 
 module ApplicationLayerNodeBase extends TransportLayerNodeBase
 {
@@ -28,13 +28,6 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
         int numApps = default(0);
         @figure[applicationLayer](type=rectangle; pos=250,6; size=1000,130; lineColor=#808080; cornerRadius=5; fillColor=#ffff00; fillOpacity=0.1);
         @figure[applicationLayer.title](type=text; pos=1245,11; anchor=ne; text="application layer");
-
-    types:
-        channel cable extends DatarateChannel
-        {
-            datarate = 1Gbps;
-            delay = 0.0000125s;
-        }
         
     submodules:
         app[numApps]: <> like IApp {
@@ -48,13 +41,13 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
 
     connections allowunconnected:
         for i=0..numApps-1 {
-            app[i].socketOut --> cable --> at.in++;//Poner cable
-            app[i].socketIn <-- at.out++;//
+            app[i].socketOut --> Eth40G --> at.in++;//Poner cable
+            app[i].socketIn <-- Eth40G <-- at.out++;//
 
         }
 
-        at.out++  --> cable--> udp.appIn if hasUdp;//
-        at.in++ <-- udp.appOut if hasUdp;//
+        at.out++ --> Eth40G --> udp.appIn if hasUdp;//
+        at.in++  <-- Eth40G <-- udp.appOut if hasUdp;//
 
         at.out++ --> tcp.appIn if hasTcp;
         at.in++ <-- tcp.appOut if hasTcp;

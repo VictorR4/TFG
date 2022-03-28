@@ -87,6 +87,10 @@ void EthernetEncapsulation::initialize(int stage)
         useSNAP = par("useSNAP");
         networkInterface = findContainingNicModule(this); // TODO or getContainingNicModule() ? or use a macaddresstable?
 
+        upperLayerOut = gate("upperLayerOut");
+        transmissionChannel = upperLayerOut->findTransmissionChannel();
+        endTxTimer = new cMessage("EndTransmission", 103);
+
         WATCH_PTRMAP(socketIdToSocketMap);
         WATCH(totalFromHigherLayer);
         WATCH(totalFromMAC);
@@ -98,6 +102,22 @@ void EthernetEncapsulation::initialize(int stage)
             registerService(Protocol::ethernetMac, gate("upperLayerIn"), gate("upperLayerOut"));
         }
     }
+}
+
+void EthernetEncapsulation::handleMessageWhenUp(cMessage *msg)
+{
+    if (msg->isSelfMessage())
+        handleSelfMessage(msg);
+    else if (msg->arrivedOn("upperLayerIn"))
+        processPacketFromHigherLayer(check_and_cast<Packet *>(msg));
+    else
+        processPacketFromMac(check_and_cast<Packet *>(msg));
+}
+
+void EthernetEncapsulation::handleSelfMessage(cMessage *msg)
+{
+    if (msg == endTxTimer)
+            handleEndTxPeriod();
 }
 
 void EthernetEncapsulation::processCommandFromHigherLayer(Request *msg)
@@ -248,8 +268,9 @@ const Ptr<const EthernetMacHeader> EthernetEncapsulation::decapsulateMacHeader(P
     return ethHeader;
 }
 
-void EthernetEncapsulation::processPacketFromMac(Packet *packet)
+void EthernetEncapsulation::processPacketFromMac(Packet *p)
 {
+    packet = p;
     const Protocol *payloadProtocol = nullptr;
     auto ethHeader = decapsulateMacHeader(packet);
 
@@ -301,6 +322,8 @@ void EthernetEncapsulation::processPacketFromMac(Packet *packet)
                 packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
                 latencyReception += actualLatency;
                 send(packet, "upperLayerOut");
+                //delete packet;
+                //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
             }
         }
         else {
@@ -349,6 +372,12 @@ void EthernetEncapsulation::handleSendPause(cMessage *msg)
 
     emit(pauseSentSignal, pauseUnits);
     totalPauseSent++;
+}
+
+void EthernetEncapsulation::handleEndTxPeriod(){
+    /*if(packet != nullptr){
+        processPacketFromMac(packet);
+    }*/
 }
 
 } // namespace inet

@@ -29,7 +29,7 @@ import inet.linklayer.ethernet.contract.IEthernetLayer;
 import inet.linklayer.ieee8021q.IIeee8021qLayer;
 import inet.networklayer.common.InterfaceTable;
 import ned.DatarateChannel;
-import inet.node.ethernet.Eth1G;
+import inet.node.ethernet.Eth40G;
 
 module LinkLayerNodeBase extends NodeBase
 {
@@ -140,7 +140,7 @@ module LinkLayerNodeBase extends NodeBase
         }
 
         for i=0..sizeof(ethg)-1 {
-            eth[i].upperLayerOut  --> li.in++;
+            eth[i].upperLayerOut --> Eth40G --> li.in++;
             eth[i].upperLayerIn <-- li.out++;
         }
 

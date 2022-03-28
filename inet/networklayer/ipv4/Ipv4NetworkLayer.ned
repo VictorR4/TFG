@@ -23,7 +23,7 @@ import inet.common.MessageDispatcher;
 import inet.networklayer.configurator.contract.IIpv4NodeConfigurator;
 import inet.networklayer.contract.IArp;
 import inet.networklayer.contract.INetworkLayer;
-import inet.node.ethernet.Eth1G;
+import inet.node.ethernet.Eth40G;
 
 //
 // Network layer of an IPv4 node.
@@ -32,6 +32,7 @@ import inet.node.ethernet.Eth1G;
 module Ipv4NetworkLayer like INetworkLayer
 {
     parameters:
+        bool isRdma = default(false);
         bool forwarding = default(false);
         bool multicastForwarding = default(false);
         string interfaceTableModule;
@@ -118,8 +119,10 @@ module Ipv4NetworkLayer like INetworkLayer
         arp.ifOut  --> lp.in++;
         arp.ifIn <-- lp.out++;
 
-        ip.queueOut --> lp.in++;
-        ip.queueIn<-- lp.out++;
+        ip.queueOut --> Eth40G --> lp.in++ if !isRdma;
+        ip.queueIn <-- Eth40G <-- lp.out++ if !isRdma;
+        ip.queueOut --> lp.in++ if isRdma;
+        ip.queueIn <-- lp.out++ if isRdma;
 
         lp.out++ --> { @display("m=s"); } --> ifOut;
         lp.in++ <-- { @display("m=s"); } <-- ifIn;

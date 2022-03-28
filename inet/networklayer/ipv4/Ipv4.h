@@ -34,6 +34,7 @@
 #include "inet/networklayer/ipv4/Ipv4FragBuf.h"
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
 #include "inet/common/clock/ClockUserModuleMixin.h"
+#include "inet/networklayer/common/NextHopAddressTag_m.h"
 
 namespace inet {
 
@@ -107,6 +108,23 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     int numForwarded = 0;
     clocktime_t latencySending = 0;
     clocktime_t latencyReception = 0;
+
+    //Variables to handle a packet that must be fragmented
+    cMessage *endTxTimer = nullptr;
+    int offset = 0;
+    int headerLength;
+    int payloadLength;
+    int fragmentLength; // payload only (without header)
+    int offsetBase;
+
+    std::string fragMsgName;
+    L3Address srcAddr, destAddr;
+    Ptr<const Ipv4Header> ipv4Header;
+    Packet *packet = nullptr;
+
+    cGate *lowerLayerOut = nullptr;
+    cChannel *transmissionChannel = nullptr;
+
     // hooks
     typedef std::list<QueuedDatagramForHook> DatagramQueueForHooks;
     DatagramQueueForHooks queuedDatagramsForHooks;
@@ -135,6 +153,7 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     // utility: calculate and set CRC
     void setComputedCrc(Ptr<Ipv4Header>& ipv4Header);
 
+
   public:
     static void insertCrc(const Ptr<Ipv4Header>& ipv4Header);
 
@@ -160,6 +179,10 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
      * Invokes encapsulate(), then routePacket().
      */
     virtual void handlePacketFromHL(Packet *packet);
+
+    // process an own message
+    virtual void handleSelfMessage(cMessage *msg);
+    virtual void handleEndTxPeriod();
 
     /**
      * Routes and sends datagram received from higher layers.

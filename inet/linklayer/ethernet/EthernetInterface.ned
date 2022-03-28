@@ -22,7 +22,7 @@ import inet.linklayer.contract.IEthernetInterface;
 import inet.linklayer.ethernet.contract.IEthernetEncapsulation;
 import inet.networklayer.common.NetworkInterface;
 import inet.queueing.contract.ITrafficConditioner;
-import inet.node.ethernet.Eth1G;
+import inet.node.ethernet.Eth40G;
 
 
 //
@@ -69,7 +69,7 @@ module EthernetInterface extends NetworkInterface like IEthernetInterface
         }
     connections:
         mac.upperLayerOut --> encap.lowerLayerIn;
-        mac.upperLayerIn  <-- encap.lowerLayerOut;
+        mac.upperLayerIn <-- encap.lowerLayerOut;
 
         mac.phys <--> { @display("m=s"); } <--> phys;
 

@@ -49,6 +49,12 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
     bool useSNAP; // true: generate EtherFrameWithSNAP, false: generate EthernetIIFrame
     NetworkInterface *networkInterface = nullptr;
 
+    //Variables to handle fragments of a packet
+    cMessage *endTxTimer = nullptr;
+    cGate *upperLayerOut = nullptr;
+    cChannel *transmissionChannel = nullptr;
+    Packet *packet = nullptr;
+
     struct Socket {
         int socketId = -1;
         MacAddress localAddress;
@@ -67,6 +73,11 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
     virtual ~EthernetEncapsulation();
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
     virtual void initialize(int stage) override;
+
+    virtual void handleMessageWhenUp(cMessage *msg) override;
+    // process an own message
+    virtual void handleSelfMessage(cMessage *msg);
+    virtual void handleEndTxPeriod();
 
     virtual void processCommandFromHigherLayer(Request *msg) override;
     virtual void processPacketFromHigherLayer(Packet *msg) override;

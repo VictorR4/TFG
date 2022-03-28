@@ -136,6 +136,23 @@ class INET_API Udp : public TransportProtocolBase
     clocktime_t latency = 0;
     clocktime_t latencySending = 0;
 
+    //Variables to handle a packet that must be fragmented
+    cMessage *endTxTimer = nullptr;
+    int offset = 0;
+    int headerLength;
+    int payloadLength;
+    int fragmentLength; // payload only (without header)
+    int offsetBase;
+
+    std::string fragMsgName;
+    L3Address srcAddr, destAddr;
+    const Protocol *l3Protocol = nullptr;
+    Ptr<UdpHeader> udpHeader;
+    Packet *packet = nullptr;
+
+    cGate *lowerLayerOut = nullptr;
+    cChannel *transmissionChannel = nullptr;
+
   protected:
     // utility: show current statistics above the icon
     virtual void refreshDisplay() const override;
@@ -184,11 +201,19 @@ class INET_API Udp : public TransportProtocolBase
     // process Udp packets coming from IP
     virtual void processUDPPacket(Packet *udpPacket);
 
+    // process anything message
+    virtual void handleMessageWhenUp(cMessage *msg) override;
+
     // process packets from application
     virtual void handleUpperPacket(Packet *appData) override;
 
-    // process packets from network layr
+    // process packets from network layer
     virtual void handleLowerPacket(Packet *appData) override;
+
+    // process an own message
+    virtual void handleSelfMessage(cMessage *msg) override;
+
+    virtual void handleEndTxPeriod();
 
     // process commands from application
     virtual void handleUpperCommand(cMessage *msg) override;

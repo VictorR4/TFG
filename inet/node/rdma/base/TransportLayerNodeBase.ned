@@ -24,7 +24,7 @@ import inet.transportlayer.contract.ITcp;
 import inet.transportlayer.contract.IUdp;
 import inet.transportlayer.contract.IRdma;
 import ned.DatarateChannel;
-import inet.node.ethernet.Eth1G;
+import inet.node.ethernet.Eth40G;
 
 module TransportLayerNodeBase extends NetworkLayerNodeBase
 {

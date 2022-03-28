@@ -20,7 +20,7 @@ package inet.node.base;
 import inet.common.MessageDispatcher;
 import inet.networklayer.contract.INetworkLayer;
 import ned.DatarateChannel;
-import inet.node.ethernet.Eth1G;
+import inet.node.ethernet.Eth40G;
 
 module NetworkLayerNodeBase extends LinkLayerNodeBase
 {
@@ -64,8 +64,8 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
 
         
     connections allowunconnected:
-        ipv4.ifIn <-- nl.out++ if hasIpv4;
-        ipv4.ifOut --> nl.in++ if hasIpv4;
+        ipv4.ifIn <-- Eth40G<-- nl.out++ if hasIpv4;
+        ipv4.ifOut --> Eth40G --> nl.in++ if hasIpv4;
 
         ipv6.ifIn <-- nl.out++ if hasIpv6;
         ipv6.ifOut --> nl.in++ if hasIpv6;
@@ -79,7 +79,7 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         ieee8021q.upperLayerOut --> nl.in++ if exists(ieee8021q);
         nl.out++ --> ieee8021q.upperLayerIn if exists(ieee8021q);
 
-        nl.out++ --> li.in++;
-        nl.in++  <-- li.out++;
+        nl.out++ --> Eth40G --> li.in++;
+        nl.in++ <-- Eth40G <-- li.out++;
 }
 

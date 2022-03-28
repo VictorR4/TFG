@@ -68,12 +68,22 @@ void Loopback::handleUpperPacket(Packet *packet)
     numRcvdOK++;
     numSent++;
     auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
-    packet->clearTags();
-    packet->addTag<DispatchProtocolReq>()->setProtocol(protocol);
-    packet->addTag<PacketProtocolTag>()->setProtocol(protocol);
-    packet->addTag<InterfaceInd>()->setInterfaceId(networkInterface->getInterfaceId());
-    emit(packetSentToUpperSignal, packet);
-    send(packet, upperLayerOutGateId);
+    if(protocol == &Protocol::rdma){
+        packet->clearTags();
+        packet->addTag<DispatchProtocolReq>()->setProtocol(protocol);
+        packet->addTag<PacketProtocolTag>()->setProtocol(protocol);
+        packet->addTag<InterfaceInd>()->setInterfaceId(networkInterface->getInterfaceId());
+        emit(packetSentToUpperSignal, packet);
+        send(packet,"appLayerOut");
+    }else{
+        packet->clearTags();
+        packet->addTag<DispatchProtocolReq>()->setProtocol(protocol);
+        packet->addTag<PacketProtocolTag>()->setProtocol(protocol);
+        packet->addTag<InterfaceInd>()->setInterfaceId(networkInterface->getInterfaceId());
+        emit(packetSentToUpperSignal, packet);
+        send(packet, upperLayerOutGateId);
+    }
+
 }
 
 void Loopback::refreshDisplay() const

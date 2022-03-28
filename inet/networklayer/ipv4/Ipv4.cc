@@ -109,6 +109,12 @@ void Ipv4::initialize(int stage)
 
         pendingPackets.clear();
 
+
+        lowerLayerOut = gate("queueOut");
+        transmissionChannel = lowerLayerOut->findTransmissionChannel();
+        endTxTimer = new cMessage("EndTransmission", 103);
+
+
         WATCH(numMulticast);
         WATCH(numLocalDeliver);
         WATCH(numDropped);
@@ -206,12 +212,17 @@ void Ipv4::handleRequest(Request *request)
 
 void Ipv4::handleMessageWhenUp(cMessage *msg)
 {
-    if(check_and_cast<Packet *>(msg)->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma)
-        isRdma = true;
-    if (msg->arrivedOn("transportIn")) { // TODO packet->getArrivalGate()->getBaseId() == transportInGateBaseId
+    /*if(check_and_cast<Packet *>(msg)->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma)
+        isRdma = true;*/
+    if(msg->isSelfMessage()){
+        handleSelfMessage(msg);
+    }
+    else if (msg->arrivedOn("transportIn")) { // TODO packet->getArrivalGate()->getBaseId() == transportInGateBaseId
         if (auto request = dynamic_cast<Request *>(msg))
             handleRequest(request);
         else
+            if(check_and_cast<Packet *>(msg)->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma)
+                    isRdma = true;
             handlePacketFromHL(check_and_cast<Packet *>(msg));
     }
     else if (msg->arrivedOn("queueIn")) { // from network
@@ -220,6 +231,11 @@ void Ipv4::handleMessageWhenUp(cMessage *msg)
     }
     else
         throw cRuntimeError("message arrived on unknown gate '%s'", msg->getArrivalGate()->getName());
+}
+
+void Ipv4::handleSelfMessage(cMessage *msg){
+    if (msg == endTxTimer)
+            handleEndTxPeriod();
 }
 
 bool Ipv4::verifyCrc(const Ptr<const Ipv4Header>& ipv4Header)
@@ -881,8 +897,9 @@ void Ipv4::insertCrc(const Ptr<Ipv4Header>& ipv4Header)
     }
 }
 
-void Ipv4::fragmentAndSend(Packet *packet)
+void Ipv4::fragmentAndSend(Packet *p)
 {
+    packet = p;
     if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
         clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
         packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
@@ -896,7 +913,8 @@ void Ipv4::fragmentAndSend(Packet *packet)
         packet->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHopAddr);
     }
 
-    const auto& ipv4Header = packet->peekAtFront<Ipv4Header>();
+    //const auto& ipv4Header = packet->peekAtFront<Ipv4Header>();
+    ipv4Header = packet->peekAtFront<Ipv4Header>();
 
     // hop counter check
     if (ipv4Header->getTimeToLive() <= 0) {
@@ -935,10 +953,10 @@ void Ipv4::fragmentAndSend(Packet *packet)
     }
 
     // FIXME some IP options should not be copied into each fragment, check their COPY bit
-    int headerLength = B(ipv4Header->getHeaderLength()).get();
-    int payloadLength = B(packet->getDataLength()).get() - headerLength;
-    int fragmentLength = ((mtu - headerLength) / 8) * 8; // payload only (without header)
-    int offsetBase = ipv4Header->getFragmentOffset();
+    headerLength = B(ipv4Header->getHeaderLength()).get();
+    payloadLength = B(packet->getDataLength()).get() - headerLength;
+    fragmentLength = ((mtu - headerLength) / 8) * 8; // payload only (without header)
+    offsetBase = ipv4Header->getFragmentOffset();
     if (fragmentLength <= 0)
         throw cRuntimeError("Cannot fragment datagram: MTU=%d too small for header size (%d bytes)", mtu, headerLength); // exception and not ICMP because this is likely a simulation configuration error, not something one wants to simulate
 
@@ -946,11 +964,46 @@ void Ipv4::fragmentAndSend(Packet *packet)
     EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
 
     // create and send fragments
-    std::string fragMsgName = packet->getName();
+    fragMsgName = packet->getName();
     fragMsgName += "-frag-";
 
-    int offset = 0;
-    while (offset < payloadLength) {
+    offset = 0;
+    if(isRdma){
+        while (offset < payloadLength) {
+            bool lastFragment = (offset + fragmentLength >= payloadLength);
+            // length equal to fragmentLength, except for last fragment;
+            int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
+
+            std::string curFragName = fragMsgName + std::to_string(offset);
+            if (lastFragment)
+                curFragName += "-last";
+            Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
+
+            // copy Tags from packet to fragment
+            fragment->copyTags(*packet);
+
+            ASSERT(fragment->getByteLength() == 0);
+            auto fraghdr = staticPtrCast<Ipv4Header>(ipv4Header->dupShared());
+            const auto& fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+            ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
+            fragment->insertAtBack(fragData);
+
+            // "more fragments" bit is unchanged in the last fragment, otherwise true
+            if (!lastFragment)
+                fraghdr->setMoreFragments(true);
+
+            fraghdr->setFragmentOffset(offsetBase + offset);
+            fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
+            if (crcMode == CRC_COMPUTED)
+                setComputedCrc(fraghdr);
+
+            fragment->insertAtFront(fraghdr);
+            ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+            sendDatagramToOutput(fragment);
+            offset += thisFragmentLength;
+        }
+
+    }else{
         bool lastFragment = (offset + fragmentLength >= payloadLength);
         // length equal to fragmentLength, except for last fragment;
         int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
@@ -979,14 +1032,15 @@ void Ipv4::fragmentAndSend(Packet *packet)
             setComputedCrc(fraghdr);
 
         fragment->insertAtFront(fraghdr);
-        ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+        //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+
         sendDatagramToOutput(fragment);
         offset += thisFragmentLength;
 
 
     }
 
-    delete packet;
+    //delete packet;
 }
 
 void Ipv4::encapsulate(Packet *transportPacket)
@@ -1180,7 +1234,12 @@ void Ipv4::sendPacketToNIC(Packet *packet)
     else
         packet->removeTagIfPresent<DispatchProtocolReq>();
     ASSERT(packet->findTag<InterfaceReq>() != nullptr);
+
     send(packet, "queueOut");
+
+
+    if(!isRdma)
+        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
 }
 
 // NetFilter:
@@ -1444,5 +1503,63 @@ void Ipv4::sendIcmpError(Packet *origPacket, int inputInterfaceId, IcmpType type
     delete origPacket;
 }
 
+void Ipv4::handleEndTxPeriod(){
+    if(offset < payloadLength){
+        bool lastFragment = (offset + fragmentLength >= payloadLength);
+        // length equal to fragmentLength, except for last fragment;
+        int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
+
+        std::string curFragName = fragMsgName + std::to_string(offset);
+        if (lastFragment)
+            curFragName += "-last";
+        Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
+
+        // copy Tags from packet to fragment
+        fragment->copyTags(*packet);
+
+        ASSERT(fragment->getByteLength() == 0);
+        auto fraghdr = staticPtrCast<Ipv4Header>(ipv4Header->dupShared());
+        const auto &fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+        ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
+        fragment->insertAtBack(fragData);
+
+        // "more fragments" bit is unchanged in the last fragment, otherwise true
+        if (!lastFragment)
+            fraghdr->setMoreFragments(true);
+
+        fraghdr->setFragmentOffset(offsetBase + offset);
+        fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
+
+        if (crcMode == CRC_COMPUTED) {
+            setComputedCrc(fraghdr);
+            //fraghdr->setCrcMode(CRC_COMPUTED);
+            //fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
+        } /*else {
+            fraghdr->setCrcMode(crcMode);
+            insertCrc(l3Protocol, srcAddr, destAddr, fraghdr, fragment);
+        }*/
+
+        /*insertTransportProtocolHeader(fragment, Protocol::udp, fraghdr);
+        fragment->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
+        fragment->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::udp);
+        fragment->setKind(0);*/
+
+        fragment->insertAtFront(fraghdr);
+        //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+
+        //EV_INFO << "Sending fragment " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
+        emit(packetSentSignal, fragment);
+        emit(packetSentToLowerSignal, fragment);
+        //send(fragment, "queueOut");
+        sendDatagramToOutput(fragment);
+
+        offset += thisFragmentLength;
+
+        //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+    }else{
+        offset = 0;
+        //numSent++;
+    }
+}
 } // namespace inet
 
