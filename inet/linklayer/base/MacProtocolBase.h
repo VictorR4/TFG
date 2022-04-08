@@ -46,6 +46,8 @@ class INET_API MacProtocolBase : public LayeredProtocolBase, public cListener
     queueing::IPacketQueue *txQueue = nullptr;
 
     cModule *hostModule = nullptr;
+    /* Reception or Sending*/
+    int reception = 1; //reception = 1; sending = 0
 
   protected:
     MacProtocolBase();

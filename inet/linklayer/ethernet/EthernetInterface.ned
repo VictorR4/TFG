@@ -23,6 +23,7 @@ import inet.linklayer.ethernet.contract.IEthernetEncapsulation;
 import inet.networklayer.common.NetworkInterface;
 import inet.queueing.contract.ITrafficConditioner;
 import inet.node.ethernet.Eth40G;
+import ned.DatarateChannel;
 
 
 //
@@ -43,12 +44,20 @@ module EthernetInterface extends NetworkInterface like IEthernetInterface
         *.interfaceTableModule = default(absPath(interfaceTableModule));
         *.fcsMode = fcsMode;
         *.duplexMode = duplexMode;
+        bool isHost = default(false); //variable to set upperLayerOut of mac module as IdealChannel only in switches
     gates:
         input upperLayerIn;
         output upperLayerOut;
         input cutthroughIn @loose;
         output cutthroughOut @loose;
         inout phys @labels(EthernetSignal);
+	types:
+        channel cable extends DatarateChannel
+        {
+            datarate = 40Gbps;
+            double length @unit(m) = default(5m);
+    		delay = replaceUnit(length / 2e8, "s") * 3;
+        }
     submodules:
         egressTC: <default("")> like ITrafficConditioner if typename != "" {
             parameters:
@@ -68,8 +77,9 @@ module EthernetInterface extends NetworkInterface like IEthernetInterface
                 @display("p=500,300");
         }
     connections:
-        mac.upperLayerOut --> encap.lowerLayerIn;
+        mac.upperLayerOut --> encap.lowerLayerIn if !isHost;
         mac.upperLayerIn <-- encap.lowerLayerOut;
+        mac.upperLayerOut --> cable --> encap.lowerLayerIn if isHost;
 
         mac.phys <--> { @display("m=s"); } <--> phys;
 

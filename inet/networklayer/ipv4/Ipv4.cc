@@ -1238,7 +1238,7 @@ void Ipv4::sendPacketToNIC(Packet *packet)
     send(packet, "queueOut");
 
 
-    if(!isRdma)
+    if(!isRdma && packet->getByteLength() > ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId())->getMtu())
         scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
 }
 
@@ -1548,8 +1548,8 @@ void Ipv4::handleEndTxPeriod(){
         //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
 
         //EV_INFO << "Sending fragment " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
-        emit(packetSentSignal, fragment);
-        emit(packetSentToLowerSignal, fragment);
+        //emit(packetSentSignal, fragment);
+        //emit(packetSentToLowerSignal, fragment);
         //send(fragment, "queueOut");
         sendDatagramToOutput(fragment);
 

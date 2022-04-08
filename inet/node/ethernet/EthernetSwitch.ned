@@ -32,6 +32,7 @@ import inet.linklayer.ethernet.contract.IEthernetEncapsulation;
 import inet.linklayer.ethernet.contract.IEthernetLayer;
 import inet.linklayer.ieee8021q.Ieee8021qLayer;
 import inet.networklayer.common.InterfaceTable;
+import inet.node.ethernet.Eth40G;
 
 //
 // Model of an Ethernet switch.

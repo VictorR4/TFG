@@ -194,6 +194,7 @@ void EthernetMacBase::initialize(int stage)
         endTxTimer = new cMessage("EndTransmission", ENDTRANSMISSION);
         endIfgTimer = new cMessage("EndIFG", ENDIFG);
         endPauseTimer = new cMessage("EndPause", ENDPAUSE);
+        endUpperTxTimer = new cMessage("EndTransmission", ENDTRANSMISSION);
 
         // initialize states
         transmitState = TX_IDLE_STATE;

@@ -18,6 +18,9 @@
 package inet.linklayer.ethernet.basic;
 
 import inet.linklayer.ethernet.contract.IEthernetEncapsulation;
+import inet.queueing.contract.IPacketQueue;
+
+
 
 //
 // Performs Ethernet II or Ethernet with LLC/SNAP encapsulation/decapsulation.
@@ -63,5 +66,12 @@ simple EthernetEncapsulation like IEthernetEncapsulation
         output upperLayerOut @labels(Ieee802Ctrl/up); // higher layer
         input lowerLayerIn @labels(EtherFrame);   // to Ethernet MAC
         output lowerLayerOut @labels(EtherFrame); // to Ethernet MAC
+	//Susceptible de ser quitado
+//    submodules:
+//        queue: <default("EthernetQueue")> like IPacketQueue {
+//            parameters:
+//                packetCapacity = default(1000);
+//                @display("p=100,100");
+//        }
 }
 

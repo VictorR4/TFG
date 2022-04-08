@@ -120,7 +120,7 @@ module Ipv4NetworkLayer like INetworkLayer
         arp.ifIn <-- lp.out++;
 
         ip.queueOut --> Eth40G --> lp.in++ if !isRdma;
-        ip.queueIn <-- Eth40G <-- lp.out++ if !isRdma;
+        ip.queueIn <-- lp.out++ if !isRdma;
         ip.queueOut --> lp.in++ if isRdma;
         ip.queueIn <-- lp.out++ if isRdma;
 

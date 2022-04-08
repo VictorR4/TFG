@@ -92,7 +92,7 @@ enum IpProtocolId {
     IP_PROT_EGP = 8,
     IP_PROT_IGP = 9,
     IP_PROT_UDP = 17,
-    IP_PROT_RDMA = 30, //Cambiado
+    IP_PROT_RDMA = 30,
     IP_PROT_XTP = 36,
     IP_PROT_IPv6 = 41,
     IP_PROT_RSVP = 46,

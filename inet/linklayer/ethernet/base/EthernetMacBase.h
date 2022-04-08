@@ -100,6 +100,7 @@ class INET_API EthernetMacBase : public MacProtocolBase
 
     // gate pointers, etc.
     cChannel *transmissionChannel = nullptr; // transmission channel
+    cChannel *upperTransmissionChannel = nullptr; //transmission channel to encapsulation module
     cGate *physInGate = nullptr; // pointer to the "phys$i" gate
     cGate *physOutGate = nullptr; // pointer to the "phys$o" gate
 
@@ -114,6 +115,7 @@ class INET_API EthernetMacBase : public MacProtocolBase
     cMessage *endTxTimer = nullptr;
     cMessage *endIfgTimer = nullptr;
     cMessage *endPauseTimer = nullptr;
+    cMessage *endUpperTxTimer = nullptr;
 
     // statistics
     unsigned long numFramesSent = 0;
