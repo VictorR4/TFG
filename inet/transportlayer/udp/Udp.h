@@ -34,6 +34,7 @@
 #include "inet/transportlayer/common/TransportPseudoHeader_m.h"
 #include "inet/transportlayer/contract/udp/UdpControlInfo.h"
 #include "inet/common/clock/ClockUserModuleMixin.h"
+#include "inet/transportlayer/udp/UdpFragBuf.h"
 
 namespace inet {
 
@@ -143,6 +144,7 @@ class INET_API Udp : public TransportProtocolBase
     int payloadLength;
     int fragmentLength; // payload only (without header)
     int offsetBase;
+    int noOfFragments = 0;
 
     std::string fragMsgName;
     L3Address srcAddr, destAddr;
@@ -152,7 +154,10 @@ class INET_API Udp : public TransportProtocolBase
 
     cGate *lowerLayerOut = nullptr;
     cChannel *transmissionChannel = nullptr;
+    int numFragment = 0;
 
+
+    UdpFragBuf fragbuf; // fragmentation reassembly buffer
   protected:
     // utility: show current statistics above the icon
     virtual void refreshDisplay() const override;

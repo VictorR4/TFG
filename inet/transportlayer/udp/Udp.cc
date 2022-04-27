@@ -825,6 +825,7 @@ void Udp::handleUpperPacket(Packet *p)
     udpHeader->setGenerationTime(generationTime);
 
     B totalLength = udpHeader->getChunkLength() + packet->getTotalLength();
+    udpHeader->setIdentification(numFragment++);
 //    if (totalLength.get() > UDP_MAX_MESSAGE_SIZE)
 //        throw cRuntimeError("send: total UDP message size exceeds %u", UDP_MAX_MESSAGE_SIZE);
 
@@ -842,7 +843,7 @@ void Udp::handleUpperPacket(Packet *p)
         packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
         packet->setKind(0);
 
-        EV_INFO << "Sending app packet " << packet->getName() << " over "<< l3Protocol->getName() << ".\n";
+        EV_INFO << "Sending app packet " << packet << " over "<< l3Protocol->getName() << ".\n";
         emit(packetSentSignal, packet);
         emit(packetSentToLowerSignal, packet);
 
@@ -857,9 +858,10 @@ void Udp::handleUpperPacket(Packet *p)
         if (fragmentLength <= 0)
             throw cRuntimeError("Cannot fragment datagram: UDP_MAX_MESSAGE_SIZE=%d too small for header size (%d bytes)",UDP_MAX_MESSAGE_SIZE, headerLength); // exception and not ICMP because this is likely a simulation configuration error, not something one wants to simulate
 
-        int noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
-        EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
-
+        if(noOfFragments == 0){
+            noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
+            EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
+        }
         // create and send fragments
         fragMsgName = packet->getName();
         fragMsgName += "-frag-";
@@ -891,6 +893,7 @@ void Udp::handleUpperPacket(Packet *p)
         fraghdr->setFragmentOffset(offsetBase + offset);
         fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
 
+
         if (crcMode == CRC_COMPUTED) {
             fraghdr->setCrcMode(CRC_COMPUTED);
             fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
@@ -907,7 +910,7 @@ void Udp::handleUpperPacket(Packet *p)
         fragment->insertAtFront(fraghdr);
         //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
 
-        EV_INFO << "Sending fragment " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
+        EV_INFO << "Sending fragment " << fragment << " over " << l3Protocol->getName() << ".\n";
         emit(packetSentSignal, fragment);
         emit(packetSentToLowerSignal, fragment);
         send(fragment, "ipOut");
@@ -1034,9 +1037,11 @@ void Udp::processUDPPacket(Packet *udpPacket)
     emit(packetReceivedFromLowerSignal, udpPacket);
     emit(packetReceivedSignal, udpPacket);
 
+    auto udpHeader = udpPacket->peekAtFront<UdpHeader>();
+
     udpPacket->removeTag<PacketProtocolTag>();
     b udpHeaderPopPosition = udpPacket->getFrontOffset();
-    auto udpHeader = udpPacket->popAtFront<UdpHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT);
+    //auto udpHeader = udpPacket->popAtFront<UdpHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT);
 
     // simulate checksum: discard packet if it has bit error
     EV_INFO << "Packet " << udpPacket->getName() << " received from network, dest port " << udpHeader->getDestinationPort() << "\n";
@@ -1062,6 +1067,21 @@ void Udp::processUDPPacket(Packet *udpPacket)
         numDroppedBadChecksum++;
         delete udpPacket;
         return;
+    }
+
+
+
+    if (udpHeader->getFragmentOffset() != 0 || udpHeader->getMoreFragments()) {
+        EV_DETAIL << "Datagram fragment: offset=" << udpHeader->getFragmentOffset()
+                          << ", MORE=" << (udpHeader->getMoreFragments() ? "true" : "false") << ".\n";
+
+        udpPacket = fragbuf.addFragment(udpPacket, simTime());
+        if (udpHeader->getMoreFragments()) {
+            EV_DETAIL << "No complete datagram yet.\n";
+            return;
+        }
+
+        EV_DETAIL << "This fragment completes the datagram.\n";
     }
 
     // remove lower layer paddings:
@@ -1654,7 +1674,7 @@ void Udp::handleEndTxPeriod(){
         fragment->insertAtFront(fraghdr);
         //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
 
-        EV_INFO << "Sending fragment " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
+        EV_INFO << "Sending fragment " << fragment << " over " << l3Protocol->getName() << ".\n";
         emit(packetSentSignal, fragment);
         emit(packetSentToLowerSignal, fragment);
         send(fragment, "ipOut");
@@ -1665,6 +1685,7 @@ void Udp::handleEndTxPeriod(){
     }else{
         offset = 0;
         numSent++;
+        numFragment = 0;
     }
 }
 // unused functions!

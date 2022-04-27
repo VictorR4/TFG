@@ -84,6 +84,7 @@ module Ipv4NetworkLayer like INetworkLayer
         ip: <default("Ipv4")> like IIpv4 {
             parameters:
                 @display("p=700,400;q=queue");
+                queue.packetCapacity = default(10000);
         }
         arp: <default("Arp")> like IArp {
             parameters:
@@ -114,7 +115,8 @@ module Ipv4NetworkLayer like INetworkLayer
         icmp.ipIn <-- mp.out++;
 
         mp.out++ --> ip.transportIn;
-        mp.in++ <-- ip.transportOut;
+        mp.in++ <-- Eth40G <-- ip.transportOut if !isRdma;
+        mp.in++ <-- ip.transportOut if isRdma;
 
         arp.ifOut  --> lp.in++;
         arp.ifIn <-- lp.out++;
@@ -126,5 +128,7 @@ module Ipv4NetworkLayer like INetworkLayer
 
         lp.out++ --> { @display("m=s"); } --> ifOut;
         lp.in++ <-- { @display("m=s"); } <-- ifIn;
+
+
 }
 

@@ -19,6 +19,8 @@
 #include "inet/networklayer/common/L3AddressTag_m.h"
 #include "inet/transportlayer/common/L4PortTag_m.h"
 #include "inet/linklayer/common/InterfaceTag_m.h"
+#include "inet/networklayer/ipv4/Ipv4Header_m.h"
+#include "inet/transportlayer/rdma/RdmaHeader_m.h"
 
 namespace inet {
 
@@ -181,6 +183,7 @@ void RdmaBasicApp::sendPacket()//Cambiado
 
     L3Address destAddr = chooseDestAddr();
     emit(packetSentSignal, packet);
+    EV_INFO << "Sending packet " << packet << " to lower layer\n";
     sendTo(packet, destAddr, destPort);
     numSent++;
 }
@@ -204,9 +207,11 @@ void RdmaBasicApp::refreshDisplay() const
 
 void RdmaBasicApp::processPacket(Packet *pk)
 {
+    EV << "Fragment " << pk << " received \n";
     int totalMessageLength = par("messageLength");
-    messageLength += pk->getTotalLength();
-    if(messageLength.get() >= totalMessageLength){
+    messageLength += (pk->getByteLength() - IPv4_MIN_HEADER_LENGTH.get());
+    if(messageLength >= totalMessageLength){
+        EV_INFO << "Packet received \n";
         emit(packetReceivedSignal, pk);
         //clocktime_t generationTime = payload->getGenerationTime();
         clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
@@ -214,7 +219,7 @@ void RdmaBasicApp::processPacket(Packet *pk)
         delete pk;
         latency += (simTime() - generationTime);
         numReceived++;
-        messageLength = B(0);
+        messageLength = 0;
     }
 
 }

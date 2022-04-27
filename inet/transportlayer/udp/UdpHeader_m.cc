@@ -352,6 +352,17 @@ void UdpHeader::setFragmentOffset(uint16_t fragmentOffset)
     this->fragmentOffset = fragmentOffset;
 }
 
+uint16_t UdpHeader::getIdentification() const
+{
+    return this->identification;
+}
+
+void UdpHeader::setIdentification(uint16_t identification)
+{
+    handleChange();
+    this->identification = identification;
+}
+
 class UdpHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:

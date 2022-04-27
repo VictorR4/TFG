@@ -237,6 +237,7 @@ void UdpBasicApp::refreshDisplay() const
 
 void UdpBasicApp::processPacket(Packet *pk)
 {
+    EV_INFO << "Packet " << pk->getName() << " received \n";
     int totalMessageLength = par("messageLength");
     messageLength += pk->getTotalLength();
     if (messageLength.get() >= totalMessageLength) {

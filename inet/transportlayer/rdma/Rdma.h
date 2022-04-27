@@ -94,6 +94,7 @@ class INET_API Rdma: public TransportProtocolBase
     int payloadLength;
     int fragmentLength; // payload only (without header)
     int offsetBase;
+    int noOfFragments = 0;
 
     std::string fragMsgName;
     L3Address srcAddr, destAddr;

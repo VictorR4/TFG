@@ -109,21 +109,32 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     clocktime_t latencySending = 0;
     clocktime_t latencyReception = 0;
 
-    //Variables to handle a packet that must be fragmented
+    //self messages
     cMessage *endTxTimer = nullptr;
+    cMessage *endUpperTxTimer = nullptr;
+
+    //Variables to handle a packet that must be fragmented
     int offset = 0;
     int headerLength;
     int payloadLength;
     int fragmentLength; // payload only (without header)
     int offsetBase;
+    int noOfFragments = 0;
 
     std::string fragMsgName;
     L3Address srcAddr, destAddr;
     Ptr<const Ipv4Header> ipv4Header;
     Packet *packet = nullptr;
+    Packet *currentFragment = nullptr;
+    Packet *packetToUpperLayer = nullptr;
 
     cGate *lowerLayerOut = nullptr;
     cChannel *transmissionChannel = nullptr;
+    cChannel *upperTransmissionChannel = nullptr;
+
+    cPacketQueue *queue = nullptr;
+    cPacketQueue *pendingPacket = nullptr;
+    cPacketQueue *queueToUpperLayer = nullptr;
 
     // hooks
     typedef std::list<QueuedDatagramForHook> DatagramQueueForHooks;
@@ -183,6 +194,7 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     // process an own message
     virtual void handleSelfMessage(cMessage *msg);
     virtual void handleEndTxPeriod();
+    virtual void handleEndUpperTxPeriod();
 
     /**
      * Routes and sends datagram received from higher layers.

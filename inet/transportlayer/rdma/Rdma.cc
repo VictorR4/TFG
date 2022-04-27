@@ -153,6 +153,7 @@ ushort Rdma::getEphemeralPort()//Cambiado
 //Handle a msg from application-layer and send it to the next layer
 void Rdma::handleUpperPacket(Packet *p)//Cambiado
 {
+    EV_INFO << "Receive packet " << p << " from upper layer\n";
     packet = p;
     emit(packetReceivedFromUpperSignal, packet); //emit a signal indicating the arrival of a msg from app-layer
 
@@ -245,15 +246,17 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
         if (fragmentLength <= 0)
             throw cRuntimeError("Cannot fragment datagram: RDMA_MAX_MESSAGE_SIZE=%d too small for header size (%d bytes)", RDMA_MAX_MESSAGE_SIZE, headerLength); // exception and not ICMP because this is likely a simulation configuration error, not something one wants to simulate
 
-        int noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
+        if(noOfFragments == 0){
+        noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
         EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
+        }
 
         // create and send fragments
         fragMsgName = packet->getName();
         fragMsgName += "-frag-";
 
-        //int offset = 0;
-        //while (offset < payloadLength) {
+        offset = 0;
+        while (offset < payloadLength) {
             bool lastFragment = (offset + fragmentLength >= payloadLength);
             // length equal to fragmentLength, except for last fragment;
             int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
@@ -268,7 +271,7 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
 
             ASSERT(fragment->getByteLength() == 0);
             auto fraghdr = staticPtrCast<RdmaHeader>(rdmaHeader->dupShared());
-            const auto &fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+            const auto& fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
             ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
             fragment->insertAtBack(fragData);
 
@@ -294,21 +297,63 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
 
             fragment->insertAtFront(fraghdr);
             //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
-
-            EV_INFO << "Sending app packet " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
-            emit(packetSentSignal, fragment);
-            emit(packetSentToLowerSignal, fragment);
+            EV_INFO << "Sending fragment " << fragment << " over " << l3Protocol->getName() << ".\n";
             send(fragment, "lowerLayerOut");
-
             offset += thisFragmentLength;
+        }
+        numSent++;
 
-            //cChannel *ch = gate("lowerLayerOut")->findTransmissionChannel();
-            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+//            bool lastFragment = (offset + fragmentLength >= payloadLength);
+//            // length equal to fragmentLength, except for last fragment;
+//            int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
+//
+//            std::string curFragName = fragMsgName + std::to_string(offset);
+//            if (lastFragment)
+//                curFragName += "-last";
+//            Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
+//
+//            // copy Tags from packet to fragment
+//            fragment->copyTags(*packet);
+//
+//            ASSERT(fragment->getByteLength() == 0);
+//            auto fraghdr = staticPtrCast<RdmaHeader>(rdmaHeader->dupShared());
+//            const auto &fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+//            ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
+//            fragment->insertAtBack(fragData);
+//
+//            // "more fragments" bit is unchanged in the last fragment, otherwise true
+//            if (!lastFragment)
+//                fraghdr->setMoreFragments(true);
+//
+//            fraghdr->setFragmentOffset(offsetBase + offset);
+//            fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
+//
+//            if (crcMode == CRC_COMPUTED) {
+//                fraghdr->setCrcMode(CRC_COMPUTED);
+//                fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
+//            } else {
+//                fraghdr->setCrcMode(crcMode);
+//                insertCrc(l3Protocol, srcAddr, destAddr, fraghdr, fragment);
+//            }
+//
+//            insertTransportProtocolHeader(fragment, Protocol::rdma, fraghdr);
+//            fragment->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
+//            fragment->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
+//            fragment->setKind(0);
+//
+//            fragment->insertAtFront(fraghdr);
+//            //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+//
+//            EV_INFO << "Sending app packet " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
+//            emit(packetSentSignal, fragment);
+//            emit(packetSentToLowerSignal, fragment);
+//            send(fragment, "lowerLayerOut");
+//
+//            offset += thisFragmentLength;
+//
+//            //cChannel *ch = gate("lowerLayerOut")->findTransmissionChannel();
+//            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
 
-
-
-        //}
-        //numSent++;
     }
 
 }

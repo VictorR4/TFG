@@ -79,6 +79,7 @@ class INET_API UdpHeader : public ::inet::TransportHeaderBase
     clocktime_t generationTime;
     bool moreFragments = false;
     uint16_t fragmentOffset = 0;
+    uint16_t identification = 0;
 
   private:
     void copy(const UdpHeader& other);
@@ -112,6 +113,8 @@ class INET_API UdpHeader : public ::inet::TransportHeaderBase
     virtual void setMoreFragments(bool moreFragments);
     virtual uint16_t getFragmentOffset() const;
     virtual void setFragmentOffset(uint16_t fragmentOffset);
+    virtual uint16_t getIdentification() const;
+    virtual void setIdentification(uint16_t identification);
 
   public:
     virtual unsigned int getSourcePort() const override { return getSrcPort(); }

@@ -16,6 +16,7 @@
 //
 
 package inet.networklayer.ipv4;
+import inet.queueing.contract.IPacketQueue;
 
 moduleinterface IIpv4
 {
@@ -26,6 +27,7 @@ moduleinterface IIpv4
         output transportOut @labels(Ipv4ControlInfo/up,TcpHeader,UdpHeader,SctpHeader);
         input queueIn @labels(Ipv4Header,ArpPacket,Ieee802Ctrl);
         output queueOut @labels(Ipv4Header,ArpPacket,Ieee802Ctrl);
+        
 }
 
 //
@@ -122,5 +124,12 @@ simple Ipv4 like IIpv4
         output transportOut @labels(Ipv4ControlInfo/up,TcpHeader,UdpHeader,SctpHeader);
         input queueIn @labels(Ipv4Header,ArpPacket,Ieee802Ctrl);
         output queueOut @labels(Ipv4Header,ArpPacket,Ieee802Ctrl);
+//	submodules:
+//	    queue: <default("EthernetQueue")> like IPacketQueue {
+//            parameters:
+//                packetCapacity = default(1000);
+//                @display("p=100,100");
+//        }
+            
 }
 

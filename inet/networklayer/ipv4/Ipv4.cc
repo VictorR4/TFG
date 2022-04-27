@@ -55,6 +55,7 @@
 #include "inet/common/TimeTag_m.h"
 #include "inet/common/ProtocolTag_m.h"
 #include "inet/common/Protocol.h"
+#include "inet/transportlayer/udp/UdpHeader_m.h"
 
 namespace inet {
 
@@ -112,8 +113,13 @@ void Ipv4::initialize(int stage)
 
         lowerLayerOut = gate("queueOut");
         transmissionChannel = lowerLayerOut->findTransmissionChannel();
+        upperTransmissionChannel = gate("transportOut")->findTransmissionChannel();
         endTxTimer = new cMessage("EndTransmission", 103);
+        endUpperTxTimer= new cMessage("EndTransmission", 103);
 
+        queue = new cPacketQueue("receiveQueue");
+        pendingPacket = new cPacketQueue("senderQueue");
+        queueToUpperLayer = new cPacketQueue("ToUpperLayerQueue");
 
         WATCH(numMulticast);
         WATCH(numLocalDeliver);
@@ -236,6 +242,8 @@ void Ipv4::handleMessageWhenUp(cMessage *msg)
 void Ipv4::handleSelfMessage(cMessage *msg){
     if (msg == endTxTimer)
             handleEndTxPeriod();
+    else if(msg == endUpperTxTimer)
+        handleEndUpperTxPeriod();
 }
 
 bool Ipv4::verifyCrc(const Ptr<const Ipv4Header>& ipv4Header)
@@ -425,6 +433,7 @@ void Ipv4::preroutingFinish(Packet *packet)
 
 void Ipv4::handlePacketFromHL(Packet *packet)
 {
+
     if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
         clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
         packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
@@ -778,10 +787,20 @@ void Ipv4::reassembleAndDeliver(Packet *packet)
             insertNetworkProtocolHeader(packet, Protocol::ipv4, ipv4Header);
         }
         EV_DETAIL << "This fragment completes the datagram.\n";
+
     }
 
-    if (datagramLocalInHook(packet) == INetfilter::IHook::ACCEPT)
-        reassembleAndDeliverFinish(packet);
+    queueToUpperLayer->insert(packet);
+    if(packetToUpperLayer == nullptr){
+        if(!queueToUpperLayer->isEmpty()){
+            packetToUpperLayer = check_and_cast<Packet *>(queueToUpperLayer->pop());
+            if (datagramLocalInHook(packet) == INetfilter::IHook::ACCEPT){
+                    reassembleAndDeliverFinish(packetToUpperLayer);
+                }
+        }
+    }
+
+
 }
 
 void Ipv4::reassembleAndDeliverFinish(Packet *packet)
@@ -812,6 +831,8 @@ void Ipv4::reassembleAndDeliverFinish(Packet *packet)
         emit(packetSentToUpperSignal, packet);
         send(packet, "transportOut");
         numLocalDeliver++;
+        //if(!queueToUpperLayer->isEmpty())
+            scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
     }
     else if (hasSocket) {
         delete packet;
@@ -845,17 +866,28 @@ void Ipv4::decapsulate(Packet *packet)
     packet->addTagIfAbsent<HopLimitInd>()->setHopLimit(ipv4Header->getTimeToLive());
 }
 
-void Ipv4::fragmentPostRouting(Packet *packet)
+void Ipv4::fragmentPostRouting(Packet *p)
 {
-    const NetworkInterface *destIE = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
+    const NetworkInterface *destIE = ift->getInterfaceById(p->getTag<InterfaceReq>()->getInterfaceId());
     // fill in source address
-    if (packet->peekAtFront<Ipv4Header>()->getSrcAddress().isUnspecified()) {
-        auto ipv4Header = removeNetworkProtocolHeader<Ipv4Header>(packet);
+    if (p->peekAtFront<Ipv4Header>()->getSrcAddress().isUnspecified()) {
+        auto ipv4Header = removeNetworkProtocolHeader<Ipv4Header>(p);
         ipv4Header->setSrcAddress(destIE->getProtocolData<Ipv4InterfaceData>()->getIPAddress());
-        insertNetworkProtocolHeader(packet, Protocol::ipv4, ipv4Header);
+        insertNetworkProtocolHeader(p, Protocol::ipv4, ipv4Header);
     }
-    if (datagramPostRoutingHook(packet) == INetfilter::IHook::ACCEPT)
+    if (datagramPostRoutingHook(p) == INetfilter::IHook::ACCEPT){
+        EV_DETAIL << "Packet " << p << " inserted in the queue" "\n";
+        queue->insert(p);
+        if(packet == nullptr){
+            if(!queue->isEmpty()){
+                packet = check_and_cast<Packet *>(queue->pop());
+                EV_DETAIL << "Packet " << packet << " extracted from the queue" "\n";
+                //offset = 0;
+            }
+        }
         fragmentAndSend(packet);
+    }
+
 }
 
 void Ipv4::setComputedCrc(Ptr<Ipv4Header>& ipv4Header)
@@ -899,31 +931,31 @@ void Ipv4::insertCrc(const Ptr<Ipv4Header>& ipv4Header)
 
 void Ipv4::fragmentAndSend(Packet *p)
 {
-    packet = p;
-    if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
-        clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
-        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+    currentFragment= p;
+    if(currentFragment->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
+        clocktime_t actualLatency = simTime() - currentFragment->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
+        currentFragment->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
         latencyReception += actualLatency;
     }
 
-    const NetworkInterface *destIE = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
-    Ipv4Address nextHopAddr = getNextHop(packet);
+    const NetworkInterface *destIE = ift->getInterfaceById(currentFragment->getTag<InterfaceReq>()->getInterfaceId());
+    Ipv4Address nextHopAddr = getNextHop(currentFragment);
     if (nextHopAddr.isUnspecified()) {
-        nextHopAddr = packet->peekAtFront<Ipv4Header>()->getDestAddress();
-        packet->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHopAddr);
+        nextHopAddr = currentFragment->peekAtFront<Ipv4Header>()->getDestAddress();
+        currentFragment->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHopAddr);
     }
 
     //const auto& ipv4Header = packet->peekAtFront<Ipv4Header>();
-    ipv4Header = packet->peekAtFront<Ipv4Header>();
+    ipv4Header = currentFragment->peekAtFront<Ipv4Header>();
 
     // hop counter check
     if (ipv4Header->getTimeToLive() <= 0) {
         // drop datagram, destruction responsibility in ICMP
         PacketDropDetails details;
         details.setReason(HOP_LIMIT_REACHED);
-        emit(packetDroppedSignal, packet, &details);
+        emit(packetDroppedSignal, currentFragment, &details);
         EV_WARN << "datagram TTL reached zero, sending ICMP_TIME_EXCEEDED\n";
-        sendIcmpError(packet, -1 /*TODO*/, ICMP_TIME_EXCEEDED, 0);
+        sendIcmpError(currentFragment, -1 /*TODO*/, ICMP_TIME_EXCEEDED, 0);
         numDropped++;
         return;
     }
@@ -931,43 +963,52 @@ void Ipv4::fragmentAndSend(Packet *p)
     int mtu = destIE->getMtu();
 
     // send datagram straight out if it doesn't require fragmentation (note: mtu==0 means infinite mtu)
-    if (mtu == 0 || packet->getByteLength() <= mtu) {
+    if (mtu == 0 || currentFragment->getByteLength() <= mtu) {
         if (crcMode == CRC_COMPUTED) {
-            auto ipv4Header = removeNetworkProtocolHeader<Ipv4Header>(packet);
+            auto ipv4Header = removeNetworkProtocolHeader<Ipv4Header>(currentFragment);
             setComputedCrc(ipv4Header);
-            insertNetworkProtocolHeader(packet, Protocol::ipv4, ipv4Header);
+            insertNetworkProtocolHeader(currentFragment, Protocol::ipv4, ipv4Header);
         }
-        sendDatagramToOutput(packet);
+        sendDatagramToOutput(currentFragment);
+        if(isRdma){
+            offset = 0;
+            packet = nullptr;
+            currentFragment = nullptr;
+            ASSERT(packet == nullptr);
+            ASSERT(currentFragment == nullptr);
+        }
         return;
     }
 
     // if "don't fragment" bit is set, throw datagram away and send ICMP error message
     if (ipv4Header->getDontFragment()) {
         PacketDropDetails details;
-        emit(packetDroppedSignal, packet, &details);
+        emit(packetDroppedSignal, currentFragment, &details);
         EV_WARN << "datagram larger than MTU and don't fragment bit set, sending ICMP_DESTINATION_UNREACHABLE\n";
-        icmp->sendPtbMessage(packet, mtu);
+        icmp->sendPtbMessage(currentFragment, mtu);
         numDropped++;
-        delete packet;
+        delete currentFragment;
         return;
     }
 
     // FIXME some IP options should not be copied into each fragment, check their COPY bit
     headerLength = B(ipv4Header->getHeaderLength()).get();
-    payloadLength = B(packet->getDataLength()).get() - headerLength;
+    payloadLength = B(currentFragment->getDataLength()).get() - headerLength;
     fragmentLength = ((mtu - headerLength) / 8) * 8; // payload only (without header)
     offsetBase = ipv4Header->getFragmentOffset();
     if (fragmentLength <= 0)
         throw cRuntimeError("Cannot fragment datagram: MTU=%d too small for header size (%d bytes)", mtu, headerLength); // exception and not ICMP because this is likely a simulation configuration error, not something one wants to simulate
 
-    int noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
-    EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
+    if(noOfFragments == 0){
+        noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
+        EV_DETAIL << "Breaking datagram " << currentFragment->getName() << " into " << noOfFragments << " fragments\n";
+    }
 
     // create and send fragments
-    fragMsgName = packet->getName();
+    fragMsgName = currentFragment->getName();
     fragMsgName += "-frag-";
 
-    offset = 0;
+    //offset = 0;
     if(isRdma){
         while (offset < payloadLength) {
             bool lastFragment = (offset + fragmentLength >= payloadLength);
@@ -980,11 +1021,11 @@ void Ipv4::fragmentAndSend(Packet *p)
             Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
 
             // copy Tags from packet to fragment
-            fragment->copyTags(*packet);
+            fragment->copyTags(*currentFragment);
 
             ASSERT(fragment->getByteLength() == 0);
             auto fraghdr = staticPtrCast<Ipv4Header>(ipv4Header->dupShared());
-            const auto& fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+            const auto& fragData = currentFragment->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
             ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
             fragment->insertAtBack(fragData);
 
@@ -1002,6 +1043,11 @@ void Ipv4::fragmentAndSend(Packet *p)
             sendDatagramToOutput(fragment);
             offset += thisFragmentLength;
         }
+        offset = 0;
+        packet = nullptr;
+        currentFragment = nullptr;
+        ASSERT(packet == nullptr);
+        ASSERT(currentFragment == nullptr);
 
     }else{
         bool lastFragment = (offset + fragmentLength >= payloadLength);
@@ -1014,11 +1060,11 @@ void Ipv4::fragmentAndSend(Packet *p)
         Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
 
         // copy Tags from packet to fragment
-        fragment->copyTags(*packet);
+        fragment->copyTags(*currentFragment);
 
         ASSERT(fragment->getByteLength() == 0);
         auto fraghdr = staticPtrCast<Ipv4Header>(ipv4Header->dupShared());
-        const auto& fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
+        const auto& fragData = currentFragment->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
         ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
         fragment->insertAtBack(fragData);
 
@@ -1036,7 +1082,6 @@ void Ipv4::fragmentAndSend(Packet *p)
 
         sendDatagramToOutput(fragment);
         offset += thisFragmentLength;
-
 
     }
 
@@ -1156,6 +1201,7 @@ void Ipv4::sendDatagramToOutput(Packet *packet)
             pendingPackets[nextHopAddr].insert(packet);
         }
         else {
+
             ASSERT2(pendingPackets.find(nextHopAddr) == pendingPackets.end(), "Ipv4-ARP error: nextHopAddr found in ARP table, but Ipv4 queue for nextHopAddr not empty");
             packet->addTagIfAbsent<MacAddressReq>()->setDestAddress(nextHopMacAddr);
             sendPacketToNIC(packet);
@@ -1178,9 +1224,16 @@ void Ipv4::arpResolutionCompleted(IArp::Notification *entry)
             EV << "Sending out queued packet " << packet << "\n";
             packet->addTagIfAbsent<InterfaceReq>()->setInterfaceId(entry->ie->getInterfaceId());
             packet->addTagIfAbsent<MacAddressReq>()->setDestAddress(entry->macAddress);
-            sendPacketToNIC(packet);
+            //if(!transmissionChannel->isBusy())
+                sendPacketToNIC(packet);
+           // else{
+            //    pendingPacket->insert(packet);
+           // }
+            //queue->insert(packet);
         }
         pendingPackets.erase(it);
+        //fragmentAndSend(check_and_cast<Packet *>(queue->pop()));
+
     }
 }
 
@@ -1219,27 +1272,76 @@ MacAddress Ipv4::resolveNextHopMacAddress(cPacket *packet, Ipv4Address nextHopAd
     return arp->resolveL3Address(nextHopAddr, destIE);
 }
 
-void Ipv4::sendPacketToNIC(Packet *packet)
+void Ipv4::sendPacketToNIC(Packet *p)
 {
-    auto networkInterface = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
-    EV_INFO << "Sending " << packet << " to output interface = " << networkInterface->getInterfaceName() << ".\n";
+    auto networkInterface = ift->getInterfaceById(p->getTag<InterfaceReq>()->getInterfaceId());
+    EV_INFO << "Sending " << p << " to output interface = " << networkInterface->getInterfaceName() << ".\n";
     if(isRdma)//Ultimocambio
-        packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
+        p->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
     else
-        packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ipv4);
-    packet->addTagIfAbsent<DispatchProtocolInd>()->setProtocol(&Protocol::ipv4);
+        p->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ipv4);
+    p->addTagIfAbsent<DispatchProtocolInd>()->setProtocol(&Protocol::ipv4);
     auto protocol = networkInterface->getProtocol();
     if (protocol != nullptr)
-        packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(protocol);
+        p->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(protocol);
     else
-        packet->removeTagIfPresent<DispatchProtocolReq>();
-    ASSERT(packet->findTag<InterfaceReq>() != nullptr);
-
-    send(packet, "queueOut");
+        p->removeTagIfPresent<DispatchProtocolReq>();
+    ASSERT(p->findTag<InterfaceReq>() != nullptr);
 
 
-    if(!isRdma && packet->getByteLength() > ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId())->getMtu())
-        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+    if(transmissionChannel){
+        if(!transmissionChannel->isBusy()){
+            send(p, "queueOut");
+            if(p->peekAtFront<Ipv4Header>()->getMoreFragments() || !queue->isEmpty()){
+                scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+            }else{
+                offset = 0;
+                packet = nullptr;
+                currentFragment = nullptr;
+                ASSERT(packet == nullptr);
+                ASSERT(currentFragment == nullptr);
+            }
+        }
+        else{
+            pendingPacket->insert(p);
+        }
+    }else{
+        send(p, "queueOut");
+    }
+/*
+    if(!transmissionChannel->isBusy()){
+        send(p, "queueOut");
+        if(!isRdma){
+                if(p->peekAtFront<Ipv4Header>()->getMoreFragments() || !queue->isEmpty()){
+                    scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+                }
+                else{
+                    offset = 0;
+                    packet = nullptr;
+                    currentFragment = nullptr;
+                    ASSERT(packet == nullptr);
+                    ASSERT(currentFragment == nullptr);
+                }
+            }else
+                packet = nullptr;
+    }else{
+        pendingPacket->insert(p);
+    }
+*/
+
+
+//    if(!isRdma && packet->peekAtFront<Ipv4Header>()->getMoreFragments()/*packet->getByteLength() == ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId())->getMtu()*/)
+//        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+//    else{
+//        if(!isRdma)
+//            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+//        else
+//            packet = nullptr;
+//    }
+
+
+
+
 }
 
 // NetFilter:
@@ -1505,60 +1607,34 @@ void Ipv4::sendIcmpError(Packet *origPacket, int inputInterfaceId, IcmpType type
 
 void Ipv4::handleEndTxPeriod(){
     if(offset < payloadLength){
-        bool lastFragment = (offset + fragmentLength >= payloadLength);
-        // length equal to fragmentLength, except for last fragment;
-        int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
+        if(!pendingPacket->isEmpty()){
+            fragmentAndSend(check_and_cast<Packet *>(pendingPacket->pop()));
+        }else{
+            fragmentAndSend(packet);
+        }
 
-        std::string curFragName = fragMsgName + std::to_string(offset);
-        if (lastFragment)
-            curFragName += "-last";
-        Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
-
-        // copy Tags from packet to fragment
-        fragment->copyTags(*packet);
-
-        ASSERT(fragment->getByteLength() == 0);
-        auto fraghdr = staticPtrCast<Ipv4Header>(ipv4Header->dupShared());
-        const auto &fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
-        ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
-        fragment->insertAtBack(fragData);
-
-        // "more fragments" bit is unchanged in the last fragment, otherwise true
-        if (!lastFragment)
-            fraghdr->setMoreFragments(true);
-
-        fraghdr->setFragmentOffset(offsetBase + offset);
-        fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
-
-        if (crcMode == CRC_COMPUTED) {
-            setComputedCrc(fraghdr);
-            //fraghdr->setCrcMode(CRC_COMPUTED);
-            //fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
-        } /*else {
-            fraghdr->setCrcMode(crcMode);
-            insertCrc(l3Protocol, srcAddr, destAddr, fraghdr, fragment);
-        }*/
-
-        /*insertTransportProtocolHeader(fragment, Protocol::udp, fraghdr);
-        fragment->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
-        fragment->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::udp);
-        fragment->setKind(0);*/
-
-        fragment->insertAtFront(fraghdr);
-        //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
-
-        //EV_INFO << "Sending fragment " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
-        //emit(packetSentSignal, fragment);
-        //emit(packetSentToLowerSignal, fragment);
-        //send(fragment, "queueOut");
-        sendDatagramToOutput(fragment);
-
-        offset += thisFragmentLength;
-
-        //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
     }else{
         offset = 0;
+        packet = nullptr;
+        currentFragment = nullptr;
+        ASSERT(packet == nullptr);
+        ASSERT(currentFragment == nullptr);
+        if (!queue->isEmpty()) {
+            packet = check_and_cast<Packet *>(queue->pop());
+            EV_DETAIL << "Packet " << packet << " extracted from the queue" "\n";
+            fragmentAndSend(packet);
+        }
+
         //numSent++;
+    }
+}
+void Ipv4::handleEndUpperTxPeriod(){
+    packetToUpperLayer = nullptr;
+    ASSERT(packetToUpperLayer == nullptr);
+
+    if(!queueToUpperLayer->isEmpty()){
+        packetToUpperLayer = check_and_cast<Packet *>(queueToUpperLayer->pop());
+        reassembleAndDeliverFinish(packetToUpperLayer);
     }
 }
 } // namespace inet

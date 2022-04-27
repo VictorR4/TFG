@@ -33,7 +33,7 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     clocktime_t stopTime;
     bool dontFragment = false;
     const char *packetName = nullptr;
-    B messageLength = B(0);
+    int messageLength = 0;
 
     // state
     ClockEvent *selfMsg = nullptr;
