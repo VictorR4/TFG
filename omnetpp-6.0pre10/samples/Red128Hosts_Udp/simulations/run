@@ -1,0 +1,4 @@
+#!/bin/sh
+cd `dirname $0`
+../src/red128hosts_udp -n .:../src $*
+# for shared lib, use: opp_run -l ../src/red128hosts_udp -n .:../src $*

@@ -1,7 +1,0 @@
-# VLAN ID   MAC Address     Interface
-  0         host1           eth0
-  0         host2           eth1
-  0         host3           eth2
-  0         host4           eth3
-  0         switch5        	eth4
-  0         switch6        	eth5
