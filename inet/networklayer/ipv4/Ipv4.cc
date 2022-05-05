@@ -883,9 +883,10 @@ void Ipv4::fragmentPostRouting(Packet *p)
                 packet = check_and_cast<Packet *>(queue->pop());
                 EV_DETAIL << "Packet " << packet << " extracted from the queue" "\n";
                 //offset = 0;
+                fragmentAndSend(packet);
             }
         }
-        fragmentAndSend(packet);
+
     }
 
 }
@@ -1006,7 +1007,7 @@ void Ipv4::fragmentAndSend(Packet *p)
 
     // create and send fragments
     fragMsgName = currentFragment->getName();
-    fragMsgName += "-frag-";
+    fragMsgName += "-frag2-";
 
     //offset = 0;
     if(isRdma){

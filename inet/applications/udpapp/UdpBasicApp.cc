@@ -56,6 +56,10 @@ void UdpBasicApp::initialize(int stage)
         if (stopTime >= CLOCKTIME_ZERO && stopTime < startTime)
             throw cRuntimeError("Invalid startTime/stopTime parameters");
         selfMsg = new ClockEvent("sendTimer");
+        lowerLayerOut = gate("socketOut");
+        transmissionChannel = lowerLayerOut->findTransmissionChannel();
+        endTxTimer = new cMessage("EndTransmission", 103);
+        queue = new cPacketQueue("receiveQueue");
     }
 }
 
@@ -125,10 +129,15 @@ void UdpBasicApp::sendPacket()
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
     packet->insertAtBack(payload);
     packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Mio
-    L3Address destAddr = chooseDestAddr();
+    destAddr = chooseDestAddr();
     emit(packetSentSignal, packet);
-    socket.sendTo(packet, destAddr, destPort);
-    numSent++;
+    queue->insert(packet);
+    if(!transmissionChannel->isBusy()){
+        socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
+        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+        numSent++;
+    }
+
 }
 
 void UdpBasicApp::processStart()
@@ -184,30 +193,33 @@ void UdpBasicApp::processStop()
 
 void UdpBasicApp::handleMessageWhenUp(cMessage *msg)
 {
+        if (msg->isSelfMessage()) {
+            if(msg == endTxTimer){
+                handleEndTxPeriod();
+            }
+            else{
+                ASSERT(msg == selfMsg);
+                switch (selfMsg->getKind()) {
+                    case START:
+                        processStart();
+                        break;
 
-    if (msg->isSelfMessage()) {
-        ASSERT(msg == selfMsg);
-        switch (selfMsg->getKind()) {
-            case START:
-                processStart();
-                break;
+                    case SEND:
+                        processSend();
+                        break;
 
-            case SEND:
-                processSend();
-                break;
+                    case STOP:
+                        processStop();
+                        break;
 
-            case STOP:
-                processStop();
-                break;
-
-            default:
-                throw cRuntimeError("Invalid kind %d in self message", (int)selfMsg->getKind());
+                    default:
+                        throw cRuntimeError("Invalid kind %d in self message", (int)selfMsg->getKind());
+                }
+            }
         }
-    }
-    else
-        socket.processMessage(msg);
+        else
+            socket.processMessage(msg);
 }
-
 void UdpBasicApp::socketDataArrived(UdpSocket *socket, Packet *packet)
 {
     // process incoming packet
@@ -273,5 +285,12 @@ void UdpBasicApp::handleCrashOperation(LifecycleOperation *operation)
     socket.destroy(); // TODO  in real operating systems, program crash detected by OS and OS closes sockets of crashed programs.
 }
 
+void UdpBasicApp::handleEndTxPeriod(){
+    if(!queue->isEmpty()){
+        socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
+        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+        numSent++;
+    }
+}
 } // namespace inet
 

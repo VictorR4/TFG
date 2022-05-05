@@ -94,6 +94,7 @@ void Udp::initialize(int stage)
         lowerLayerOut = gate("ipOut");
         transmissionChannel = lowerLayerOut->findTransmissionChannel();
         endTxTimer = new cMessage("EndTransmission", 103);
+        queue = new cPacketQueue("receiveQueue");
 
         WATCH(numSent);
         WATCH(numPassedUp);
@@ -137,8 +138,17 @@ void Udp::handleMessageWhenUp(cMessage *msg)
     else if (msg->getArrivalGateId() == findGate("appIn"))
         if(msg->getKind() == UDP_C_BIND)
             handleUpperCommand(msg);
-        else
-            handleUpperPacket(check_and_cast<Packet *>(msg));
+        else{
+            Packet *pkt = check_and_cast<Packet *>(msg);
+            queue->insert(pkt);
+            if(packet == nullptr){
+                if(!queue->isEmpty()){
+                    packet = check_and_cast<Packet *>(queue->pop());
+                    handleUpperPacket(packet);
+                }
+            }
+
+        }
     else if (msg->getArrivalGateId() == findGate("ipIn"))
         handleLowerPacket(check_and_cast<Packet *>(msg));
     else
@@ -735,6 +745,12 @@ void Udp::setMulticastSourceFilter(SockDesc *sd, NetworkInterface *ie, L3Address
 //Only method that participate in the sending of a packet to ip layer
 void Udp::handleUpperPacket(Packet *p)
 {
+ /*   queue->insert(p);
+    if(packet == nullptr){
+        if(!queue->isEmpty())
+            packet = check_and_cast<Packet *>(queue->pop());
+    }
+*/
     packet = p;
     if (packet->getKind() != UDP_C_DATA)
         throw cRuntimeError("Unknown packet command code (message kind) %d received from app", packet->getKind());
@@ -848,6 +864,7 @@ void Udp::handleUpperPacket(Packet *p)
         emit(packetSentToLowerSignal, packet);
 
         send(packet, "ipOut");
+        packet = nullptr;
         numSent++;
     }else{
         // FIXME some IP options should not be copied into each fragment, check their COPY bit
@@ -915,9 +932,9 @@ void Udp::handleUpperPacket(Packet *p)
         emit(packetSentToLowerSignal, fragment);
         send(fragment, "ipOut");
 
+        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
         offset += thisFragmentLength;
 
-        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
         //numSent++;
     }
 
@@ -1677,6 +1694,7 @@ void Udp::handleEndTxPeriod(){
         EV_INFO << "Sending fragment " << fragment << " over " << l3Protocol->getName() << ".\n";
         emit(packetSentSignal, fragment);
         emit(packetSentToLowerSignal, fragment);
+
         send(fragment, "ipOut");
 
         offset += thisFragmentLength;
@@ -1684,8 +1702,16 @@ void Udp::handleEndTxPeriod(){
         scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
     }else{
         offset = 0;
+        packet = nullptr;
         numSent++;
         numFragment = 0;
+        ASSERT(packet == nullptr);
+        if (!queue->isEmpty()) {
+            packet = check_and_cast<Packet *>(queue->pop());
+            EV_DETAIL << "Packet " << packet << " extracted from the queue" "\n";
+            handleUpperPacket(packet);
+        }
+
     }
 }
 // unused functions!

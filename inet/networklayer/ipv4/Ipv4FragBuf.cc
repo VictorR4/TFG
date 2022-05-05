@@ -83,7 +83,7 @@ Packet *Ipv4FragBuf::addFragment(Packet *packet, simtime_t now)
     if (curBuf->buf.isComplete()) {
         // datagram complete: deallocate buffer and return complete datagram
         std::string pkName(curBuf->packet->getName());
-        std::size_t found = pkName.find("-frag-");
+        std::size_t found = pkName.find("-frag2-");
         if (found != std::string::npos)
             pkName.resize(found);
         auto hdr = Ptr<Ipv4Header>(curBuf->packet->peekAtFront<Ipv4Header>()->dup());

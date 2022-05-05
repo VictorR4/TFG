@@ -155,6 +155,7 @@ class INET_API Udp : public TransportProtocolBase
     cGate *lowerLayerOut = nullptr;
     cChannel *transmissionChannel = nullptr;
     int numFragment = 0;
+    cPacketQueue *queue = nullptr;
 
 
     UdpFragBuf fragbuf; // fragmentation reassembly buffer

@@ -303,57 +303,6 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
         }
         numSent++;
 
-//            bool lastFragment = (offset + fragmentLength >= payloadLength);
-//            // length equal to fragmentLength, except for last fragment;
-//            int thisFragmentLength = lastFragment ? payloadLength - offset : fragmentLength;
-//
-//            std::string curFragName = fragMsgName + std::to_string(offset);
-//            if (lastFragment)
-//                curFragName += "-last";
-//            Packet *fragment = new Packet(curFragName.c_str()); // TODO add offset or index to fragment name
-//
-//            // copy Tags from packet to fragment
-//            fragment->copyTags(*packet);
-//
-//            ASSERT(fragment->getByteLength() == 0);
-//            auto fraghdr = staticPtrCast<RdmaHeader>(rdmaHeader->dupShared());
-//            const auto &fragData = packet->peekDataAt(B(headerLength + offset), B(thisFragmentLength));
-//            ASSERT(fragData->getChunkLength() == B(thisFragmentLength));
-//            fragment->insertAtBack(fragData);
-//
-//            // "more fragments" bit is unchanged in the last fragment, otherwise true
-//            if (!lastFragment)
-//                fraghdr->setMoreFragments(true);
-//
-//            fraghdr->setFragmentOffset(offsetBase + offset);
-//            fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
-//
-//            if (crcMode == CRC_COMPUTED) {
-//                fraghdr->setCrcMode(CRC_COMPUTED);
-//                fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
-//            } else {
-//                fraghdr->setCrcMode(crcMode);
-//                insertCrc(l3Protocol, srcAddr, destAddr, fraghdr, fragment);
-//            }
-//
-//            insertTransportProtocolHeader(fragment, Protocol::rdma, fraghdr);
-//            fragment->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
-//            fragment->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
-//            fragment->setKind(0);
-//
-//            fragment->insertAtFront(fraghdr);
-//            //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
-//
-//            EV_INFO << "Sending app packet " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
-//            emit(packetSentSignal, fragment);
-//            emit(packetSentToLowerSignal, fragment);
-//            send(fragment, "lowerLayerOut");
-//
-//            offset += thisFragmentLength;
-//
-//            //cChannel *ch = gate("lowerLayerOut")->findTransmissionChannel();
-//            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-
     }
 
 }

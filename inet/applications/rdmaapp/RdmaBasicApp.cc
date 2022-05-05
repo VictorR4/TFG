@@ -155,6 +155,7 @@ void RdmaBasicApp::sendToRdma(cMessage *msg)//Cambiado
 
 void RdmaBasicApp::sendTo(Packet *pk, L3Address destAddr, int destPort)
 {
+    pk->setKind(0);
     pk->addTagIfAbsent<L4PortReq>()->setSrcPort(localPort);
     auto addressReq = pk->addTagIfAbsent<L3AddressReq>();
     addressReq->setDestAddress(destAddr);
@@ -210,8 +211,9 @@ void RdmaBasicApp::processPacket(Packet *pk)
     EV << "Fragment " << pk << " received \n";
     int totalMessageLength = par("messageLength");
     messageLength += (pk->getByteLength() - IPv4_MIN_HEADER_LENGTH.get());
+    EV_INFO << "Message length total = " << messageLength <<  "\n";
     if(messageLength >= totalMessageLength){
-        EV_INFO << "Packet received \n";
+        EV_INFO << "Packet received with message length = " << messageLength <<  "\n";
         emit(packetReceivedSignal, pk);
         //clocktime_t generationTime = payload->getGenerationTime();
         clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();

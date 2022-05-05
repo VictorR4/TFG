@@ -53,7 +53,12 @@ class INET_API UdpBasicApp : public ClockUserModuleMixin<ApplicationBase>, publi
     int numSent = 0;
     int numReceived = 0;
     clocktime_t latency;
+    cMessage *endTxTimer = nullptr;
+    cGate *lowerLayerOut = nullptr;
+    cChannel *transmissionChannel = nullptr;
+    cPacketQueue *queue = nullptr;
 
+    L3Address destAddr;
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
     virtual void initialize(int stage) override;
@@ -78,6 +83,10 @@ class INET_API UdpBasicApp : public ClockUserModuleMixin<ApplicationBase>, publi
     virtual void socketDataArrived(UdpSocket *socket, Packet *packet) override;
     virtual void socketErrorArrived(UdpSocket *socket, Indication *indication) override;
     virtual void socketClosed(UdpSocket *socket) override;
+
+
+    // process an own message
+    virtual void handleEndTxPeriod();
 
   public:
     UdpBasicApp() {}

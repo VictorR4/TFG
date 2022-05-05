@@ -78,7 +78,7 @@ class INET_API UdpHeader : public ::inet::TransportHeaderBase
     inet::CrcMode crcMode = CRC_MODE_UNDEFINED;
     clocktime_t generationTime;
     bool moreFragments = false;
-    uint16_t fragmentOffset = 0;
+    uint32_t fragmentOffset = 0;
     uint16_t identification = 0;
 
   private:
@@ -111,8 +111,8 @@ class INET_API UdpHeader : public ::inet::TransportHeaderBase
     virtual void setGenerationTime(clocktime_t generationtime);
     virtual bool getMoreFragments() const;
     virtual void setMoreFragments(bool moreFragments);
-    virtual uint16_t getFragmentOffset() const;
-    virtual void setFragmentOffset(uint16_t fragmentOffset);
+    virtual uint32_t getFragmentOffset() const;
+    virtual void setFragmentOffset(uint32_t fragmentOffset);
     virtual uint16_t getIdentification() const;
     virtual void setIdentification(uint16_t identification);
 

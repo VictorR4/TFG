@@ -341,16 +341,17 @@ void UdpHeader::setMoreFragments(bool moreFragments)
     this->moreFragments = moreFragments;
 }
 
-uint16_t UdpHeader::getFragmentOffset() const
+uint32_t UdpHeader::getFragmentOffset() const
 {
     return this->fragmentOffset;
 }
 
-void UdpHeader::setFragmentOffset(uint16_t fragmentOffset)
+void UdpHeader::setFragmentOffset(uint32_t fragmentOffset)
 {
     handleChange();
     this->fragmentOffset = fragmentOffset;
 }
+
 
 uint16_t UdpHeader::getIdentification() const
 {
