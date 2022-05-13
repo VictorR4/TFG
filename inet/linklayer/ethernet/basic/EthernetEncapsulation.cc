@@ -1,4 +1,4 @@
-//
+//EthernetEncapsulation.cc mio nuevo
 // Copyright (C) 2003 Andras Varga; CTIE, Monash University, Australia
 //
 // This program is free software; you can redistribute it and/or
@@ -90,6 +90,8 @@ void EthernetEncapsulation::initialize(int stage)
         upperLayerOut = gate("upperLayerOut");
         transmissionChannel = upperLayerOut->findTransmissionChannel();
         endTxTimer = new cMessage("EndTransmission", 103);
+        queueToUpperLayer = new cPacketQueue("queueFromMac");
+        isRdma = par("isRdma");
 
         WATCH_PTRMAP(socketIdToSocketMap);
         WATCH(totalFromHigherLayer);
@@ -110,8 +112,10 @@ void EthernetEncapsulation::handleMessageWhenUp(cMessage *msg)
         handleSelfMessage(msg);
     else if (msg->arrivedOn("upperLayerIn"))
         processPacketFromHigherLayer(check_and_cast<Packet *>(msg));
-    else
-        processPacketFromMac(check_and_cast<Packet *>(msg));
+    else{
+        Packet *pkt = check_and_cast<Packet *>(msg);
+        processPacketFromMac(pkt);
+    }
 }
 
 void EthernetEncapsulation::handleSelfMessage(cMessage *msg)
@@ -270,30 +274,31 @@ const Ptr<const EthernetMacHeader> EthernetEncapsulation::decapsulateMacHeader(P
 
 void EthernetEncapsulation::processPacketFromMac(Packet *p)
 {
-    packet = p;
+    EV_INFO << "Packet" << p << " received from mac\n";
+    //packet = p;
     const Protocol *payloadProtocol = nullptr;
-    auto ethHeader = decapsulateMacHeader(packet);
-
+    auto ethHeader = decapsulateMacHeader(p);
+    //isRdma = ethHeader->getIsRdma();
     // remove llc header if possible
     if (isIeee8023Header(*ethHeader)) {
-        Ieee8022Llc::processPacketFromMac(packet);
+        Ieee8022Llc::processPacketFromMac(p);
         return;
     }
     else if (isEth2Header(*ethHeader)) {
         payloadProtocol = ProtocolGroup::ethertype.findProtocol(ethHeader->getTypeOrLength());
         if (payloadProtocol != nullptr) {
-            packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(payloadProtocol);
-            packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(payloadProtocol);
+            p->addTagIfAbsent<PacketProtocolTag>()->setProtocol(payloadProtocol);
+            p->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(payloadProtocol);
         }
         else {
-            packet->removeTagIfPresent<PacketProtocolTag>();
-            packet->removeTagIfPresent<DispatchProtocolReq>();
+            p->removeTagIfPresent<PacketProtocolTag>();
+            p->removeTagIfPresent<DispatchProtocolReq>();
         }
         bool steal = false;
         for (auto it : socketIdToSocketMap) {
             auto socket = it.second;
-            if (socket->matches(packet, ethHeader)) {
-                auto packetCopy = packet->dup();
+            if (socket->matches(p, ethHeader)) {
+                auto packetCopy = p->dup();
                 packetCopy->setKind(SOCKET_I_DATA);
                 packetCopy->addTagIfAbsent<SocketInd>()->setSocketId(it.first);
                 send(packetCopy, "upperLayerOut");
@@ -301,37 +306,28 @@ void EthernetEncapsulation::processPacketFromMac(Packet *p)
             }
         }
         if (steal)
-            delete packet;
+            delete p;
         else if (payloadProtocol != nullptr && upperProtocols.find(payloadProtocol) != upperProtocols.end()) {
-            EV_DETAIL << "Decapsulating frame `" << packet->getName() << "', passing up contained packet `"
-                      << packet->getName() << "' to higher layer\n";
-
-            totalFromMAC++;
-            emit(decapPkSignal, packet);
-
-            // pass up to higher layers.
-            EV_INFO << "Sending " << packet << " to upper layer.\n";
-            //auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
-            auto isRdma = ethHeader->getIsRdma();
-            if(isRdma == 1){
-                auto generationTime = ethHeader->getGenerationTime();
-                packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
-                send(packet, "appLayerOut");
-             }else{
-                clocktime_t actualLatency = simTime() - ethHeader->getGenerationTime();
-                packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
-                latencyReception += actualLatency;
-                send(packet, "upperLayerOut");
-                //delete packet;
-                //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+            EV_INFO << "Packet" << p << " enqueued in " << queueToUpperLayer->getName() << "\n";
+            queueToUpperLayer->insert(p);
+            if(!transmissionChannel->isBusy()){
+                packet = nullptr;
+                if(packet == nullptr){
+                    if(!queueToUpperLayer->isEmpty()){
+                        packet = check_and_cast<Packet *>(queueToUpperLayer->pop());
+                        EV_INFO << "Packet" << packet << " extracted from the queue " << queueToUpperLayer->getName() << "\n";
+                        sendPacket(packet);
+                    }
+                }
             }
+
         }
         else {
             EV_WARN << "Unknown protocol, dropping packet\n";
             PacketDropDetails details;
             details.setReason(NO_PROTOCOL_FOUND);
-            emit(packetDroppedSignal, packet, &details);
-            delete packet;
+            emit(packetDroppedSignal, p, &details);
+            delete p;
         }
     }
     else
@@ -374,10 +370,40 @@ void EthernetEncapsulation::handleSendPause(cMessage *msg)
     totalPauseSent++;
 }
 
+void EthernetEncapsulation::sendPacket(Packet *packet){
+    //auto ethHeader = decapsulateMacHeader(packet);
+    EV_DETAIL << "Decapsulating frame `" << packet->getName() << "', passing up contained packet `"
+                          << packet->getName() << "' to higher layer\n";
+
+    totalFromMAC++;
+    emit(decapPkSignal, packet);
+
+    // pass up to higher layers.
+    EV_INFO << "Sending " << packet << " to upper layer.\n";
+    //auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
+    //auto isRdma = ethHeader->getIsRdma();
+    if(isRdma){
+        //auto generationTime = ethHeader->getGenerationTime();
+        //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
+        send(packet, "appLayerOut");
+     }else{
+        //clocktime_t actualLatency = simTime() - ethHeader->getGenerationTime();
+        //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+        //latencyReception += actualLatency;
+        send(packet, "upperLayerOut");
+        //delete packet;
+        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+    }
+}
 void EthernetEncapsulation::handleEndTxPeriod(){
-    /*if(packet != nullptr){
-        processPacketFromMac(packet);
-    }*/
+    packet = nullptr;
+
+    if(packet == nullptr){
+        if(!queueToUpperLayer->isEmpty()){
+            packet = check_and_cast<Packet *>(queueToUpperLayer->pop());
+            sendPacket(packet);
+        }
+    }
 }
 
 } // namespace inet

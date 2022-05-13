@@ -44,6 +44,7 @@ class INET_API UdpBasicApp : public ClockUserModuleMixin<ApplicationBase>, publi
     bool dontFragment = false;
     const char *packetName = nullptr;
     B messageLength = B(0);
+    int id;
 
     // state
     UdpSocket socket;

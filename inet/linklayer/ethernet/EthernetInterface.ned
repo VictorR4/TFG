@@ -44,7 +44,7 @@ module EthernetInterface extends NetworkInterface like IEthernetInterface
         *.interfaceTableModule = default(absPath(interfaceTableModule));
         *.fcsMode = fcsMode;
         *.duplexMode = duplexMode;
-        bool isHost = default(false); //variable to set upperLayerOut of mac module as IdealChannel only in switches and when we use Rdma
+        //bool isHost = default(false); //variable to set upperLayerOut of mac module as IdealChannel only in switches and when we use Rdma
     gates:
         input upperLayerIn;
         output upperLayerOut;
@@ -77,9 +77,9 @@ module EthernetInterface extends NetworkInterface like IEthernetInterface
                 @display("p=500,300");
         }
     connections:
-        mac.upperLayerOut --> encap.lowerLayerIn if !isHost;
+        mac.upperLayerOut --> encap.lowerLayerIn;// if !isHost;
         mac.upperLayerIn <-- encap.lowerLayerOut;
-        mac.upperLayerOut --> cable --> encap.lowerLayerIn if isHost;
+        //mac.upperLayerOut --> cable --> encap.lowerLayerIn if isHost;
 
         mac.phys <--> { @display("m=s"); } <--> phys;
 

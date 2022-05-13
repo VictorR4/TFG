@@ -40,7 +40,8 @@ class INET_API UdpFragBuf
     // Key for finding the reassembly buffer for a datagram.
     //
     struct Key {
-        ushort id = static_cast<ushort>(-1);
+        //ushort id = static_cast<ushort>(-1);
+        uint16_t id = -1;
         int localPort = -1;
         int remotePort = -1;
 

@@ -119,7 +119,7 @@ L3Address UdpBasicApp::chooseDestAddr()
 void UdpBasicApp::sendPacket()
 {
     std::ostringstream str;
-    str << packetName << "-" << numSent;
+    str << packetName << "-H" << getId() << "-"<< numSent;
     Packet *packet = new Packet(str.str().c_str());
     if (dontFragment)
         packet->addTag<FragmentationReq>()->setDontFragment(true);
@@ -246,7 +246,7 @@ void UdpBasicApp::refreshDisplay() const
     sprintf(buf, "rcvd: %d pks\nsent: %d pks\n latency: %f s", numReceived, numSent, latency.dbl());
     getDisplayString().setTagArg("t", 0, buf);
 }
-
+/*
 void UdpBasicApp::processPacket(Packet *pk)
 {
     EV_INFO << "Packet " << pk->getName() << " received \n";
@@ -261,6 +261,13 @@ void UdpBasicApp::processPacket(Packet *pk)
         messageLength = B(0);
     }
 
+}*/
+void UdpBasicApp::processPacket(Packet *pk)
+{
+    emit(packetReceivedSignal, pk);
+    EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+    delete pk;
+    numReceived++;
 }
 
 void UdpBasicApp::handleStartOperation(LifecycleOperation *operation)

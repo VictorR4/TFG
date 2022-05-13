@@ -140,8 +140,8 @@ module LinkLayerNodeBase extends NodeBase
         }
 
         for i=0..sizeof(ethg)-1 {
-            eth[i].upperLayerOut  --> li.in++;
-            eth[i].upperLayerIn <-- li.out++;
+            eth[i].upperLayerOut --> Eth40G --> li.in++;
+            eth[i].upperLayerIn <-- Eth40G<-- li.out++;
         }
 
         for i=0..sizeof(pppg)-1 {

@@ -1,4 +1,4 @@
-//
+//EthernetEncapsulation.h mio nuevo
 // Copyright (C) 2003 Andras Varga; CTIE, Monash University, Australia
 //
 // This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
   protected:
     FcsMode fcsMode = FCS_MODE_UNDEFINED;
     int seqNum;
-    int isRdma = 0;
+    bool isRdma = false;
     clocktime_t latencySending = 0;
     clocktime_t latencyReception = 0;
     // statistics
@@ -54,6 +54,8 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
     cGate *upperLayerOut = nullptr;
     cChannel *transmissionChannel = nullptr;
     Packet *packet = nullptr;
+
+    cPacketQueue *queueToUpperLayer = nullptr;
 
     struct Socket {
         int socketId = -1;
@@ -78,6 +80,7 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
     // process an own message
     virtual void handleSelfMessage(cMessage *msg);
     virtual void handleEndTxPeriod();
+    virtual void sendPacket(Packet *p);
 
     virtual void processCommandFromHigherLayer(Request *msg) override;
     virtual void processPacketFromHigherLayer(Packet *msg) override;
@@ -96,4 +99,5 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
 } // namespace inet
 
 #endif
+
 

@@ -47,7 +47,6 @@ class INET_API EthernetMac : public EthernetMacBase
     virtual void handleEndIFGPeriod();
     virtual void handleEndTxPeriod();
     virtual void handleEndPausePeriod();
-    virtual void handleEndUpperTxPeriod();
     virtual void handleSelfMessage(cMessage *msg) override;
 
     // helpers
@@ -67,4 +66,3 @@ class INET_API EthernetMac : public EthernetMacBase
 } // namespace inet
 
 #endif
-

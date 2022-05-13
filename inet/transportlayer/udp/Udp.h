@@ -156,7 +156,10 @@ class INET_API Udp : public TransportProtocolBase
     cChannel *transmissionChannel = nullptr;
     int numFragment = 0;
     cPacketQueue *queue = nullptr;
-
+    cPacketQueue *queueToUpperLayer = nullptr;
+    Packet *packetToUpperLayer = nullptr;
+    cChannel *upperTransmissionChannel = nullptr;
+    cMessage *endUpperTxTimer = nullptr;
 
     UdpFragBuf fragbuf; // fragmentation reassembly buffer
   protected:
@@ -220,6 +223,8 @@ class INET_API Udp : public TransportProtocolBase
     virtual void handleSelfMessage(cMessage *msg) override;
 
     virtual void handleEndTxPeriod();
+
+    virtual void handleEndUpperTxPeriod();
 
     // process commands from application
     virtual void handleUpperCommand(cMessage *msg) override;

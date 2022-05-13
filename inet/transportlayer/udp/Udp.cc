@@ -95,6 +95,10 @@ void Udp::initialize(int stage)
         transmissionChannel = lowerLayerOut->findTransmissionChannel();
         endTxTimer = new cMessage("EndTransmission", 103);
         queue = new cPacketQueue("receiveQueue");
+        upperTransmissionChannel = gate("appOut")->findTransmissionChannel();
+        endUpperTxTimer = new cMessage("EndTransmission", 103);
+        queueToUpperLayer = new cPacketQueue("ToUpperLayerQueue");
+
 
         WATCH(numSent);
         WATCH(numPassedUp);
@@ -149,8 +153,9 @@ void Udp::handleMessageWhenUp(cMessage *msg)
             }
 
         }
-    else if (msg->getArrivalGateId() == findGate("ipIn"))
+    else if (msg->getArrivalGateId() == findGate("ipIn")){
         handleLowerPacket(check_and_cast<Packet *>(msg));
+    }
     else
         throw cRuntimeError("Message received from unknown gate!");
 }
@@ -177,6 +182,8 @@ void Udp::handleLowerPacket(Packet *packet)
 void Udp::handleSelfMessage(cMessage *msg){
     if (msg == endTxTimer)
             handleEndTxPeriod();
+    else if(msg == endUpperTxTimer)
+        handleEndUpperTxPeriod();
 }
 
 void Udp::handleUpperCommand(cMessage *msg)
@@ -841,7 +848,10 @@ void Udp::handleUpperPacket(Packet *p)
     udpHeader->setGenerationTime(generationTime);
 
     B totalLength = udpHeader->getChunkLength() + packet->getTotalLength();
-    udpHeader->setIdentification(numFragment++);
+    auto id = getId() * 10 + numFragment++;
+    udpHeader->setIdentification(id);
+    EV_INFO << "Paquete " << p << " con id = " << id <<"\n";
+    EV_INFO << "Paquete " << p << " con getID = " << udpHeader->getIdentification() <<"\n";
 //    if (totalLength.get() > UDP_MAX_MESSAGE_SIZE)
 //        throw cRuntimeError("send: total UDP message size exceeds %u", UDP_MAX_MESSAGE_SIZE);
 
@@ -857,7 +867,7 @@ void Udp::handleUpperPacket(Packet *p)
 
         insertTransportProtocolHeader(packet, Protocol::udp, udpHeader);
         packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
-        packet->setKind(0);
+        packet->setKind(UDP_I_DATA);
 
         EV_INFO << "Sending app packet " << packet << " over "<< l3Protocol->getName() << ".\n";
         emit(packetSentSignal, packet);
@@ -909,6 +919,7 @@ void Udp::handleUpperPacket(Packet *p)
 
         fraghdr->setFragmentOffset(offsetBase + offset);
         fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
+        fraghdr->setIdentification(udpHeader->getIdentification());
 
 
         if (crcMode == CRC_COMPUTED) {
@@ -1061,7 +1072,7 @@ void Udp::processUDPPacket(Packet *udpPacket)
     //auto udpHeader = udpPacket->popAtFront<UdpHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT);
 
     // simulate checksum: discard packet if it has bit error
-    EV_INFO << "Packet " << udpPacket->getName() << " received from network, dest port " << udpHeader->getDestinationPort() << "\n";
+    EV_INFO << "Packet " << udpPacket->getName() << " received from network, dest port " << udpHeader->getDestinationPort() << ", with id = " <<  udpHeader->getIdentification() << "\n";
 
     auto srcPort = udpHeader->getSourcePort();
     auto destPort = udpHeader->getDestinationPort();
@@ -1093,7 +1104,7 @@ void Udp::processUDPPacket(Packet *udpPacket)
                           << ", MORE=" << (udpHeader->getMoreFragments() ? "true" : "false") << ".\n";
 
         udpPacket = fragbuf.addFragment(udpPacket, simTime());
-        if (udpHeader->getMoreFragments()) {
+        if (!udpPacket/*udpHeader->getMoreFragments()*/) {
             EV_DETAIL << "No complete datagram yet.\n";
             return;
         }
@@ -1102,9 +1113,9 @@ void Udp::processUDPPacket(Packet *udpPacket)
     }
 
     // remove lower layer paddings:
-    if (totalLength < udpPacket->getDataLength()) {
+/*    if (totalLength < udpPacket->getDataLength()) {
         udpPacket->setBackOffset(udpHeaderPopPosition + totalLength);
-    }
+    }*/
 
     bool isMulticast = destAddr.isMulticast();
     bool isBroadcast = destAddr.isBroadcast();
@@ -1163,9 +1174,21 @@ void Udp::sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, us
     }
 
     emit(packetSentToUpperSignal, payload);
-    send(payload, "appOut");
-    numPassedUp++;
+    queueToUpperLayer->insert(payload);
+    if(!upperTransmissionChannel->isBusy()){
+        packetToUpperLayer = nullptr;
+        if(packetToUpperLayer == nullptr){
+            if(!queueToUpperLayer->isEmpty()){
+                packetToUpperLayer = check_and_cast<Packet *>(queueToUpperLayer->pop());
+                send(packetToUpperLayer, "appOut");
+                numPassedUp++;
+                rescheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
+            }
+        }
+    }
 }
+
+
 //Usado en la recepción
 bool Udp::verifyCrc(const Protocol *networkProtocol, const Ptr<const UdpHeader>& udpHeader, Packet *packet)
 {
@@ -1674,6 +1697,7 @@ void Udp::handleEndTxPeriod(){
 
         fraghdr->setFragmentOffset(offsetBase + offset);
         fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
+        fraghdr->setIdentification(udpHeader->getIdentification());
 
         if (crcMode == CRC_COMPUTED) {
             fraghdr->setCrcMode(CRC_COMPUTED);
@@ -1714,6 +1738,20 @@ void Udp::handleEndTxPeriod(){
 
     }
 }
+void Udp::handleEndUpperTxPeriod(){
+    packetToUpperLayer = nullptr;
+    ASSERT(packetToUpperLayer == nullptr);
+
+    if(!upperTransmissionChannel->isBusy()){
+        if(!queueToUpperLayer->isEmpty()){
+            packetToUpperLayer = check_and_cast<Packet *>(queueToUpperLayer->pop());
+            send(packetToUpperLayer, "appOut");
+            scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
+        }
+    }
+
+}
+
 // unused functions!
 
 UdpHeader *Udp::createUDPPacket()

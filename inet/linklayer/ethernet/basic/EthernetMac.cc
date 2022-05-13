@@ -42,7 +42,6 @@ EthernetMac::EthernetMac()
 void EthernetMac::initialize(int stage)
 {
     EthernetMacBase::initialize(stage);
-    upperTransmissionChannel = gate("upperLayerOut")->findTransmissionChannel();
 
     if (stage == INITSTAGE_LOCAL) {
         if (!par("duplexMode"))
@@ -95,8 +94,6 @@ void EthernetMac::handleSelfMessage(cMessage *msg)
         handleEndIFGPeriod();
     else if (msg == endPauseTimer)
         handleEndPausePeriod();
-    else if(msg == endUpperTxTimer)
-        handleEndUpperTxPeriod();
     else
         throw cRuntimeError("Unknown self message received!");
 }
@@ -137,7 +134,6 @@ void EthernetMac::startFrameTransmission()
 
 void EthernetMac::handleUpperPacket(Packet *packet)
 {
-    reception = 0;
     EV_INFO << "Received " << packet << " from upper layer." << endl;
 
     numFramesFromHL++;
@@ -190,7 +186,6 @@ void EthernetMac::handleUpperPacket(Packet *packet)
 
 void EthernetMac::processMsgFromNetwork(EthernetSignalBase *signal)
 {
-    reception = 1;
     EV_INFO << signal << " received." << endl;
 
     if (!connected) {
@@ -260,17 +255,7 @@ void EthernetMac::processMsgFromNetwork(EthernetSignalBase *signal)
     }
     else {
         EV_INFO << "Reception of " << EV_FIELD(packet) << " successfully completed." << endl;
-        txQueue->enqueuePacket(packet);
-
-        //ASSERT(currentTxFrame == nullptr);
-        if(currentTxFrame == nullptr){
-            if(!txQueue->isEmpty()){
-                popTxQueue();
-                //addPaddingAndSetFcs(currentTxFrame, MIN_ETHERNET_FRAME_BYTES);
-                processReceivedDataFrame(currentTxFrame, frame);
-            }
-        }
-        //processReceivedDataFrame(packet, frame);
+        processReceivedDataFrame(packet, frame);
     }
 }
 
@@ -356,7 +341,6 @@ void EthernetMac::handleEndPausePeriod()
 
 void EthernetMac::processReceivedDataFrame(Packet *packet, const Ptr<const EthernetMacHeader>& frame)
 {
-
     // statistics
     unsigned long curBytes = packet->getByteLength();
     numFramesReceivedOK++;
@@ -367,7 +351,7 @@ void EthernetMac::processReceivedDataFrame(Packet *packet, const Ptr<const Ether
     macAddressInd->setSrcAddress(frame->getSrc());
     macAddressInd->setDestAddress(frame->getDest());
     packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::ethernetMac);
-    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);//Ultimocambio
+    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);
     if (networkInterface)
         packet->addTagIfAbsent<InterfaceInd>()->setInterfaceId(networkInterface->getInterfaceId());
 
@@ -376,11 +360,6 @@ void EthernetMac::processReceivedDataFrame(Packet *packet, const Ptr<const Ether
     // pass up to upper layer
     EV_INFO << "Sending " << packet << " to upper layer.\n";
     send(packet, upperLayerOutGateId);
-
-    if(upperTransmissionChannel)
-        scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
-    else
-        currentTxFrame = nullptr;
 }
 
 void EthernetMac::processPauseCommand(int pauseUnits)
@@ -428,13 +407,7 @@ void EthernetMac::beginSendFrames()
     if (currentTxFrame) {
         // Other frames are queued, transmit next frame
         EV_DETAIL << "Transmit next frame in output queue\n";
-        if(reception == 0)
-            startFrameTransmission();
-        else{
-            const auto& frame = currentTxFrame->peekAtFront<EthernetMacHeader>();
-            processReceivedDataFrame(currentTxFrame, frame);
-        }
-
+        startFrameTransmission();
     }
     else {
         // No more frames set transmitter to idle
@@ -443,18 +416,4 @@ void EthernetMac::beginSendFrames()
     }
 }
 
-void EthernetMac::handleEndUpperTxPeriod(){
-    EV_INFO << "Transmission of " << currentTxFrame << " successfully completed.\n";
-    //deleteCurrentTxFrame();
-    currentTxFrame = nullptr;
-    ASSERT(currentTxFrame == nullptr);
-
-    if (!txQueue->isEmpty()) {
-            popTxQueue();
-            //addPaddingAndSetFcs(currentTxFrame, MIN_ETHERNET_FRAME_BYTES);
-        }
-        beginSendFrames();
-}
-
 } // namespace inet
-

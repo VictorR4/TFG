@@ -791,12 +791,15 @@ void Ipv4::reassembleAndDeliver(Packet *packet)
     }
 
     queueToUpperLayer->insert(packet);
-    if(packetToUpperLayer == nullptr){
-        if(!queueToUpperLayer->isEmpty()){
-            packetToUpperLayer = check_and_cast<Packet *>(queueToUpperLayer->pop());
-            if (datagramLocalInHook(packet) == INetfilter::IHook::ACCEPT){
-                    reassembleAndDeliverFinish(packetToUpperLayer);
-                }
+    if(!upperTransmissionChannel->isBusy()){
+        packetToUpperLayer = nullptr;
+        if(packetToUpperLayer == nullptr){
+            if(!queueToUpperLayer->isEmpty()){
+                packetToUpperLayer = check_and_cast<Packet *>(queueToUpperLayer->pop());
+                if (datagramLocalInHook(packet) == INetfilter::IHook::ACCEPT){
+                        reassembleAndDeliverFinish(packetToUpperLayer);
+                    }
+            }
         }
     }
 
@@ -827,11 +830,10 @@ void Ipv4::reassembleAndDeliverFinish(Packet *packet)
         }
     }
     if (upperProtocols.find(protocol) != upperProtocols.end()) {
-        EV_INFO << "Passing up to protocol " << *protocol << "\n";
-        emit(packetSentToUpperSignal, packet);
-        send(packet, "transportOut");
-        numLocalDeliver++;
-        //if(!queueToUpperLayer->isEmpty())
+            EV_INFO << "Passing up packet " << packet << " to protocol " << *protocol << "\n";
+            emit(packetSentToUpperSignal, packet);
+            send(packet, "transportOut");
+            numLocalDeliver++;
             scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
     }
     else if (hasSocket) {
@@ -1083,6 +1085,8 @@ void Ipv4::fragmentAndSend(Packet *p)
 
         sendDatagramToOutput(fragment);
         offset += thisFragmentLength;
+        if(lastFragment && queue->isEmpty())
+            offset = 0;
 
     }
 
@@ -1138,7 +1142,7 @@ void Ipv4::encapsulate(Packet *transportPacket)
         transportPacket->addTag<EcnInd>()->setExplicitCongestionNotification(ipv4Header->getEcn());
     }
 
-    ipv4Header->setIdentification(curFragmentId++);
+    ipv4Header->setIdentification(getId() * 10 + curFragmentId++);
     ipv4Header->setMoreFragments(false);
     ipv4Header->setDontFragment(dontFragment);
     ipv4Header->setFragmentOffset(0);

@@ -64,7 +64,7 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
 
         
     connections allowunconnected:
-        ipv4.ifIn<-- nl.out++ if hasIpv4;
+        ipv4.ifIn <-- Eth40G <-- nl.out++ if hasIpv4;
         ipv4.ifOut --> Eth40G --> nl.in++ if hasIpv4;
 
         ipv6.ifIn <-- nl.out++ if hasIpv6;
@@ -80,6 +80,6 @@ module NetworkLayerNodeBase extends LinkLayerNodeBase
         nl.out++ --> ieee8021q.upperLayerIn if exists(ieee8021q);
 
         nl.out++ --> Eth40G --> li.in++;
-        nl.in++ <-- li.out++;
+        nl.in++ <-- Eth40G <-- li.out++;
 }
 
