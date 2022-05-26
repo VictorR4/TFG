@@ -226,10 +226,11 @@ void Ipv4::handleMessageWhenUp(cMessage *msg)
     else if (msg->arrivedOn("transportIn")) { // TODO packet->getArrivalGate()->getBaseId() == transportInGateBaseId
         if (auto request = dynamic_cast<Request *>(msg))
             handleRequest(request);
-        else
+        else{
             if(check_and_cast<Packet *>(msg)->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma)
                     isRdma = true;
             handlePacketFromHL(check_and_cast<Packet *>(msg));
+        }
     }
     else if (msg->arrivedOn("queueIn")) { // from network
         EV_INFO << "Received " << msg << " from network.\n";
@@ -963,7 +964,7 @@ void Ipv4::fragmentAndSend(Packet *p)
         return;
     }
 
-    int mtu = destIE->getMtu();
+    mtu = destIE->getMtu();
 
     // send datagram straight out if it doesn't require fragmentation (note: mtu==0 means infinite mtu)
     if (mtu == 0 || currentFragment->getByteLength() <= mtu) {
@@ -972,7 +973,10 @@ void Ipv4::fragmentAndSend(Packet *p)
             setComputedCrc(ipv4Header);
             insertNetworkProtocolHeader(currentFragment, Protocol::ipv4, ipv4Header);
         }
+        //headerLength = B(ipv4Header->getHeaderLength()).get();
+        //payloadLength = B(currentFragment->getDataLength()).get() - headerLength;
         sendDatagramToOutput(currentFragment);
+        //offset += payloadLength;
         if(isRdma){
             offset = 0;
             packet = nullptr;
@@ -1611,7 +1615,7 @@ void Ipv4::sendIcmpError(Packet *origPacket, int inputInterfaceId, IcmpType type
 }
 
 void Ipv4::handleEndTxPeriod(){
-    if(offset < payloadLength){
+    if(offset < payloadLength && mtu < currentFragment->getByteLength()){
         if(!pendingPacket->isEmpty()){
             fragmentAndSend(check_and_cast<Packet *>(pendingPacket->pop()));
         }else{

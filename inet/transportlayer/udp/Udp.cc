@@ -850,8 +850,6 @@ void Udp::handleUpperPacket(Packet *p)
     B totalLength = udpHeader->getChunkLength() + packet->getTotalLength();
     auto id = getId() * 10 + numFragment++;
     udpHeader->setIdentification(id);
-    EV_INFO << "Paquete " << p << " con id = " << id <<"\n";
-    EV_INFO << "Paquete " << p << " con getID = " << udpHeader->getIdentification() <<"\n";
 //    if (totalLength.get() > UDP_MAX_MESSAGE_SIZE)
 //        throw cRuntimeError("send: total UDP message size exceeds %u", UDP_MAX_MESSAGE_SIZE);
 

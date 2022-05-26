@@ -87,6 +87,7 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     simtime_t fragmentTimeoutTime;
     bool limitedBroadcast = false;
     std::string directBroadcastInterfaces = "";
+    int mtu;
 
     cPatternMatcher directBroadcastInterfaceMatcher;
 

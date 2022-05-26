@@ -36,6 +36,7 @@ class INET_API UdpBasicApp : public ClockUserModuleMixin<ApplicationBase>, publi
     enum SelfMsgKinds { START = 1, SEND, STOP };
 
     // parameters
+    int packetsToSend;
     std::vector<L3Address> destAddresses;
     std::vector<std::string> destAddressStr;
     int localPort = -1, destPort = -1;

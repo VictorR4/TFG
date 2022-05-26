@@ -58,7 +58,8 @@ simple EthernetEncapsulation like IEthernetEncapsulation
         @statistic[encapPk](title="packets encapsulated"; source=encapPk; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[decapPk](title="packets decapsulated"; source=decapPk; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[pauseSent](title="pause sent"; record=count,sum,vector);
-    gates:
+    	bool isRdma = default(false);
+  	gates:
         input upperLayerIn @labels(Ieee802Ctrl/down); // higher layer
         output upperLayerOut @labels(Ieee802Ctrl/up); // higher layer
         input lowerLayerIn @labels(EtherFrame);   // to Ethernet MAC

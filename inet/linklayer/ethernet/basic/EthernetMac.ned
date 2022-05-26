@@ -161,7 +161,7 @@ module EthernetMac like IEtherMac
     submodules:
         queue: <default("EthernetQueue")> like IPacketQueue {
             parameters:
-                packetCapacity = default(1000);
+                packetCapacity = default(10000);
                 @display("p=100,100");
         }
 }

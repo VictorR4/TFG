@@ -216,10 +216,10 @@ void RdmaBasicApp::processPacket(Packet *pk)
         EV_INFO << "Packet received with message length = " << messageLength <<  "\n";
         emit(packetReceivedSignal, pk);
         //clocktime_t generationTime = payload->getGenerationTime();
-        clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
+        //clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
         //EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
         delete pk;
-        latency += (simTime() - generationTime);
+        //latency += (simTime() - generationTime);
         numReceived++;
         messageLength = 0;
     }

@@ -53,6 +53,9 @@ void UdpBasicApp::initialize(int stage)
         stopTime = par("stopTime");
         packetName = par("packetName");
         dontFragment = par("dontFragment");
+        packetsToSend = par("packetsToSend");
+        if(packetsToSend == -1)
+            packetsToSend = INT_MAX;
         if (stopTime >= CLOCKTIME_ZERO && stopTime < startTime)
             throw cRuntimeError("Invalid startTime/stopTime parameters");
         selfMsg = new ClockEvent("sendTimer");
@@ -118,24 +121,26 @@ L3Address UdpBasicApp::chooseDestAddr()
 
 void UdpBasicApp::sendPacket()
 {
-    std::ostringstream str;
-    str << packetName << "-H" << getId() << "-"<< numSent;
-    Packet *packet = new Packet(str.str().c_str());
-    if (dontFragment)
-        packet->addTag<FragmentationReq>()->setDontFragment(true);
-    const auto& payload = makeShared<ApplicationPacket>();
-    payload->setChunkLength(B(par("messageLength")));
-    payload->setSequenceNumber(numSent);
-    payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
-    packet->insertAtBack(payload);
-    packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Mio
-    destAddr = chooseDestAddr();
-    emit(packetSentSignal, packet);
-    queue->insert(packet);
-    if(!transmissionChannel->isBusy()){
-        socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
-        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-        numSent++;
+    if(packetsToSend > numSent){
+        std::ostringstream str;
+        str << packetName << "-H" << getId() << "-"<< numSent;
+        Packet *packet = new Packet(str.str().c_str());
+        if (dontFragment)
+            packet->addTag<FragmentationReq>()->setDontFragment(true);
+        const auto& payload = makeShared<ApplicationPacket>();
+        payload->setChunkLength(B(par("messageLength")));
+        payload->setSequenceNumber(numSent);
+        payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
+        packet->insertAtBack(payload);
+        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Mio
+        destAddr = chooseDestAddr();
+        emit(packetSentSignal, packet);
+        queue->insert(packet);
+        if(!transmissionChannel->isBusy()){
+            socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
+            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+            numSent++;
+        }
     }
 
 }
@@ -246,22 +251,7 @@ void UdpBasicApp::refreshDisplay() const
     sprintf(buf, "rcvd: %d pks\nsent: %d pks\n latency: %f s", numReceived, numSent, latency.dbl());
     getDisplayString().setTagArg("t", 0, buf);
 }
-/*
-void UdpBasicApp::processPacket(Packet *pk)
-{
-    EV_INFO << "Packet " << pk->getName() << " received \n";
-    int totalMessageLength = par("messageLength");
-    messageLength += pk->getTotalLength();
-    if (messageLength.get() >= totalMessageLength) {
-        emit(packetReceivedSignal, pk);
-        latency += simTime() - pk->getTag<CreationTimeTag>()->getCreationTime();
-        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
-        delete pk;
-        numReceived++;
-        messageLength = B(0);
-    }
 
-}*/
 void UdpBasicApp::processPacket(Packet *pk)
 {
     emit(packetReceivedSignal, pk);
@@ -293,10 +283,12 @@ void UdpBasicApp::handleCrashOperation(LifecycleOperation *operation)
 }
 
 void UdpBasicApp::handleEndTxPeriod(){
-    if(!queue->isEmpty()){
-        socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
-        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-        numSent++;
+    if(packetsToSend > numSent){
+        if(!queue->isEmpty()){
+            socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
+            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+            numSent++;
+        }
     }
 }
 } // namespace inet
