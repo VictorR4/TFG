@@ -42,6 +42,9 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     int numSent = 0;
     int numReceived = 0;
     clocktime_t latency;
+    cStdDev statsLatency;
+    cOutVector statsLatencyVector;
+    simtime_t sendTime;
 
     // statistics:
     static int counter; // counter for generating a global number for each packet

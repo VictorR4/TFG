@@ -24,6 +24,7 @@ simple RdmaBasicApp like IAppRdma
         string clockModule = default(""); // relative path of a module that implements IClock; optional
         int localPort = default(-1);  // local port (-1: use ephemeral port)
         string destAddresses = default(""); // list of IP addresses, separated by spaces ("": don't send)
+        bool excludeLocalDestAddresses = default(true);     // excluding local addresses from destAddresses
         string localAddress = default("");
         string packetName = default("RdmaBasicAppData");
         int destPort;

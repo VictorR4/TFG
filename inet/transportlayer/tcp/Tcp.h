@@ -146,7 +146,7 @@ class INET_API Tcp : public TransportProtocolBase
     bool useDataNotification = false;
     CrcMode crcMode = CRC_MODE_UNDEFINED;
     int msl;
-
+    cMessage *endTxTimer = nullptr;
   public:
     Tcp() {}
     virtual ~Tcp();
@@ -197,6 +197,8 @@ class INET_API Tcp : public TransportProtocolBase
      * To be called from TcpConnection: create a new receive queue.
      */
     virtual TcpReceiveQueue *createReceiveQueue();
+
+    //virtual void handleEndTxPeriod();
 
     // ILifeCycle:
     virtual void handleStartOperation(LifecycleOperation *operation) override;

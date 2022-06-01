@@ -68,6 +68,7 @@ void Tcp::initialize(int stage)
 
         msl = par("msl");
         useDataNotification = par("useDataNotification");
+        endTxTimer = new cMessage("EndTransmission", 103);
 
         WATCH(lastEphemeralPort);
         WATCH_PTRMAP(tcpConnMap);
@@ -125,6 +126,8 @@ void Tcp::sendFromConn(cMessage *msg, const char *gatename, int gateindex)
     Enter_Method("sendFromConn");
     take(msg);
     send(msg, gatename, gateindex);
+    //auto transmissionChannel = gate(gatename)->findTransmissionChannel();
+    //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
 }
 
 void Tcp::handleUpperPacket(Packet *packet)

@@ -38,6 +38,7 @@ class INET_API TcpSendQueue : public cObject
     uint32_t begin = 0; // 1st sequence number stored
     uint32_t end = 0; // last sequence number stored +1
     ChunkQueue dataBuffer; // dataBuffer
+    int fragmentSent = 0;
 
   public:
     /**

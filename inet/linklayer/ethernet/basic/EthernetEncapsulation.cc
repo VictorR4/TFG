@@ -223,10 +223,10 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
         ethHeader->setGenerationTime(generationTime);
     }else if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::ipv4){
         ethHeader->setIsRdma(0);
-        clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
-        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
-        latencySending += actualLatency;
-        ethHeader->setGenerationTime(simTime());
+        //clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
+        //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
+        //latencySending += actualLatency;
+        //ethHeader->setGenerationTime(simTime());
     }
 
 

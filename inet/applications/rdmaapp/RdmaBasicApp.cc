@@ -52,6 +52,8 @@ void RdmaBasicApp::initialize(int stage)
         if (stopTime >= CLOCKTIME_ZERO && stopTime < startTime)
             throw cRuntimeError("Invalid startTime/stopTime parameters");
         selfMsg = new ClockEvent("sendTimer");
+        statsLatency.setName("packetLatencyStats");
+        statsLatencyVector.setName("packetLatencyVector");
     }
 }
 
@@ -61,6 +63,8 @@ void RdmaBasicApp::finish()
     recordScalar("packets received", numReceived);
     recordScalar("latency", latency.dbl());
     recordScalar("meanLatency", latency.dbl()/numReceived);
+    EV << "Desviación típica: " << statsLatency.getStddev() << endl;
+    statsLatency.recordAs("statsLatency");
     ApplicationBase::finish();
 }
 
@@ -106,13 +110,20 @@ void RdmaBasicApp::processStart()
     const char *destAddrs = par("destAddresses");
     cStringTokenizer tokenizer(destAddrs);
     const char *token;
+    sendTime = simTime();
+    bool excludeLocalDestAddresses = par("excludeLocalDestAddresses");
+
+    IInterfaceTable *ift = getModuleFromPar<IInterfaceTable>(par("interfaceTableModule"), this);
 
     while ((token = tokenizer.nextToken()) != nullptr) {
         destAddressStr.push_back(token);
         L3Address result;
+        L3Address addr = L3AddressResolver().resolve(token);
         L3AddressResolver().tryResolve(token, result);
         if (result.isUnspecified())
             EV_ERROR << "cannot resolve destination address: " << token << endl;
+        else if (excludeLocalDestAddresses && ift && ift->isLocalAddress(addr))
+            continue;
         destAddresses.push_back(result);
     }
 
@@ -219,9 +230,14 @@ void RdmaBasicApp::processPacket(Packet *pk)
         //clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
         //EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
         delete pk;
+        auto latencia = simTime() - pk->getCreationTime();
+        statsLatencyVector.record(latencia);
+        statsLatency.collect(latencia);
+        //EV_INFO << "Paquete " << numReceived << " con desviación típica = " << creationTime. << "\n";
         //latency += (simTime() - generationTime);
         numReceived++;
         messageLength = 0;
+
     }
 
 }
