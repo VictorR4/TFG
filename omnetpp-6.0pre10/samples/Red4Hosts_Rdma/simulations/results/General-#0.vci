@@ -1,0 +1,626 @@
+file 21047423 1654086995                                        
+version 3
+run General-0-20220601-14:36:23-12386
+attr configname General
+attr datetime 20220601-14:36:23
+attr datetimef 20220601-143623
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Red
+attr processid 12386
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../inet/images
+config network Red
+config sim-time-limit 34s
+config **.H*.app[0].startTime 32s
+config **.H*.ipv4.isRdma true
+config **.H*.eth[*].encap.isRdma true
+config **.length 5m
+config **.visualize true
+config **.SW_*.hasStp true
+config **.spanningTreeProtocol "\"Stp\""
+config **.H*.numApps 1
+config **.H*.app[0].typename RdmaBasicApp
+config **.H*.app[0].localPort 1000
+config **.H*.app[0].destPort 1000
+config **.H_1.app[0].destAddresses "\"\""
+config **.H*.app[0].destAddresses "\"H_1\""
+config **.H*.app[*].sendInterval 0.01s
+config **.H*.app[*].messageLength 65536B
+
+vector 0 Red.SW_1_1.encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 1 Red.SW_2_1.encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 2 Red.SW_1_1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 3 Red.SW_1_1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 4 Red.SW_1_1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 5 Red.SW_1_1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 6 Red.SW_1_1.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 7 Red.SW_1_1.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 8 Red.SW_1_1.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 9 Red.SW_1_1.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 10 Red.SW_1_1.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 11 Red.SW_1_1.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 12 Red.SW_1_1.eth[2].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 13 Red.SW_1_1.eth[2].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 14 Red.SW_1_1.eth[2].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 15 Red.SW_1_1.eth[2].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 16 Red.SW_1_1.eth[2].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 17 Red.SW_2_1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 18 Red.SW_2_1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 19 Red.SW_2_1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 20 Red.SW_2_1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 21 Red.SW_2_1.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 22 Red.SW_2_1.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 23 Red.SW_2_1.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 24 Red.SW_2_1.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 25 Red.SW_2_1.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 26 Red.SW_2_1.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 27 Red.SW_2_1.eth[2].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 28 Red.SW_2_1.eth[2].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 29 Red.SW_2_1.eth[2].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 30 Red.SW_2_1.eth[2].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 31 Red.SW_2_1.eth[2].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 32 Red.SW_1_1.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 33 Red.SW_1_1.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 34 Red.SW_1_1.eth[2].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 35 Red.SW_2_1.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 36 Red.SW_2_1.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 37 Red.SW_2_1.eth[2].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 38 Red.H_0.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 39 Red.H_0.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 40 Red.H_1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 41 Red.H_1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 42 Red.SW_2_1.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 43 Red.SW_2_1.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 44 Red.H_2.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 45 Red.H_2.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 46 Red.H_3.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 47 Red.H_3.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 48 Red.SW_1_1.eth[2].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 49 Red.SW_1_1.eth[2].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 50 Red.H_0.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 51 Red.H_2.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 52 Red.H_3.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 53 Red.H_0.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 54 Red.H_2.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 55 Red.H_3.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 56 Red.H_0.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 57 Red.H_2.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 58 Red.H_3.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 59 Red.H_0.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 60 Red.H_0.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 61 Red.H_0.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 62 Red.H_0.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 63 Red.H_0.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 64 Red.H_2.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 65 Red.H_2.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 66 Red.H_2.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 67 Red.H_2.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 68 Red.H_2.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 69 Red.H_3.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 70 Red.H_3.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 71 Red.H_3.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 72 Red.H_3.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 73 Red.H_3.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 74 Red.H_0.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 75 Red.H_2.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 76 Red.H_3.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 77 Red.SW_1_1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 78 Red.SW_1_1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 79 Red.SW_2_1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 80 Red.SW_2_1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 81 Red.SW_2_1.eth[1].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 82 Red.SW_2_1.eth[1].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 83 Red.H_1.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 84 Red.H_3.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 85 Red.H_2.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 86 Red.H_1.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr source arpReplySent
+attr title "ARP replies sent, vector(packetBytes)"
+vector 87 Red.H_1.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 88 Red.H_1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 89 Red.H_1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 90 Red.H_1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 91 Red.H_1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 92 Red.H_1.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 93 Red.H_1.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 94 Red.SW_1_1.eth[1].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 95 Red.SW_1_1.eth[1].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 96 Red.H_0.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 97 Red.H_1.app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 98 Red.H_1.app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 99 Red.H_1.app[0] rcvdPkLifetime:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, vector"
+attr unit s
+vector 100 Red.H_1.app[0] packetLatencyVector ETV
+9	19087 826293 16 258869 1 33.1100061462 32768 0 49 1046970 42032904
+0	845380 1228 3 232554 1 33 101 35 35 3535 123725
+1	846608 1600 6 232924 1 33.0000000394 72 4 35 2489 86991
+2	848208 468 15 232612 1 33 36 56 64 2040 115776
+3	848676 468 15 232612 1 33 36 56 64 2040 115776
+4	849144 864 15 232612 1 33 72 0 1 36 36
+5	850008 468 15 232612 1 33 36 56 64 2040 115776
+6	850476 432 15 232612 1 33 36 0 0 0 0
+7	850908 583531 16 335813 1 33.440013751 21299 56 1518 29364810 41714511804
+8	1434439 583531 16 335813 1 33.440013751 21299 56 1518 29364810 41714511804
+9	2017970 251041 258885 335819 33.1100063194 33.4400137794 9783 0 49 313834 12593564
+10	2269011 604866 16 335819 1 33.4400137794 21252 56 1518 29299848 41622090624
+11	2873877 736558 16 335819 1 33.4400137794 21252 0 1.3667e-05 0.19190714339998 2.168807986924e-06
+12	3610435 549 17 232614 1 33 38 56 64 2152 122048
+13	3610984 549 17 232614 1 33 38 56 64 2152 122048
+14	3611533 1022 17 232614 1 33 76 0 1 38 38
+15	3612555 549 17 232614 1 33 38 56 64 2152 122048
+16	3613104 511 17 232614 1 33 38 0 0 0 0
+17	3613615 901 18 232927 1 33.0000000394 38 56 64 2152 122048
+18	3614516 901 18 232927 1 33.0000000394 38 56 64 2152 122048
+19	3615417 1726 18 232927 1 33.0000000394 76 0 1 38 38
+20	3617143 901 18 232927 1 33.0000000394 38 56 64 2152 122048
+21	3618044 870 18 232927 1 33.0000000394 38 0 1.68e-08 1.68e-08 2.8224e-16
+22	3618914 902 19 232928 1 33.0000000394 38 56 64 2152 122048
+23	3619816 902 19 232928 1 33.0000000394 38 56 64 2152 122048
+24	3620718 1728 19 232928 1 33.0000000394 76 0 1 38 38
+25	3622446 902 19 232928 1 33.0000000394 38 56 64 2152 122048
+26	3623348 871 19 232928 1 33.0000000394 38 0 1.68e-08 1.68e-08 2.8224e-16
+27	3624219 404373 20 335815 1 33.440013751 14214 25 1518 19622189 27875574073
+28	4028592 404373 20 335815 1 33.440013751 14214 25 1518 19622189 27875574073
+29	4432965 746017 20 335818 1 33.4400137794 28378 0 51 700869 23069389
+30	5178982 403024 20 335818 1 33.4400137794 14164 25 1518 19554353 27779421169
+31	5582006 487097 20 335818 1 33.4400137794 14164 0 1.39972e-05 0.099433056 9.2950411248319e-07
+32	6069103 865 21 232909 1.0000000144 33.0000000144 36 64 64 2304 147456
+33	6069968 604625 22 335817 1.0000000144 33.440013777 21251 64 1518 29298594 41619817980
+34	6674593 911 23 232911 1.0000000144 33.0000000144 38 64 64 2432 155648
+35	6675504 913 24 232929 1.0000000144 33.0000000538 38 64 64 2432 155648
+36	6676417 913 25 232930 1.0000000144 33.0000000538 38 64 64 2432 155648
+37	6677330 403017 26 335816 1.0000000144 33.440013777 14163 64 1518 19553218 27778028476
+38	7080347 866 33 232915 1.0000000394 33.0000000394 36 64 64 2304 147456
+39	7081213 866 33 232915 1.0000000394 33.0000000394 36 64 64 2304 147456
+40	7082079 603876 34 335781 1.0000000394 33.4400135616 21250 64 1518 29297412 41618420856
+41	7685955 603876 34 335781 1.0000000394 33.4400135616 21250 64 1518 29297412 41618420856
+42	8289831 911 35 232917 1.0000000394 33.0000000394 38 64 64 2432 155648
+43	8290742 911 35 232917 1.0000000394 33.0000000394 38 64 64 2432 155648
+44	8291653 913 36 232933 1.0000000394 33.0000000788 38 64 64 2432 155648
+45	8292566 913 36 232933 1.0000000394 33.0000000788 38 64 64 2432 155648
+46	8293479 913 37 232934 1.0000000394 33.0000000788 38 64 64 2432 155648
+47	8294392 913 37 232934 1.0000000394 33.0000000788 38 64 64 2432 155648
+48	8295305 402296 38 335820 1.0000000394 33.440013802 14163 64 1518 19553218 27778028476
+49	8697601 402268 38 335780 1.0000000394 33.4400135616 14162 64 1518 19552036 27776631352
+50	9099869 3124 1274 334270 32 33.44 145 65536 65536 9502720 622770257920
+51	9102993 3124 1276 334271 32 33.44 145 65536 65536 9502720 622770257920
+52	9106117 3124 1277 334272 32 33.44 145 65536 65536 9502720 622770257920
+53	9109241 14 1286 1286 32 32 1 28 28 28 784
+54	9109255 14 1303 1303 32 32 1 28 28 28 784
+55	9109269 14 1320 1320 32 32 1 28 28 28 784
+56	9109283 146379 1340 334375 32 33.44 7106 28 1500 9683128 13586888224
+57	9255662 146379 1341 334424 32 33.44 7106 28 1500 9683128 13586888224
+58	9402041 146379 1342 334473 32 33.44 7106 28 1500 9683128 13586888224
+59	9548420 146379 1346 334522 32 33.44 7106 46 1518 9811036 13937783176
+60	9694799 146379 1346 334522 32 33.44 7106 46 1518 9811036 13937783176
+61	9841178 316051 1346 335789 32 33.4400136896 14212 0 48 334226 10693026
+62	10157229 200849 1346 335789 32 33.4400136896 7106 46 1518 9811036 13937783176
+63	10358078 242318 1346 335789 32 33.4400136896 7106 0 1.36896e-05 0.048788208 4.506160753472e-07
+64	10600396 146379 1347 334571 32 33.44 7106 46 1518 9811036 13937783176
+65	10746775 146379 1347 334571 32 33.44 7106 46 1518 9811036 13937783176
+66	10893154 316048 1347 335790 32 33.4400136896 14212 0 48 334226 10693026
+67	11209202 200846 1347 335790 32 33.4400136896 7106 46 1518 9811036 13937783176
+68	11410048 242315 1347 335790 32 33.4400136896 7106 0 1.36896e-05 0.048788208 4.506160753472e-07
+69	11652363 146379 1348 334620 32 33.44 7106 46 1518 9811036 13937783176
+70	11798742 146379 1348 334620 32 33.44 7106 46 1518 9811036 13937783176
+71	11945121 316051 1348 335791 32 33.4400136896 14212 0 48 334226 10693026
+72	12261172 200849 1348 335791 32 33.4400136896 7106 46 1518 9811036 13937783176
+73	12462021 242318 1348 335791 32 33.4400136896 7106 0 1.36896e-05 0.048788208 4.506160753472e-07
+74	12704339 201740 1352 335801 32.0000000144 33.440013726 7106 64 1518 9811054 13937785156
+75	12906079 201742 1353 335802 32.0000000144 33.440013726 7106 64 1518 9811054 13937785156
+76	13107821 201739 1354 335803 32.0000000144 33.440013726 7106 64 1518 9811054 13937785156
+77	13309560 202176 1364 335807 32.0000000394 33.440013751 7106 64 1518 9811054 13937785156
+78	13511736 202176 1364 335807 32.0000000394 33.440013751 7106 64 1518 9811054 13937785156
+79	13713912 202176 1365 335808 32.0000000394 33.440013751 7106 64 1518 9811054 13937785156
+80	13916088 202176 1365 335808 32.0000000394 33.440013751 7106 64 1518 9811054 13937785156
+81	14118264 202175 1366 335809 32.0000000394 33.440013751 7106 64 1518 9811054 13937785156
+82	14320439 202175 1366 335809 32.0000000394 33.440013751 7106 64 1518 9811054 13937785156
+83	14522614 603084 1408 335783 32.0000000788 33.4400135616 21217 46 1500 28913394 40570529196
+84	15125698 75 1410 1698 32.0000000788 32.0000002532 3 46 46 138 6348
+85	15125773 75 1412 1597 32.0000000788 32.0000002364 3 46 46 138 6348
+86	15125848 74 1413 1470 32.0000000788 32.000000135 3 28 28 84 2352
+87	15125922 74 1420 1471 32.0000000788 32.000000135 3 28 28 84 2352
+88	15125996 74 1421 1472 32.0000000788 32.000000135 3 46 46 138 6348
+89	15126070 74 1421 1472 32.0000000788 32.000000135 3 46 46 138 6348
+90	15126144 142 1421 1472 32.0000000788 32.000000135 6 0 1 3 3
+91	15126286 74 1421 1472 32.0000000788 32.000000135 3 46 46 138 6348
+92	15126360 71 1421 1472 32.0000000788 32.000000135 3 0 0 0 0
+93	15126431 75 1426 1473 32.0000000932 32.0000001494 3 64 64 192 12288
+94	15126506 75 1448 1580 32.0000001182 32.0000001744 3 64 64 192 12288
+95	15126581 75 1448 1580 32.0000001182 32.0000001744 3 64 64 192 12288
+96	15126656 74 1451 1477 32.0000001182 32.0000001576 3 46 46 138 6348
+97	15126730 12105 3009 334659 32.0000142672 33.4400006604 432 1164 1500 599952 844000128
+98	15138835 4953 3009 325415 0.1 33.4 334 0 3331200 46543680 1.547447768064e+14
+99	15143788 14554 3009 334659 32.0000142672 33.4400006604 432 6.604e-07 2.8236e-05 0.006204862 1.4325125080496e-07
+100	15158342 14986 3009 334659 32.0000142672 33.4400006604 432 6.604e-07 2.8236e-05 0.006204862 1.4325125080496e-07
+vector 101 Red.H_0.app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 102 Red.H_2.app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 103 Red.H_3.app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+0	15173727 45 463691 463693 34 34 3 35 35 105 3675
+2	15173772 15 463751 463751 34 34 1 56 56 56 3136
+3	15173787 15 463751 463751 34 34 1 56 56 56 3136
+4	15173802 28 463751 463751 34 34 2 0 1 1 1
+5	15173830 15 463751 463751 34 34 1 56 56 56 3136
+6	15173845 14 463751 463751 34 34 1 0 0 0 0
+7	15173859 225744 335824 463752 33.440013802 34 8138 56 1518 11234486 15959183908
+8	15399603 225744 335824 463752 33.440013802 34 8138 56 1518 11234486 15959183908
+9	15625347 418831 335824 463752 33.440013802 34 16323 0 49 524549 21098245
+10	16044178 235736 335832 463752 33.440014087 34 8185 56 1518 11299448 16051605088
+11	16279914 286609 335832 463752 33.440014087 34 8185 0 1.3667e-05 0.074412734200001 8.4249434622119e-07
+12	16566523 16 463753 463753 34 34 1 56 56 56 3136
+13	16566539 16 463753 463753 34 34 1 56 56 56 3136
+14	16566555 30 463753 463753 34 34 2 0 1 1 1
+15	16566585 16 463753 463753 34 34 1 56 56 56 3136
+16	16566601 15 463753 463753 34 34 1 0 0 0 0
+27	16566616 155100 336945 462920 33.4500003302 33.990013751 5390 174 1518 7442820 10573489080
+28	16721716 155100 336945 462920 33.4500003302 33.990013751 5390 174 1518 7442820 10573489080
+29	16876816 288210 335827 463424 33.4400140198 33.9900277482 10830 0 51 267535 8806215
+30	17165026 156538 335827 463424 33.4400140198 33.9900277482 5440 174 1518 7510656 10669641984
+31	17321564 188867 335827 463424 33.4400140198 33.9900277482 5440 0 1.39972e-05 0.0384375776 3.6041470614272e-07
+33	17510431 235525 335831 463681 33.4400140846 33.990041513 8185 174 1518 11300910 16053906276
+37	17745956 156567 335826 463431 33.4400140174 33.9900277846 5441 174 1518 7511838 10671039108
+40	17902523 235273 335821 463683 33.440013802 33.990041538 8186 174 1518 11302092 16055303400
+41	18137796 235273 335821 463683 33.440013802 33.990041538 8186 174 1518 11302092 16055303400
+48	18373069 156288 335828 463433 33.4400140424 33.9900278096 5441 174 1518 7511838 10671039108
+49	18529357 156316 335820 463433 33.440013802 33.9900278096 5442 174 1518 7513020 10672436232
+50	18685673 1224 336581 463688 33.45 34 56 65536 65536 3670016 240518168576
+51	18686897 1224 336582 463689 33.45 34 56 65536 65536 3670016 240518168576
+52	18688121 1224 336583 463690 33.45 34 56 65536 65536 3670016 240518168576
+56	18689345 57176 336638 463802 33.45 34 2744 156 1500 3739680 5247349632
+57	18746521 57176 336687 463851 33.45 34 2744 156 1500 3739680 5247349632
+58	18803697 57176 336736 463900 33.45 34 2744 156 1500 3739680 5247349632
+59	18860873 57176 336785 463949 33.45 34 2744 174 1518 3789072 5382867168
+60	18918049 57176 336785 463949 33.45 34 2744 174 1518 3789072 5382867168
+61	18975225 122309 336785 463949 33.45 34 5440 0 48 127952 4094000
+62	19097534 77068 336785 463901 33.45 34 2696 174 1518 3722928 5289048864
+63	19174602 92795 336785 463901 33.45 34 2696 0 1.36896e-05 0.018505872 1.709233389248e-07
+64	19267397 57176 336834 463998 33.45 34 2744 174 1518 3789072 5382867168
+65	19324573 57176 336834 463998 33.45 34 2744 174 1518 3789072 5382867168
+66	19381749 122309 336834 463998 33.45 34 5440 0 48 127952 4094000
+67	19504058 77068 336834 463950 33.45 34 2696 174 1518 3722928 5289048864
+68	19581126 92795 336834 463950 33.45 34 2696 0 1.36896e-05 0.018505872 1.709233389248e-07
+69	19673921 57176 336883 464047 33.45 34 2744 174 1518 3789072 5382867168
+70	19731097 57176 336883 464047 33.45 34 2744 174 1518 3789072 5382867168
+71	19788273 122309 336883 464047 33.45 34 5440 0 48 127952 4094000
+72	19910582 77068 336883 463999 33.45 34 2696 174 1518 3722928 5289048864
+73	19987650 92795 336883 463999 33.45 34 2696 0 1.36896e-05 0.018505872 1.709233389248e-07
+74	20080445 77385 336932 462906 33.4500003052 33.990013726 2695 174 1518 3721410 5286744540
+75	20157830 77385 336933 462907 33.4500003052 33.990013726 2695 174 1518 3721410 5286744540
+76	20235215 77385 336934 462908 33.4500003052 33.990013726 2695 174 1518 3721410 5286744540
+77	20312600 77550 336938 462912 33.4500003302 33.990013751 2695 174 1518 3721410 5286744540
+78	20390150 77550 336938 462912 33.4500003302 33.990013751 2695 174 1518 3721410 5286744540
+79	20467700 77550 336939 462913 33.4500003302 33.990013751 2695 174 1518 3721410 5286744540
+80	20545250 77550 336939 462913 33.4500003302 33.990013751 2695 174 1518 3721410 5286744540
+81	20622800 77550 336940 462914 33.4500003302 33.990013751 2695 174 1518 3721410 5286744540
+82	20700350 77550 336940 462914 33.4500003302 33.990013751 2695 174 1518 3721410 5286744540
+83	20777900 235273 335823 463684 33.440013802 33.990041538 8186 156 1500 11154744 15651080352
+97	21013173 4731 335845 463440 33.44001435 33.9900280784 167 1164 1500 231684 325624176
+98	21017904 136 348525 464048 33.5 34 6 3331200 3331200 19987200 66581360640000
+99	21018040 5678 335845 463440 33.44001435 33.9900280784 167 6.604e-07 2.80784e-05 0.0024123124 5.570585365616e-08
+100	21023718 5845 335845 463440 33.44001435 33.9900280784 167 6.604e-07 2.80784e-05 0.0024123124 5.570585365616e-08
+101	21029563 5953 464048 464048 0.1 34 340 0 0 0 0
+102	21035516 5953 464048 464048 0.1 34 340 0 0 0 0
+103	21041469 5953 464048 464048 0.1 34 340 0 0 0 0
+

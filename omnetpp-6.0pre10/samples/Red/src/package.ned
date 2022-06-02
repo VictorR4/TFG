@@ -1,3 +1,0 @@
-package red;
-
-@license(LGPL);

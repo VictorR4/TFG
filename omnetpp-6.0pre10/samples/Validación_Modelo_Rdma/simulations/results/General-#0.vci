@@ -1,0 +1,290 @@
+file 10355904 1654076878                                        
+version 3
+run General-0-20220601-11:47:53-7586
+attr configname General
+attr datetime 20220601-11:47:53
+attr datetimef 20220601-114753
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsd ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Modelo2Hosts
+attr processid 7586
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+config image-path ../../inet/images
+config network Modelo2Hosts
+config sim-time-limit 34s
+config **.H*.app[*].startTime 32s
+config **.H*.ipv4.isRdma true
+config **.H*.eth[*].encap.isRdma true
+config **.length 5m
+config **.visualize true
+config **.SW_*.hasStp true
+config **.spanningTreeProtocol "\"Stp\""
+config **.H*.numApps 1
+config **.H*.app[0].typename RdmaBasicApp
+config **.H*.app[0].localPort 1000
+config **.H*.app[0].destPort 1000
+config **.H*.app[0].destAddresses "moduleListByNedType(\"inet.node.rdma.RdmaHost\")"
+config **.H*.app[*].excludeLocalDestAddresses true
+config **.H*.app[*].sendInterval 0.01s
+config **.H*.app[*].messageLength 65536B
+
+vector 0 Modelo2Hosts.SW_1_1.encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 1 Modelo2Hosts.SW_1_1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 2 Modelo2Hosts.SW_1_1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 3 Modelo2Hosts.SW_1_1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 4 Modelo2Hosts.SW_1_1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 5 Modelo2Hosts.SW_1_1.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 6 Modelo2Hosts.SW_1_1.eth[1].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 7 Modelo2Hosts.SW_1_1.eth[1].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 8 Modelo2Hosts.SW_1_1.eth[1].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 9 Modelo2Hosts.SW_1_1.eth[1].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 10 Modelo2Hosts.SW_1_1.eth[1].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 11 Modelo2Hosts.SW_1_1.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 12 Modelo2Hosts.SW_1_1.eth[1].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 13 Modelo2Hosts.H_0.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 14 Modelo2Hosts.H_0.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 15 Modelo2Hosts.H_1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 16 Modelo2Hosts.H_1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 17 Modelo2Hosts.H_0.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 18 Modelo2Hosts.H_1.app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 19 Modelo2Hosts.H_0.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 20 Modelo2Hosts.H_1.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 21 Modelo2Hosts.H_0.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 22 Modelo2Hosts.H_1.eth[0].encap encapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source encapPk
+attr title "packets encapsulated, vector(packetBytes)"
+vector 23 Modelo2Hosts.H_0.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 24 Modelo2Hosts.H_0.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 25 Modelo2Hosts.H_0.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 26 Modelo2Hosts.H_0.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 27 Modelo2Hosts.H_0.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 28 Modelo2Hosts.H_1.eth[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packet bytes from higher layer, vector(packetBytes)"
+vector 29 Modelo2Hosts.H_1.eth[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 30 Modelo2Hosts.H_1.eth[0].mac.queue queueLength:vector ETV
+attr autoWarmupFilter false
+attr interpolationmode sample-hold
+attr source "warmup(count(packetPushed) - count(packetPulled) - count(packetRemoved) - count(packetDropped))"
+attr title "queue length, vector"
+attr type int
+vector 31 Modelo2Hosts.H_1.eth[0].mac.queue packetPulled:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pulled, vector(packetBytes)"
+vector 32 Modelo2Hosts.H_1.eth[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPulled)
+attr title "queueing times, vector"
+attr unit s
+vector 33 Modelo2Hosts.H_0.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 34 Modelo2Hosts.H_1.eth[0].mac txPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets transmitted, vector(packetBytes)"
+vector 35 Modelo2Hosts.SW_1_1.eth[0].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 36 Modelo2Hosts.SW_1_1.eth[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 37 Modelo2Hosts.SW_1_1.eth[1].mac rxPkOk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source rxPkOk
+attr title "packets received OK, vector(packetBytes)"
+vector 38 Modelo2Hosts.SW_1_1.eth[1].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 39 Modelo2Hosts.H_1.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 40 Modelo2Hosts.H_0.eth[0].encap decapPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source decapPk
+attr title "packets decapsulated, vector(packetBytes)"
+vector 41 Modelo2Hosts.H_1.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr source arpReplySent
+attr title "ARP replies sent, vector(packetBytes)"
+vector 42 Modelo2Hosts.H_0.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr source arpReplySent
+attr title "ARP replies sent, vector(packetBytes)"
+vector 43 Modelo2Hosts.H_0.app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 44 Modelo2Hosts.H_0.app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 45 Modelo2Hosts.H_0.app[0] rcvdPkLifetime:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, vector"
+attr unit s
+vector 46 Modelo2Hosts.H_0.app[0] "" ETV
+vector 47 Modelo2Hosts.H_1.app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 48 Modelo2Hosts.H_1.app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 49 Modelo2Hosts.H_1.app[0] rcvdPkLifetime:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, vector"
+attr unit s
+vector 50 Modelo2Hosts.H_1.app[0] "" ETV
+0	10179 794 2 243348 1 34 68 35 35 2380 83300
+1	10973 268236 6 243387 1 34 9836 56 1518 13534432 19224640416
+2	279209 268236 6 243387 1 34 9836 56 1518 13534432 19224640416
+3	547445 478200 6 243387 1 34 19672 0 3 10240 10648
+4	1025645 268436 6 243387 1 34 9836 56 1518 13534432 19224640416
+5	1294081 263208 6 243387 1 34 9836 0 2.908e-07 0.00026909080000001 2.8985940640001e-11
+6	1557289 268235 7 243388 1 34 9836 56 1518 13534432 19224640416
+7	1825524 268235 7 243388 1 34 9836 56 1518 13534432 19224640416
+8	2093759 478198 7 243388 1 34 19672 0 3 10240 10648
+9	2571957 268435 7 243388 1 34 9836 56 1518 13534432 19224640416
+10	2840392 273043 7 243388 1 34 9836 0 2.908e-07 0.00026909080000001 2.8985940640001e-11
+11	3113435 278420 8 243335 1.0000000144 33.9900140562 9835 64 1518 13534640 19224668960
+12	3391855 278420 9 243334 1.0000000144 33.9900140562 9835 64 1518 13534640 19224668960
+13	3670275 278224 12 243339 1.0000000394 33.9900140812 9835 64 1518 13534640 19224668960
+14	3948499 278224 12 243339 1.0000000394 33.9900140812 9835 64 1518 13534640 19224668960
+15	4226723 278224 13 243338 1.0000000394 33.9900140812 9835 64 1518 13534640 19224668960
+16	4504947 278224 13 243338 1.0000000394 33.9900140812 9835 64 1518 13534640 19224668960
+17	4783171 4304 466 243345 32 34 201 65536 65536 13172736 863288426496
+18	4787475 4304 467 243346 32 34 201 65536 65536 13172736 863288426496
+19	4791779 13 473 473 32 32 1 28 28 28 784
+20	4791792 13 490 490 32 32 1 28 28 28 784
+21	4791805 201422 509 243437 32 34 9851 28 1500 13422836 18834238640
+22	4993227 201422 510 243486 32 34 9851 28 1500 13422836 18834238640
+23	5194649 201422 513 243535 32 34 9851 46 1518 13600154 19320652460
+24	5396071 201422 513 243535 32 34 9851 46 1518 13600154 19320652460
+25	5597493 434138 513 243535 32 34 19654 0 49 462275 14791731
+26	6031631 275828 513 243487 32 34 9803 46 1518 13534010 19226834156
+27	6307459 333033 513 243487 32 34 9803 0 1.37284e-05 0.067307808400001 6.2172788323856e-07
+28	6640492 201422 514 243584 32 34 9851 46 1518 13600154 19320652460
+29	6841914 201422 514 243584 32 34 9851 46 1518 13600154 19320652460
+30	7043336 434138 514 243584 32 34 19654 0 49 462275 14791731
+31	7477474 275828 514 243536 32 34 9803 46 1518 13534010 19226834156
+32	7753302 333033 514 243536 32 34 9803 0 1.37284e-05 0.067307808400001 6.2172788323856e-07
+33	8086335 277038 517 243304 32.0000000144 33.990013726 9802 64 1518 13532528 19224533792
+34	8363373 277038 518 243305 32.0000000144 33.990013726 9802 64 1518 13532528 19224533792
+35	8640411 277639 525 243308 32.0000000394 33.990013751 9802 64 1518 13532528 19224533792
+36	8918050 277639 525 243308 32.0000000394 33.990013751 9802 64 1518 13532528 19224533792
+37	9195689 277638 526 243309 32.0000000394 33.990013751 9802 64 1518 13532528 19224533792
+38	9473327 277638 526 243309 32.0000000394 33.990013751 9802 64 1518 13532528 19224533792
+39	9750965 277444 539 243340 32.0000000788 33.9900140812 9802 46 1500 13356092 18740538632
+40	10028409 277444 540 243341 32.0000000788 33.9900140812 9802 46 1500 13356092 18740538632
+41	10305853 24 541 541 32.0000000788 32.0000000788 1 28 28 28 784
+42	10305877 24 542 542 32.0000000788 32.0000000788 1 28 28 28 784
+43	10305901 5712 1721 243333 32.0000141212 33.9900140424 200 1164 1164 232800 270979200
+44	10311613 5065 1721 243585 0.1 34 340 0 931200 18624000 17342668800000
+45	10316678 7112 1721 243333 32.0000141212 33.9900140424 200 1.40424e-05 1.41212e-05 0.0028085588 3.944001884368e-08
+46	10323790 7112 1721 243333 32.0000141212 33.9900140424 200 1.40424e-05 1.41212e-05 0.0028085588 3.944001884368e-08
+47	10330902 5712 1722 243332 32.0000141212 33.9900140424 200 1164 1164 232800 270979200
+48	10336614 5065 1722 243585 0.1 34 340 0 931200 18624000 17342668800000
+49	10341679 7112 1722 243332 32.0000141212 33.9900140424 200 1.40424e-05 1.41212e-05 0.0028085588 3.944001884368e-08
+50	10348791 7112 1722 243332 32.0000141212 33.9900140424 200 1.40424e-05 1.41212e-05 0.0028085588 3.944001884368e-08
+
