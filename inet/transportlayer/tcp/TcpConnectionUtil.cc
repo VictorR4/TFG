@@ -907,7 +907,6 @@ bool TcpConnection::sendData(uint32_t congestionWindow)
         ASSERT(bytesToSend >= sentBytes);
         bytesToSend -= sentBytes;
     }
-
     if (bytesToSend > 0) {
         // Nagle's algorithm: when a TCP connection has outstanding data that has not
         // yet been acknowledged, small segments cannot be sent until the outstanding

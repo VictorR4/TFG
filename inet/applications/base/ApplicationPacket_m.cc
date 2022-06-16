@@ -260,6 +260,40 @@ void ApplicationPacket::setSequenceNumber(uint32_t sequenceNumber)
     this->sequenceNumber = sequenceNumber;
 }
 
+//Añadido
+bool ApplicationPacket::getMoreFragments() const
+{
+    return this->moreFragments;
+}
+
+void ApplicationPacket::setMoreFragments(bool moreFragments)
+{
+    handleChange();
+    this->moreFragments = moreFragments;
+}
+
+uint32_t ApplicationPacket::getFragmentOffset() const
+{
+    return this->fragmentOffset;
+}
+
+void ApplicationPacket::setFragmentOffset(uint32_t fragmentOffset)
+{
+    handleChange();
+    this->fragmentOffset = fragmentOffset;
+}
+
+bool ApplicationPacket::getFirstFragment() const
+{
+    return this->firstFragment;
+}
+
+void ApplicationPacket::setFirstFragment(bool firstFragment)
+{
+    handleChange();
+    this->firstFragment = firstFragment;
+}
+
 class ApplicationPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:

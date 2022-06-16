@@ -57,6 +57,15 @@ void TcpAppBase::handleMessageWhenUp(cMessage *msg)
         socket.processMessage(msg);
 }
 
+L3Address TcpAppBase::chooseDestAddr()
+{
+    int k = intrand(destAddresses.size());
+    if (destAddresses[k].isUnspecified() || destAddresses[k].isLinkLocal()) {
+        L3AddressResolver().tryResolve(destAddressStr[k].c_str(), destAddresses[k]);
+    }
+    return destAddresses[k];
+}
+
 void TcpAppBase::connect()
 {
     // we need a new connId if this is not the first connection
@@ -79,16 +88,33 @@ void TcpAppBase::connect()
         socket.setTos(tos);
 
     // connect
-    const char *connectAddress = par("connectAddress");
-    int connectPort = par("connectPort");
+    const char *connectAddrs = par("connectAddress");
+    cStringTokenizer tokenizer(connectAddrs);
+    const char *token;
 
+    bool excludeLocalDestAddresses = par("excludeLocalDestAddresses");
+    IInterfaceTable *ift = getModuleFromPar<IInterfaceTable>(par("interfaceTableModule"), this);
+    int connectPort = par("connectPort");
     L3Address destination;
-    L3AddressResolver().tryResolve(connectAddress, destination);
+
+    while ((token = tokenizer.nextToken()) != nullptr) {
+        if (strstr(token, "Broadcast") != nullptr)
+            destAddresses.push_back(Ipv4Address::ALLONES_ADDRESS);
+        else {
+            L3Address addr = L3AddressResolver().resolve(token);
+            if (excludeLocalDestAddresses && ift && ift->isLocalAddress(addr))
+                continue;
+            destAddresses.push_back(addr);
+        }
+    }
+
+    destination = chooseDestAddr();
+    //L3AddressResolver().tryResolve(connectAddress, destination);
     if (destination.isUnspecified()) {
-        EV_ERROR << "Connecting to " << connectAddress << " port=" << connectPort << ": cannot resolve destination address\n";
+        //EV_ERROR << "Connecting to " << connectAddress << " port=" << connectPort << ": cannot resolve destination address\n";
     }
     else {
-        EV_INFO << "Connecting to " << connectAddress << "(" << destination << ") port=" << connectPort << endl;
+        EV_INFO << "Connecting to " /*<< connectAddress*/ << "(" << destination << ") port=" << connectPort << endl;
 
         socket.connect(destination, connectPort);
 

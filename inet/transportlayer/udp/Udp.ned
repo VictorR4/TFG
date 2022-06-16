@@ -72,7 +72,7 @@ simple Udp like IUdp
         string interfaceTableModule;   // The path to the InterfaceTable module
         string icmpModule = default("^.ipv4.icmp");
         string icmpv6Module = default("^.ipv6.icmpv6");
-        string crcMode @enum("disabled", "declared", "computed") = default("declared");
+        string crcMode @enum("disabled", "declared", "computed") = default("computed");
         @display("i=block/transport");
         @signal[packetSentToUpper](type=cPacket);
         @signal[packetReceivedFromUpper](type=cPacket);
@@ -80,7 +80,7 @@ simple Udp like IUdp
         @signal[packetReceivedFromLower](type=cPacket);
         @signal[packetDropped](type=inet::Packet);
         @signal[packetSent](type=cPacket);
-        @signal[packetReceived](type=cPacket);        
+        @signal[packetReceived](type=cPacket);
         @statistic[packetSent](title="packets sent"; source=packetSent; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[packetReceived](title="packets received"; source=packetReceived; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[passedUpPk](title="packets passed up"; source=packetSentToUpper; record=count,"vector(count)"; interpolationmode=none);

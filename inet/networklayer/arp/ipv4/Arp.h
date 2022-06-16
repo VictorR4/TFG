@@ -63,6 +63,9 @@ class INET_API Arp : public OperationalBase, public IArp
         ArpCache::iterator myIter; // iterator pointing to this entry
     };
 
+    static simsignal_t arpRequestSentSignal;
+    static simsignal_t arpReplySentSignal;
+
   protected:
     simtime_t retryTimeout;
     int retryCount = 0;
@@ -75,8 +78,7 @@ class INET_API Arp : public OperationalBase, public IArp
 
     cPatternMatcher proxyArpInterfacesMatcher;
 
-    static simsignal_t arpRequestSentSignal;
-    static simsignal_t arpReplySentSignal;
+
 
     ArpCache arpCache;
 

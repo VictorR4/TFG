@@ -59,12 +59,31 @@ void RdmaBasicApp::initialize(int stage)
 
 void RdmaBasicApp::finish()
 {
+
     recordScalar("packets sent", numSent);
     recordScalar("packets received", numReceived);
-    recordScalar("latency", latency.dbl());
-    recordScalar("meanLatency", latency.dbl()/numReceived);
+    //recordScalar("latency", latency.dbl());
+    //recordScalar("meanLatency", latency.dbl()/numReceived);
+    EV << "Media: " << statsLatency.getMean() << endl;
     EV << "Desviación típica: " << statsLatency.getStddev() << endl;
+    //Calculo del intervalo de confianza
+    auto confidenceIntervalMax = statsLatency.getMean() + 1.96 * statsLatency.getStddev()/sqrt(numReceived);
+    auto confidenceIntervalMin = statsLatency.getMean() - 1.96 * statsLatency.getStddev()/sqrt(numReceived);
+    EV_INFO << "Invervalo de confianza: (" << confidenceIntervalMin << "," << confidenceIntervalMax << ")\n";
+    for (int i = 0; i < numReceived; i++) {
+        //EV_INFO << "Latencia = " << latencyPackets[i] << "\n";
+        if(latencyPackets[i] >= confidenceIntervalMin /*&& latencyPackets[i] <= confidenceIntervalMax*/){
+            latency += latencyPackets[i];
+            valoresValidos++;
+        }
+    }
+    recordScalar("meanLatency", latency.dbl()/valoresValidos, "s");
+    EV_INFO << "Media de confianza = " << latency.dbl()/valoresValidos << "\n";
+    EV_INFO << "Latency = " << latency.dbl() << "\n";
+    EV_INFO << "Valores validos = " << valoresValidos << "\n";
+    statsLatency.collect(latency);
     statsLatency.recordAs("statsLatency");
+    recordScalar("valoresValido", valoresValidos);
     ApplicationBase::finish();
 }
 
@@ -110,7 +129,6 @@ void RdmaBasicApp::processStart()
     const char *destAddrs = par("destAddresses");
     cStringTokenizer tokenizer(destAddrs);
     const char *token;
-    sendTime = simTime();
     bool excludeLocalDestAddresses = par("excludeLocalDestAddresses");
 
     IInterfaceTable *ift = getModuleFromPar<IInterfaceTable>(par("interfaceTableModule"), this);
@@ -118,11 +136,11 @@ void RdmaBasicApp::processStart()
     while ((token = tokenizer.nextToken()) != nullptr) {
         destAddressStr.push_back(token);
         L3Address result;
-        L3Address addr = L3AddressResolver().resolve(token);
+        //L3Address addr = L3AddressResolver().resolve(token);
         L3AddressResolver().tryResolve(token, result);
         if (result.isUnspecified())
             EV_ERROR << "cannot resolve destination address: " << token << endl;
-        else if (excludeLocalDestAddresses && ift && ift->isLocalAddress(addr))
+        else if (excludeLocalDestAddresses && ift && ift->isLocalAddress(result))
             continue;
         destAddresses.push_back(result);
     }
@@ -182,12 +200,16 @@ void RdmaBasicApp::send(Packet *pk){//Cambiado
 void RdmaBasicApp::sendPacket()//Cambiado
 {
     std::ostringstream str;
-    str << packetName << "-" << numSent;
+    str << packetName <<  getParentModule()->getName() << "-" << numSent;
     Packet *packet = new Packet(str.str().c_str());
+
+
+    messageLength = B(par("messageLength"));
+
     if (dontFragment)
         packet->addTag<FragmentationReq>()->setDontFragment(true);
     const auto& payload = makeShared<ApplicationPacket>();
-    payload->setChunkLength(B(par("messageLength")));
+    payload->setChunkLength(messageLength);
     payload->setSequenceNumber(numSent);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
     packet->insertAtBack(payload);
@@ -219,26 +241,24 @@ void RdmaBasicApp::refreshDisplay() const
 
 void RdmaBasicApp::processPacket(Packet *pk)
 {
-    EV << "Fragment " << pk << " received \n";
-    int totalMessageLength = par("messageLength");
-    messageLength += (pk->getByteLength() - IPv4_MIN_HEADER_LENGTH.get());
-    EV_INFO << "Message length total = " << messageLength <<  "\n";
-    if(messageLength >= totalMessageLength){
-        EV_INFO << "Packet received with message length = " << messageLength <<  "\n";
-        emit(packetReceivedSignal, pk);
-        //clocktime_t generationTime = payload->getGenerationTime();
-        //clocktime_t generationTime = pk->getTag<CreationTimeTag>()->getCreationTime();
-        //EV_INFO << "Received packet: " << getReceivedPacketInfo(pk) << endl;
-        delete pk;
-        auto latencia = simTime() - pk->getCreationTime();
-        statsLatencyVector.record(latencia);
-        statsLatency.collect(latencia);
-        //EV_INFO << "Paquete " << numReceived << " con desviación típica = " << creationTime. << "\n";
-        //latency += (simTime() - generationTime);
-        numReceived++;
-        messageLength = 0;
 
-    }
+        EV << "Fragment " << pk << " received \n";
+
+        totalLengthToReceive = B(par("messageLength"));
+        receivedMessageLength += B((pk->getByteLength() - IPv4_MIN_HEADER_LENGTH.get()));
+        EV_INFO << "Message length total = " << totalLengthToReceive <<  "\n";
+        if(receivedMessageLength >= totalLengthToReceive){
+            EV_INFO << "Packet received with message length = " << receivedMessageLength <<  "\n";
+            emit(packetReceivedSignal, pk);
+            simtime_t latencia = simTime() - pk->getCreationTime();
+            latencyPackets.push_back(latencia);
+            delete pk;
+            statsLatencyVector.record(latencia);
+            statsLatency.collect(latencia);
+            numReceived++;
+            receivedMessageLength = B(0);
+        }
+
 
 }
 

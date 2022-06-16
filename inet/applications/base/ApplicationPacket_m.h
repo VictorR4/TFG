@@ -57,6 +57,9 @@ class INET_API ApplicationPacket : public ::inet::FieldsChunk
 {
   protected:
     uint32_t sequenceNumber = 0;
+    bool moreFragments = false;
+    uint32_t fragmentOffset = 0;
+    bool firstFragment = true;
   private:
     void copy(const ApplicationPacket& other);
 
@@ -75,6 +78,12 @@ class INET_API ApplicationPacket : public ::inet::FieldsChunk
     // field getter/setter methods
     virtual uint32_t getSequenceNumber() const;
     virtual void setSequenceNumber(uint32_t sequenceNumber);
+    virtual bool getMoreFragments() const;
+    virtual void setMoreFragments(bool moreFragments);
+    virtual uint32_t getFragmentOffset() const;
+    virtual void setFragmentOffset(uint32_t fragmentOffset);
+    virtual bool getFirstFragment() const;
+    virtual void setFirstFragment(bool firstFragment);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const ApplicationPacket& obj) {obj.parsimPack(b);}

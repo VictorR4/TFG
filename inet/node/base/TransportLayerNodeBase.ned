@@ -63,14 +63,14 @@ module TransportLayerNodeBase extends NetworkLayerNodeBase
         udp.ipOut --> Eth40G --> tn.in++ if hasUdp;//
         udp.ipIn  <-- Eth40G <-- tn.out++ if hasUdp;//
 
-        tcp.ipOut --> tn.in++ if hasTcp;
-        tcp.ipIn <-- tn.out++ if hasTcp;
+        tcp.ipOut --> Eth40G --> tn.in++ if hasTcp;
+        tcp.ipIn <-- Eth40G <-- tn.out++ if hasTcp;
 
         sctp.ipOut --> tn.in++ if hasSctp;
         tn.out++ --> sctp.ipIn if hasSctp;
 
-        tn.out++ --> ipv4.transportIn if hasIpv4;//
-        tn.in++ <-- ipv4.transportOut if hasIpv4;//
+        tn.out++ --> Eth40G --> ipv4.transportIn if hasIpv4;//
+        tn.in++  <-- Eth40G <-- ipv4.transportOut if hasIpv4;//
 
         tn.out++ --> ipv6.transportIn if hasIpv6;
         tn.in++ <-- ipv6.transportOut if hasIpv6;

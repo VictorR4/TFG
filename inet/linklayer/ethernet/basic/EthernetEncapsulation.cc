@@ -217,16 +217,11 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
     const auto& ethHeader = makeShared<EthernetMacHeader>();
     if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma){
         ethHeader->setIsRdma(1);
-        //auto time = packet->removeTagIfPresent<CreationTimeTag>();
         clocktime_t generationTime = simTime();// - time->getCreationTime();
         // set generation time of the packet
         ethHeader->setGenerationTime(generationTime);
     }else if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::ipv4){
         ethHeader->setIsRdma(0);
-        //clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
-        //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
-        //latencySending += actualLatency;
-        //ethHeader->setGenerationTime(simTime());
     }
 
 

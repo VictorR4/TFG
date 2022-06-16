@@ -118,7 +118,7 @@ module Ipv4NetworkLayer like INetworkLayer
         mp.in++ <-- Eth40G <-- ip.transportOut if !isRdma;
         mp.in++ <-- ip.transportOut if isRdma;
 
-        arp.ifOut  --> lp.in++;
+        arp.ifOut  --> Eth40G --> lp.in++;
         arp.ifIn <-- lp.out++;
 
         ip.queueOut --> Eth40G --> lp.in++ if !isRdma;

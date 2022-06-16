@@ -49,7 +49,7 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
         at.out++ --> Eth40G --> udp.appIn if hasUdp;//
         at.in++  <-- Eth40G <-- udp.appOut if hasUdp;//
 
-        at.out++ --> tcp.appIn if hasTcp;
+        at.out++ --> Eth40G--> tcp.appIn if hasTcp;
         at.in++ <-- tcp.appOut if hasTcp;
 
         at.out++ --> sctp.appIn if hasSctp;

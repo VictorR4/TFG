@@ -147,6 +147,14 @@ class INET_API Tcp : public TransportProtocolBase
     CrcMode crcMode = CRC_MODE_UNDEFINED;
     int msl;
     cMessage *endTxTimer = nullptr;
+    cMessage *endUpperTxTimer = nullptr;
+    cPacketQueue *queue = nullptr;
+    cPacketQueue *upperQueue = nullptr;
+    cGate *lowerLayer = nullptr;
+    cGate *upperLayer = nullptr;
+    cChannel *transmissionChannel = nullptr;
+    cChannel *upperTransmissionChannel = nullptr;
+
   public:
     Tcp() {}
     virtual ~Tcp();
@@ -198,7 +206,8 @@ class INET_API Tcp : public TransportProtocolBase
      */
     virtual TcpReceiveQueue *createReceiveQueue();
 
-    //virtual void handleEndTxPeriod();
+    virtual void handleEndTxPeriod();
+    virtual void handleEndUpperTxPeriod();
 
     // ILifeCycle:
     virtual void handleStartOperation(LifecycleOperation *operation) override;

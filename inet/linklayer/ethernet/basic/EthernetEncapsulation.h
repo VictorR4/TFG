@@ -57,6 +57,8 @@ class INET_API EthernetEncapsulation : public Ieee8022Llc
 
     cPacketQueue *queueToUpperLayer = nullptr;
 
+
+
     struct Socket {
         int socketId = -1;
         MacAddress localAddress;

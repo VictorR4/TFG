@@ -35,6 +35,8 @@
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
 #include "inet/common/clock/ClockUserModuleMixin.h"
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
+#include "inet/networklayer/arp/ipv4/Arp.h"
+
 
 namespace inet {
 
@@ -77,6 +79,7 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     IIpv4RoutingTable *rt = nullptr;
     IInterfaceTable *ift = nullptr;
     IArp *arp = nullptr;
+    //Arp *arp2 = nullptr;
     Icmp *icmp = nullptr;
     int transportInGateBaseId = -1;
     bool isRdma = false;
@@ -88,6 +91,8 @@ class INET_API Ipv4 : public OperationalBase, public NetfilterBase, public INetw
     bool limitedBroadcast = false;
     std::string directBroadcastInterfaces = "";
     int mtu;
+    int requestsReceived = 0;
+    int replySended = 0;
 
     cPatternMatcher directBroadcastInterfaceMatcher;
 

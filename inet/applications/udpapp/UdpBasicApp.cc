@@ -123,7 +123,7 @@ void UdpBasicApp::sendPacket()
 {
     if(packetsToSend > numSent){
         std::ostringstream str;
-        str << packetName << "-H" << getId() << "-"<< numSent;
+        str << packetName << "_" << getParentModule()->getName() << "-" << numSent;
         Packet *packet = new Packet(str.str().c_str());
         if (dontFragment)
             packet->addTag<FragmentationReq>()->setDontFragment(true);

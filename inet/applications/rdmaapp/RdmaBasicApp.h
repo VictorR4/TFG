@@ -33,7 +33,9 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     clocktime_t stopTime;
     bool dontFragment = false;
     const char *packetName = nullptr;
-    int messageLength = 0;
+    B messageLength = B(0);
+    B receivedMessageLength = B(0);
+    B totalLengthToReceive;
 
     // state
     ClockEvent *selfMsg = nullptr;
@@ -44,7 +46,10 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     clocktime_t latency;
     cStdDev statsLatency;
     cOutVector statsLatencyVector;
-    simtime_t sendTime;
+    //double *latencyPackets;
+    std::vector<simtime_t> latencyPackets;
+    simtime_t meanLatency;
+    int valoresValidos = 0;
 
     // statistics:
     static int counter; // counter for generating a global number for each packet

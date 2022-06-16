@@ -33,8 +33,6 @@
 #include "inet/transportlayer/common/CrcMode_m.h"
 #include "inet/transportlayer/common/TransportPseudoHeader_m.h"
 #include "inet/transportlayer/contract/udp/UdpControlInfo.h"
-#include "inet/common/clock/ClockUserModuleMixin.h"
-#include "inet/transportlayer/udp/UdpFragBuf.h"
 
 namespace inet {
 
@@ -127,41 +125,22 @@ class INET_API Udp : public TransportProtocolBase
     Icmp *icmp = nullptr;
     Icmpv6 *icmpv6 = nullptr;
 
-    //Necessary
-    bool undeliverablePacket = false;
     // statistics
     int numSent = 0;
     int numPassedUp = 0;
     int numDroppedWrongPort = 0;
     int numDroppedBadChecksum = 0;
-    clocktime_t latency = 0;
-    clocktime_t latencySending = 0;
 
-    //Variables to handle a packet that must be fragmented
     cMessage *endTxTimer = nullptr;
-    int offset = 0;
-    int headerLength;
-    int payloadLength;
-    int fragmentLength; // payload only (without header)
-    int offsetBase;
-    int noOfFragments = 0;
-
-    std::string fragMsgName;
-    L3Address srcAddr, destAddr;
-    const Protocol *l3Protocol = nullptr;
-    Ptr<UdpHeader> udpHeader;
-    Packet *packet = nullptr;
-
     cGate *lowerLayerOut = nullptr;
     cChannel *transmissionChannel = nullptr;
-    int numFragment = 0;
     cPacketQueue *queue = nullptr;
-    cPacketQueue *queueToUpperLayer = nullptr;
-    Packet *packetToUpperLayer = nullptr;
-    cChannel *upperTransmissionChannel = nullptr;
-    cMessage *endUpperTxTimer = nullptr;
 
-    UdpFragBuf fragbuf; // fragmentation reassembly buffer
+    cMessage *endUpperTxTimer = nullptr;
+    cChannel *upperTransmissionChannel = nullptr;
+    cPacketQueue *queueToUpperLayer = nullptr;
+
+
   protected:
     // utility: show current statistics above the icon
     virtual void refreshDisplay() const override;
@@ -199,7 +178,7 @@ class INET_API Udp : public TransportProtocolBase
     virtual SockDesc *findSocketForUnicastPacket(const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
     virtual std::vector<SockDesc *> findSocketsForMcastBcastPacket(const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort, bool isMulticast, bool isBroadcast);
     virtual SockDesc *findFirstSocketByLocalAddress(const L3Address& localAddr, ushort localPort);
-    virtual void sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort, clocktime_t latency);
+    virtual void sendUp(Ptr<const UdpHeader>& header, Packet *payload, SockDesc *sd, ushort srcPort, ushort destPort);
     virtual void processUndeliverablePacket(Packet *udpPacket);
     virtual void sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
 
@@ -210,13 +189,10 @@ class INET_API Udp : public TransportProtocolBase
     // process Udp packets coming from IP
     virtual void processUDPPacket(Packet *udpPacket);
 
-    // process anything message
-    virtual void handleMessageWhenUp(cMessage *msg) override;
-
     // process packets from application
     virtual void handleUpperPacket(Packet *appData) override;
 
-    // process packets from network layer
+    // process packets from network layr
     virtual void handleLowerPacket(Packet *appData) override;
 
     // process an own message

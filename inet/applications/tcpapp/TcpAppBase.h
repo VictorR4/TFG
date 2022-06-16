@@ -45,6 +45,9 @@ class INET_API TcpAppBase : public ApplicationBase, public TcpSocket::ICallback
     // statistics:
     static simsignal_t connectSignal;
 
+    std::vector<L3Address> destAddresses;
+    std::vector<std::string> destAddressStr;
+
   protected:
     virtual void initialize(int stage) override;
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
@@ -56,6 +59,8 @@ class INET_API TcpAppBase : public ApplicationBase, public TcpSocket::ICallback
     virtual void connect();
     virtual void close();
     virtual void sendPacket(Packet *pkt);
+    // chooses random destination address
+    virtual L3Address chooseDestAddr();
 
     virtual void handleTimer(cMessage *msg) = 0;
 

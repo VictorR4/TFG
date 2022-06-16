@@ -434,13 +434,13 @@ void Ipv4::preroutingFinish(Packet *packet)
 
 void Ipv4::handlePacketFromHL(Packet *packet)
 {
-
+/*
     if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
         clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
         packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
         latencySending += actualLatency;
     }
-
+*/
     EV_INFO << "Received " << packet << " from upper layer.\n";
     emit(packetReceivedFromUpperSignal, packet);
 
@@ -1089,8 +1089,10 @@ void Ipv4::fragmentAndSend(Packet *p)
 
         sendDatagramToOutput(fragment);
         offset += thisFragmentLength;
-        if(lastFragment && queue->isEmpty())
+        /*if(lastFragment && queue->isEmpty()){
             offset = 0;
+        }*/
+
 
     }
 
@@ -1296,9 +1298,12 @@ void Ipv4::sendPacketToNIC(Packet *p)
     else
         p->removeTagIfPresent<DispatchProtocolReq>();
     ASSERT(p->findTag<InterfaceReq>() != nullptr);
-
-
+    send(p, "queueOut");
     if(transmissionChannel){
+        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+    }
+
+  /*  if(transmissionChannel){
         if(!transmissionChannel->isBusy()){
             send(p, "queueOut");
             if(p->peekAtFront<Ipv4Header>()->getMoreFragments() || !queue->isEmpty()){
@@ -1316,7 +1321,7 @@ void Ipv4::sendPacketToNIC(Packet *p)
         }
     }else{
         send(p, "queueOut");
-    }
+    }*/
 /*
     if(!transmissionChannel->isBusy()){
         send(p, "queueOut");
@@ -1606,6 +1611,7 @@ void Ipv4::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj,
     if (signalID == IArp::arpResolutionFailedSignal) {
         arpResolutionTimedOut(check_and_cast<IArp::Notification *>(obj));
     }
+
 }
 
 void Ipv4::sendIcmpError(Packet *origPacket, int inputInterfaceId, IcmpType type, IcmpCode code)
