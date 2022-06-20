@@ -48,11 +48,21 @@ void TcpEchoApp::initialize(int stage)
         echoFactor = par("echoFactor");
 
         bytesRcvd = bytesSent = 0;
+
+        lowerLayer = gate("socketOut");
+        transmissionChannel = lowerLayer->findTransmissionChannel();
+        queue = new cPacketQueue("senderQueue");
+        endTxTimer = new cMessage("EndTransmission", 103);
         WATCH(bytesRcvd);
         WATCH(bytesSent);
     }
 }
 
+void TcpEchoApp::handleSelfMessage(cMessage *msg){
+    if(msg == endTxTimer){
+        handleEndTxTimer();
+    }
+}
 void TcpEchoApp::sendDown(Packet *msg)
 {
     if (msg->isPacket()) {
@@ -63,7 +73,17 @@ void TcpEchoApp::sendDown(Packet *msg)
 
     msg->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::tcp);
     msg->getTag<SocketReq>();
-    send(msg, "socketOut");
+    /*if(transmissionChannel){
+        if(!transmissionChannel->isBusy()){
+            send(msg, "socketOut");
+            //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+        }else{
+            queue->insert(msg);
+        }
+    }else{*/
+        send(msg, "socketOut");
+    //}
+
 }
 
 void TcpEchoApp::refreshDisplay() const
@@ -113,9 +133,11 @@ void TcpEchoAppThread::dataArrived(Packet *rcvdPkt, bool urgent)
 
         ASSERT(outPkt->getByteLength() == outByteLen);
 
-        if (echoAppModule->delay == 0)
+        if (echoAppModule->delay == 0){
+            //echoAppModule->queue->insert(outPkt);
+            //echoAppModule->sendDown(check_and_cast<Packet *>(echoAppModule->queue->pop()));
             echoAppModule->sendDown(outPkt);
-        else
+        }else
             scheduleAfter(echoAppModule->delay, outPkt); // send after a delay
     }
     delete rcvdPkt;
@@ -129,6 +151,10 @@ void TcpEchoAppThread::timerExpired(cMessage *timer)
     Packet *pkt = check_and_cast<Packet *>(timer);
     pkt->setContextPointer(nullptr);
     echoAppModule->sendDown(pkt);
+}
+
+void TcpEchoApp::handleEndTxTimer(){
+    sendDown(check_and_cast<Packet *>(queue->pop()));
 }
 
 } // namespace inet

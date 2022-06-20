@@ -36,6 +36,8 @@ class INET_API TcpBasicClientApp : public TcpAppBase
     simtime_t startTime;
     simtime_t stopTime;
 
+
+
     virtual void sendRequest();
     virtual void rescheduleAfterOrDeleteTimer(simtime_t d, short int msgKind);
 

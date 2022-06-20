@@ -395,11 +395,17 @@ void MyUdpBasicApp::refreshDisplay() const
 void MyUdpBasicApp::processPacket(Packet *pk)
 {
     if(numReceived == 0 && isGlobalArp){
-        delete pk;
+        //delete pk;
         numReceived++;
-    }else{
+    }
+    else{
+        emit(packetReceivedSignal, pk);
+        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+        //delete pk;
+        numReceived++;
+        auto payload = pk->peekAtFront<ApplicationPacket>();
+    /*EV_INFO << "Packet " << pk->getName() << " length = " << pk->getByteLength() << " creationTime = " << payload->getTag<CreationTimeTag>()->getCreationTime() << "\n";
 
-    auto payload = pk->peekAtFront<ApplicationPacket>();
     if(payload->getFirstFragment())
         creationTime_firstFragment = payload->getTag<CreationTimeTag>()->getCreationTime();
 
@@ -418,17 +424,17 @@ void MyUdpBasicApp::processPacket(Packet *pk)
         p->insertAtBack(payload2);
 
         EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(p) << endl;
-        emit(packetReceivedSignal, p);
-        simtime_t latency = simTime() - creationTime_firstFragment;
+        emit(packetReceivedSignal, p);*/
+        simtime_t latency = simTime() - payload->getTag<CreationTimeTag>()->getCreationTime();
         EV_INFO << "simTime = " << simTime() << "\n";
-        EV_INFO << "first 2 = " << creationTime_firstFragment << "\n";
+        //EV_INFO << "first 2 = " << creationTime_firstFragment << "\n";
         EV_INFO << "Latencia = " << latency << "\n";
         latencyPackets.push_back(latency);
 
-        numReceived++;
-        totalreceivedMessagesLength = B(0);
-        creationTime_firstFragment = 0;
-        receivedMessageLength = B(0);
+        //numReceived++;
+        //totalreceivedMessagesLength = B(0);
+        //creationTime_firstFragment = 0;
+        //receivedMessageLength = B(0);
         //delete p;
         statsLatencyVector.record(latency);
         statsLatency.collect(latency);
@@ -436,7 +442,6 @@ void MyUdpBasicApp::processPacket(Packet *pk)
     delete pk;
     }
 
-}
 
 void MyUdpBasicApp::handleStartOperation(LifecycleOperation *operation)
 {

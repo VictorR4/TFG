@@ -19,6 +19,8 @@
 
 #include "inet/networklayer/common/L3AddressResolver.h"
 #include "inet/transportlayer/contract/tcp/TcpSocket.h"
+#include "inet/common/TimeTag_m.h"
+#include "inet/applications/tcpapp/GenericAppMsg_m.h"
 
 namespace inet {
 

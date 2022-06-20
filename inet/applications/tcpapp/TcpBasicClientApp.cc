@@ -91,6 +91,17 @@ void TcpBasicClientApp::sendRequest()
     payload->setExpectedReplyLength(B(replyLength));
     payload->setServerClose(false);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
+    /*simtime_t creationTime = payload->getTag<CreationTimeTag>()->getCreationTime();
+
+    std::vector<simtime_t>::iterator it;
+    it = find(creationTimesQueue.begin(), creationTimesQueue.end(), creationTime);
+
+    if(it == creationTimesQueue.end()){
+        creationTimesQueue.push_back(creationTime);
+        EV_INFO << "Puesto\n";
+    }
+
+    EV_INFO << "Creation time client = " << creationTime << "\n";*/
     packet->insertAtBack(payload);
 
     EV_INFO << "sending request with " << requestLength << " bytes, expected reply length " << replyLength << " bytes,"
@@ -155,6 +166,7 @@ void TcpBasicClientApp::rescheduleAfterOrDeleteTimer(simtime_t d, short int msgK
 void TcpBasicClientApp::socketDataArrived(TcpSocket *socket, Packet *msg, bool urgent)
 {
     TcpAppBase::socketDataArrived(socket, msg, urgent);
+
 
     if (numRequestsToSend > 0) {
         EV_INFO << "reply arrived\n";

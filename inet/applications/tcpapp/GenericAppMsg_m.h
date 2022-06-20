@@ -71,6 +71,7 @@ class INET_API GenericAppMsg : public ::inet::FieldsChunk
     B expectedReplyLength = B(-1);
     double replyDelay = 0;
     bool serverClose = false;
+    int id;
 
   private:
     void copy(const GenericAppMsg& other);
@@ -94,6 +95,8 @@ class INET_API GenericAppMsg : public ::inet::FieldsChunk
     virtual void setReplyDelay(double replyDelay);
     virtual bool getServerClose() const;
     virtual void setServerClose(bool serverClose);
+    virtual int getIdentification() const;
+    virtual void setIdentification(int id);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const GenericAppMsg& obj) {obj.parsimPack(b);}

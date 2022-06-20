@@ -835,7 +835,7 @@ void Ipv4::reassembleAndDeliverFinish(Packet *packet)
             emit(packetSentToUpperSignal, packet);
             send(packet, "transportOut");
             numLocalDeliver++;
-            scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
+            rescheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
     }
     else if (hasSocket) {
         delete packet;

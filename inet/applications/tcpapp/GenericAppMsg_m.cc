@@ -288,6 +288,17 @@ void GenericAppMsg::setServerClose(bool serverClose)
     this->serverClose = serverClose;
 }
 
+int GenericAppMsg::getIdentification() const
+{
+    return this->id;
+}
+
+void GenericAppMsg::setIdentification(int id)
+{
+    handleChange();
+    this->id = id;
+}
+
 class GenericAppMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:

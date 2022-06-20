@@ -69,12 +69,18 @@ void Tcp::initialize(int stage)
         msl = par("msl");
         useDataNotification = par("useDataNotification");
         endTxTimer = new cMessage("EndTransmission", 103);
-        queue = new cPacketQueue("Queue");
+        queue = new cQueue("Queue");
+
+        endUpperTxTimer = new cMessage("EndTransmission", 103);
+        upperQueue = new cQueue("send to upper queue");
 
         upperLayer = gate("appOut");
         lowerLayer = gate("ipOut");
         transmissionChannel = lowerLayer->findTransmissionChannel();
-        upperTransmissionChannel = upperLayer->findTransmissionChannel();
+        upperTransmissionChannel = gate("appOut")->findTransmissionChannel();
+
+
+
 
         WATCH(lastEphemeralPort);
         WATCH_PTRMAP(tcpConnMap);
@@ -107,6 +113,8 @@ void Tcp::handleSelfMessage(cMessage *msg)
 {
     if(msg == endTxTimer){
         handleEndTxPeriod();
+    }else if(msg == endUpperTxTimer){
+        handleEndUpperTxPeriod();
     }else
         throw cRuntimeError("model error: should schedule timers on connection");
 }
@@ -145,7 +153,7 @@ void Tcp::sendFromConn(cMessage *msg, const char *gatename, int gateindex)
                 rescheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
             }else{
                 EV_INFO << "Packet " << msg << "inserted in the queue\n";
-                queue->insert(check_and_cast<Packet *>(msg));
+                queue->insert(check_and_cast<cMessage *>(msg));
             }
         }else{
             send(msg, "ipOut", gateindex);
@@ -153,12 +161,12 @@ void Tcp::sendFromConn(cMessage *msg, const char *gatename, int gateindex)
     }else if(gate(gatename)->getId() == upperLayer->getId()){
         if(upperTransmissionChannel){
             if(!upperTransmissionChannel->isBusy()){
-                send(msg, "appOut", gateindex);
                 EV_INFO << "Packet " << msg << " sent\n";
-                rescheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
+                send(msg, "appOut", gateindex);
+                scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
             }else{
                 EV_INFO << "Packet " << msg << "inserted in the queue\n";
-                upperQueue->insert(check_and_cast<Packet *>(msg));
+                upperQueue->insert(check_and_cast<cMessage *>(msg));
             }
         }else{
             send(msg, "appOut", gateindex);
@@ -598,17 +606,13 @@ std::ostream& operator<<(std::ostream& os, const TcpConnection& conn)
 
 void Tcp::handleEndTxPeriod(){
     if(!queue->isEmpty()){
-        //send(check_and_cast<Packet *>(queue->pop()), "ipOut");
-        sendFromConn(check_and_cast<Packet *>(queue->pop()), "ipOut");
-        //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+        sendFromConn(check_and_cast<cMessage *>(queue->pop()), "ipOut");
     }
 }
 
 void Tcp::handleEndUpperTxPeriod(){
     if(!upperQueue->isEmpty()){
-        //send(check_and_cast<Packet *>(queue->pop()), "ipOut");
-        sendFromConn(check_and_cast<Packet *>(upperQueue->pop()), "appOut");
-        //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
+        sendFromConn(check_and_cast<cMessage *>(upperQueue->pop()), "appOut");
     }
 }
 

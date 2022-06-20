@@ -42,6 +42,18 @@ class INET_API TcpAppBase : public ApplicationBase, public TcpSocket::ICallback
     int bytesSent;
     int bytesRcvd;
 
+    simtime_t latency;
+    simtime_t creationTime;
+    std::vector<simtime_t> latencyPackets;
+    cStdDev statsLatency;
+    cOutVector statsLatencyVector;
+    int valoresValidos = 0;
+    B receivedMessageLength = B(0);
+    B totalreceivedMessagesLength;
+    std::vector<simtime_t> creationTimesQueue;
+    //std::vector<B> packetsSizeList;
+    int id = 0;
+
     // statistics:
     static simsignal_t connectSignal;
 

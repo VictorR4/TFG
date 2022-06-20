@@ -148,8 +148,8 @@ class INET_API Tcp : public TransportProtocolBase
     int msl;
     cMessage *endTxTimer = nullptr;
     cMessage *endUpperTxTimer = nullptr;
-    cPacketQueue *queue = nullptr;
-    cPacketQueue *upperQueue = nullptr;
+    cQueue *queue = nullptr;
+    cQueue *upperQueue = nullptr;
     cGate *lowerLayer = nullptr;
     cGate *upperLayer = nullptr;
     cChannel *transmissionChannel = nullptr;

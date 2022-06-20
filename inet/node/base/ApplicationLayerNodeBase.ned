@@ -41,16 +41,18 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
 
     connections allowunconnected:
         for i=0..numApps-1 {
-            app[i].socketOut --> Eth40G --> at.in++;//Poner cable
-            app[i].socketIn <-- Eth40G <-- at.out++;//
+            app[i].socketOut --> Eth40G --> at.in++ if !hasTcp;
+            app[i].socketOut --> at.in++ if hasTcp;//3
+            app[i].socketIn <-- Eth40G <-- at.out++ if !hasTcp;//2
+            app[i].socketIn  <-- at.out++ if hasTcp;//
 
         }
 
         at.out++ --> Eth40G --> udp.appIn if hasUdp;//
         at.in++  <-- Eth40G <-- udp.appOut if hasUdp;//
 
-        at.out++ --> Eth40G--> tcp.appIn if hasTcp;
-        at.in++ <-- tcp.appOut if hasTcp;
+        at.out++ --> tcp.appIn if hasTcp;//4
+        at.in++ <-- tcp.appOut if hasTcp;//1
 
         at.out++ --> sctp.appIn if hasSctp;
         at.in++ <-- sctp.appOut if hasSctp;

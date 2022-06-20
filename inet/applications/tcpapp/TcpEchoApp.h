@@ -37,6 +37,11 @@ class INET_API TcpEchoApp : public TcpServerHostApp
     long bytesRcvd = 0;
     long bytesSent = 0;
 
+    cPacketQueue *queue = nullptr;
+    cGate *lowerLayer;
+    cChannel *transmissionChannel;
+    cMessage *endTxTimer = nullptr;
+
   protected:
     virtual void sendDown(Packet *packet);
 
@@ -44,6 +49,10 @@ class INET_API TcpEchoApp : public TcpServerHostApp
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
     virtual void finish() override;
     virtual void refreshDisplay() const override;
+
+    virtual void handleEndTxTimer();
+    //Process an own message
+    virtual void handleSelfMessage(cMessage *msg);
 
   public:
     TcpEchoApp();
