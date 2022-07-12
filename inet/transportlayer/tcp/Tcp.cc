@@ -163,7 +163,7 @@ void Tcp::sendFromConn(cMessage *msg, const char *gatename, int gateindex)
             if(!upperTransmissionChannel->isBusy()){
                 EV_INFO << "Packet " << msg << " sent\n";
                 send(msg, "appOut", gateindex);
-                scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
+                //scheduleAt(upperTransmissionChannel->getTransmissionFinishTime(), endUpperTxTimer);
             }else{
                 EV_INFO << "Packet " << msg << "inserted in the queue\n";
                 upperQueue->insert(check_and_cast<cMessage *>(msg));

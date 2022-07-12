@@ -152,33 +152,40 @@ void MyUdpBasicApp::sendPacket()
     if(packetsToSend > numSent){
         std::string str;
         str = packetName; str += "_"; str += getParentModule()->getName(); str += "-"; str += std::to_string(numSent);
+        Packet *packet = new Packet(str.c_str());
+        if (dontFragment)
+            packet->addTag<FragmentationReq>()->setDontFragment(true);
 
         const auto& payload = makeShared<ApplicationPacket>();
+
+        payload->setSequenceNumber(numSent);
+        payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
+
+
 
         if(numSent == 0 && isGlobalArp)
             messageLength = B(par("firstPacket"));
         else
             messageLength = B(par("messageLength"));
 
+        payload->setChunkLength(messageLength);
+        id = getParentModule()->getId() * 10 + numSent;
+        payload->setId(id);
+
+        packet->insertAtFront(payload);
+        emit(packetSentSignal, packet);
+
         if(messageLength <= fragmentSize){
-            Packet *packet = new Packet(str.c_str());
-
-            if (dontFragment)
-                packet->addTag<FragmentationReq>()->setDontFragment(true);
-
-            payload->setChunkLength(messageLength);
-            payload->setSequenceNumber(numSent);
-            payload->addTag<CreationTimeTag>()->setCreationTime(creationTime);
-            packet->insertAtBack(payload);
-
-            destAddr = chooseDestAddr();
+            //destAddr = chooseDestAddr();
             EV_INFO << "Sending packet " << packet << "\n";
             emit(packetSentSignal, packet);
             socket.sendTo(packet, destAddr, destPort);
             numSent++;
         }else{
-            int noOfFragments =  messageLength.get() % fragmentSize.get() != 0 ? messageLength.get()/fragmentSize.get() + 1 : messageLength.get()/fragmentSize.get() ;
             int offsetBase = payload->getFragmentOffset();
+
+            int noOfFragments =  messageLength.get() % fragmentSize.get() != 0 ? messageLength.get()/fragmentSize.get() + 1 : messageLength.get()/fragmentSize.get() ;
+
             if(offset == B(0))
                 EV_DETAIL << "Breaking message into " << noOfFragments << " fragments\n";
 
@@ -190,33 +197,30 @@ void MyUdpBasicApp::sendPacket()
                 B thisFragmentLength = lastFragment ? messageLength - offset : fragmentSize;
 
                 std::string curFragName = fragMsgName + std::to_string(offset.get());
+
                 if (lastFragment)
                     curFragName += "-last";
                 else
                     payload->setMoreFragments(true);
 
-                if(offset != B(0)){
+                if(offset != B(0))
                     payload->setFirstFragment(false);
-                    EV_INFO << "Creation time false = " << creationTime << "\n";
-                }else{
-                    EV_INFO << "Creation time true = " << creationTime << "\n";
-                }
 
+                Packet *fragment = new Packet(curFragName.c_str());
+                fragment->copyTags(*packet);
 
+                ASSERT(fragment->getByteLength() == 0);
                 payload->setChunkLength(thisFragmentLength);
                 payload->setFragmentOffset(offsetBase + offset.get());
-                Packet *fragment = new Packet(curFragName.c_str());
 
-                if (dontFragment)
-                    fragment->addTag<FragmentationReq>()->setDontFragment(true);
+                payload->setTotalLengthField(thisFragmentLength);
+                payload->setId(id);
 
-                payload->setSequenceNumber(numSent);
-                payload->addTag<CreationTimeTag>()->setCreationTime(creationTime);
-                fragment->insertAtBack(payload);
+                fragment->insertAtFront(payload);
                 EV_INFO << "Creation time saved = " << fragment->getCreationTime() << "\n";
 
-                destAddr = chooseDestAddr();
-                emit(packetSentSignal, fragment);
+
+                //emit(packetSentSignal, fragment);
 
                 EV_INFO << "Sending fragment " << fragment << "\n";
                 socket.sendTo(fragment, destAddr, destPort);
@@ -228,39 +232,43 @@ void MyUdpBasicApp::sendPacket()
                     numSent++;
 
             }else{
-                int noOfFragments =  messageLength.get() % fragmentSize.get() != 0 ? messageLength.get()/fragmentSize.get() + 1 : messageLength.get()/fragmentSize.get() ;
-                if(offset == B(0))
-                    EV_DETAIL << "Breaking message into " << noOfFragments << " fragments\n";
-
-                fragMsgName = str;
-                fragMsgName += "-frag-";
-
                 while(offset < messageLength){
                     bool lastFragment = (offset + fragmentSize >= messageLength);
-                    B thisFragmentLength = lastFragment ? fragmentSize - offset : fragmentSize;
+                    B thisFragmentLength = lastFragment ? messageLength - offset : fragmentSize;
 
                     std::string curFragName = fragMsgName + std::to_string(offset.get());
+
+
+                    Packet *fragment = new Packet(curFragName.c_str());
+                    fragment->copyTags(*packet);
+
+                    ASSERT(fragment->getByteLength() == 0);
+                    auto fraghdr = staticPtrCast<ApplicationPacket>(payload->dupShared());
+                    fraghdr->setChunkLength(thisFragmentLength);
+
+                    fraghdr->setFragmentOffset(offsetBase + offset.get());
+                    fraghdr->setTotalLengthField(thisFragmentLength);
+                    fraghdr->setId(id);
+
                     if (lastFragment)
                         curFragName += "-last";
                     else
-                        payload->setMoreFragments(true);
+                        fraghdr->setMoreFragments(true);
 
                     if(offset != B(0))
-                        payload->setFirstFragment(false);
+                        fraghdr->setFirstFragment(false);
 
-                    payload->setChunkLength(fragmentSize);
-                    Packet *fragment = new Packet(curFragName.c_str());
-                    if (dontFragment)
-                        fragment->addTag<FragmentationReq>()->setDontFragment(true);
-                    payload->setSequenceNumber(numSent);
-                    payload->addTag<CreationTimeTag>()->setCreationTime(creationTime);
-                    fragment->insertAtBack(payload);
-                    destAddr = chooseDestAddr();
-                    emit(packetSentSignal, fragment);
+                    fragment->insertAtFront(fraghdr);
+
+                    //destAddr = chooseDestAddr();
+
+                    //emit(packetSentSignal, fragment);
                     socket.sendTo(fragment, destAddr, destPort);
                     offset += thisFragmentLength;
+
                 }
                 numSent++;
+                offset = B(0);
             }
         }
 
@@ -318,7 +326,8 @@ void MyUdpBasicApp::processStart()
 
 void MyUdpBasicApp::processSend()
 {
-    creationTime = simTime();
+    //creationTime = simTime();
+    destAddr = chooseDestAddr();
     sendPacket();
     clocktime_t d = par("sendInterval");
     if (stopTime < CLOCKTIME_ZERO || getClockTime() + d < stopTime) {
@@ -391,6 +400,21 @@ void MyUdpBasicApp::refreshDisplay() const
     sprintf(buf, "rcvd: %d pks\nsent: %d pks\n latency: %f s", numReceived, numSent, latency.dbl());
     getDisplayString().setTagArg("t", 0, buf);
 }
+/*
+void MyUdpBasicApp::processPacket(Packet *pk)
+{
+    emit(packetReceivedSignal, pk);
+    EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+    simtime_t latency = simTime() - pk->getCreationTime();
+    EV_INFO << "simTime = " << simTime() << "\n";
+    EV_INFO << "Latencia = " << latency << "\n";
+    latencyPackets.push_back(latency);
+
+    statsLatencyVector.record(latency);
+    statsLatency.collect(latency);
+    delete pk;
+    numReceived++;
+}*/
 
 void MyUdpBasicApp::processPacket(Packet *pk)
 {
@@ -399,17 +423,33 @@ void MyUdpBasicApp::processPacket(Packet *pk)
         numReceived++;
     }
     else{
-        emit(packetReceivedSignal, pk);
-        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+        //pakemit(packetReceivedSignal, pk);
+        EV_INFO << "Received fragment: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
         //delete pk;
-        numReceived++;
+
         auto payload = pk->peekAtFront<ApplicationPacket>();
+
+        if (payload->getFragmentOffset() != 0 || payload->getMoreFragments()) {
+            EV_DETAIL << "Datagram fragment: offset=" << payload->getFragmentOffset()
+                              << ", MORE=" << (payload->getMoreFragments() ? "true" : "false") << ".\n";
+
+        pk = fragbuf.addFragment(pk, simTime());
+        if (!pk/*udpHeader->getMoreFragments()*/) {
+            EV_DETAIL << "No complete datagram yet.\n";
+            return;
+        }
+
+        EV_DETAIL << "This fragment completes the datagram.\n";
+        }
+
+        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
+        numReceived++;
     /*EV_INFO << "Packet " << pk->getName() << " length = " << pk->getByteLength() << " creationTime = " << payload->getTag<CreationTimeTag>()->getCreationTime() << "\n";
 
     if(payload->getFirstFragment())
         creationTime_firstFragment = payload->getTag<CreationTimeTag>()->getCreationTime();
-
-
+    */
+/*
     totalreceivedMessagesLength = B(par("messageLength"));
     receivedMessageLength += B(pk->getByteLength());
     if(receivedMessageLength >= totalreceivedMessagesLength){
@@ -423,9 +463,9 @@ void MyUdpBasicApp::processPacket(Packet *pk)
         p->setName(pkName.c_str());
         p->insertAtBack(payload2);
 
-        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(p) << endl;
-        emit(packetReceivedSignal, p);*/
-        simtime_t latency = simTime() - payload->getTag<CreationTimeTag>()->getCreationTime();
+        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(p) << endl;*/
+        emit(packetReceivedSignal, pk);
+        simtime_t latency = simTime() - pk->getCreationTime();
         EV_INFO << "simTime = " << simTime() << "\n";
         //EV_INFO << "first 2 = " << creationTime_firstFragment << "\n";
         EV_INFO << "Latencia = " << latency << "\n";
@@ -438,9 +478,10 @@ void MyUdpBasicApp::processPacket(Packet *pk)
         //delete p;
         statsLatencyVector.record(latency);
         statsLatency.collect(latency);
-    }
+
     delete pk;
     }
+}
 
 
 void MyUdpBasicApp::handleStartOperation(LifecycleOperation *operation)

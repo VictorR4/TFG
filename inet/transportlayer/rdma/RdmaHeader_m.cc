@@ -350,16 +350,28 @@ void RdmaHeader::setMoreFragments(bool moreFragments)
     this->moreFragments = moreFragments;
 }
 
-uint16_t RdmaHeader::getFragmentOffset() const
+int RdmaHeader::getFragmentOffset() const
 {
     return this->fragmentOffset;
 }
 
-void RdmaHeader::setFragmentOffset(uint16_t fragmentOffset)
+void RdmaHeader::setFragmentOffset(int fragmentOffset)
 {
     handleChange();
     this->fragmentOffset = fragmentOffset;
 }
+
+uint16_t RdmaHeader::getIdentification() const
+{
+    return this->identification;
+}
+
+void RdmaHeader::setIdentification(uint16_t identification)
+{
+    handleChange();
+    this->identification = identification;
+}
+
 class RdmaHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:

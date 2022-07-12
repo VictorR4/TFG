@@ -33,7 +33,6 @@ class INET_API TcpAppBase : public ApplicationBase, public TcpSocket::ICallback
 {
   protected:
     TcpSocket socket;
-
     // statistics
     int numSessions;
     int numBroken;

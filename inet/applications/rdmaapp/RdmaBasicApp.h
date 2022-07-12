@@ -13,6 +13,9 @@
 #include "inet/applications/base/ApplicationBase.h"
 #include "inet/common/clock/ClockUserModuleMixin.h"
 #include "inet/transportlayer/contract/udp/UdpSocket.h"
+#include "inet/applications/rdmaapp/fragBuff/RdmaFragBuf.h"
+#include "inet/networklayer/ipv4/Ipv4FragBuf.h"
+#include "inet/transportlayer/rdma/RdmaHeader_m.h"
 
 namespace inet {
 
@@ -51,6 +54,9 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     simtime_t meanLatency;
     int valoresValidos = 0;
 
+    RdmaAppFragBuf fragbufRdma; // fragmentation reassembly buffer
+    Ipv4FragBuf fragbufIpv4; // fragmentation reassembly buffer
+
     // statistics:
     static int counter; // counter for generating a global number for each packet
   protected:
@@ -78,6 +84,7 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     virtual void handleStartOperation(LifecycleOperation *operation) override;
     virtual void handleStopOperation(LifecycleOperation *operation) override;
     virtual void handleCrashOperation(LifecycleOperation *operation) override;
+    virtual void decapsulate(Packet *packet);
 
   public:
     RdmaBasicApp() {}

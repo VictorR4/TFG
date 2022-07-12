@@ -60,6 +60,9 @@ class INET_API ApplicationPacket : public ::inet::FieldsChunk
     bool moreFragments = false;
     uint32_t fragmentOffset = 0;
     bool firstFragment = true;
+    int id;
+    B totalLengthField = B(-1);
+
   private:
     void copy(const ApplicationPacket& other);
 
@@ -84,6 +87,10 @@ class INET_API ApplicationPacket : public ::inet::FieldsChunk
     virtual void setFragmentOffset(uint32_t fragmentOffset);
     virtual bool getFirstFragment() const;
     virtual void setFirstFragment(bool firstFragment);
+    virtual int getId() const;
+    virtual void setId(int id);
+    virtual B getTotalLengthField() const;
+    virtual void setTotalLengthField(B totalLengthField);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const ApplicationPacket& obj) {obj.parsimPack(b);}

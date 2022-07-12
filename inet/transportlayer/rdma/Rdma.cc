@@ -208,6 +208,7 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
     // set source and destination port
     rdmaHeader->setSourcePort(srcPort);
     rdmaHeader->setDestinationPort(destPort);
+    rdmaHeader->setIdentification(getParentModule()->getId() *10 + numSent);
 
     // set generation time of the packet
     //rdmaHeader->setGenerationTime(generationTime);
@@ -280,6 +281,7 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
                 fraghdr->setMoreFragments(true);
 
             fraghdr->setFragmentOffset(offsetBase + offset);
+            EV_INFO << fraghdr->getFragmentOffset() <<"\n";
             fraghdr->setTotalLengthField(B(headerLength + thisFragmentLength));
 
             if (crcMode == CRC_COMPUTED) {

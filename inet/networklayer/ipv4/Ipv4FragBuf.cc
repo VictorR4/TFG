@@ -91,11 +91,14 @@ Packet *Ipv4FragBuf::addFragment(Packet *packet, simtime_t now)
         pk->setName(pkName.c_str());
         pk->removeAll();
         const auto& payload = curBuf->buf.getReassembledData();
+        EV_INFO << "Length payload = " << payload->getChunkLength() << "\n";
         hdr->setTotalLengthField(hdr->getHeaderLength() + payload->getChunkLength());
+        EV_INFO << "Length payload = " << hdr->getTotalLengthField() << "\n";
         hdr->setFragmentOffset(0);
         hdr->setMoreFragments(false);
         pk->insertAtFront(hdr);
         pk->insertAtBack(payload);
+        EV_INFO << "Length = " << pk->getByteLength() << "\n";
         bufs.erase(i);
         return pk;
     }

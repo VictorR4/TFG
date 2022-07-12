@@ -84,25 +84,18 @@ void TcpBasicClientApp::sendRequest()
         requestLength = 1;
     if (replyLength < 1)
         replyLength = 1;
+    std::string str;
+    str = "TcpPacket"; str += "_"; str += getParentModule()->getName(); str += "-"; str += std::to_string(packetsSent);
 
     const auto& payload = makeShared<GenericAppMsg>();
-    Packet *packet = new Packet("data");
+    Packet *packet = new Packet(str.c_str());
     payload->setChunkLength(B(requestLength));
     payload->setExpectedReplyLength(B(replyLength));
     payload->setServerClose(false);
     payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
-    /*simtime_t creationTime = payload->getTag<CreationTimeTag>()->getCreationTime();
-
-    std::vector<simtime_t>::iterator it;
-    it = find(creationTimesQueue.begin(), creationTimesQueue.end(), creationTime);
-
-    if(it == creationTimesQueue.end()){
-        creationTimesQueue.push_back(creationTime);
-        EV_INFO << "Puesto\n";
-    }
-
-    EV_INFO << "Creation time client = " << creationTime << "\n";*/
     packet->insertAtBack(payload);
+    creationTime = simTime();
+    EV_INFO << "Tiempo de envío =" << creationTime << "\n";
 
     EV_INFO << "sending request with " << requestLength << " bytes, expected reply length " << replyLength << " bytes,"
             << "remaining " << numRequestsToSend - 1 << " request\n";

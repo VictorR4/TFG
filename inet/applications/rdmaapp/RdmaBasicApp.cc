@@ -21,6 +21,10 @@
 #include "inet/linklayer/common/InterfaceTag_m.h"
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
 #include "inet/transportlayer/rdma/RdmaHeader_m.h"
+#include "inet/networklayer/common/DscpTag_m.h"
+#include "inet/networklayer/common/EcnTag_m.h"
+#include "inet/networklayer/common/TosTag_m.h"
+#include "inet/networklayer/common/HopLimitTag_m.h"
 
 namespace inet {
 
@@ -241,23 +245,70 @@ void RdmaBasicApp::refreshDisplay() const
 
 void RdmaBasicApp::processPacket(Packet *pk)
 {
+    auto ipv4Header = pk->peekAtFront<Ipv4Header>();
+    if (ipv4Header->getFragmentOffset() != 0 || ipv4Header->getMoreFragments()) {
+        EV_DETAIL << "Datagram fragment: offset=" << ipv4Header->getFragmentOffset()
+                          << ", MORE=" << (ipv4Header->getMoreFragments() ? "true" : "false") << ".\n";
 
-        EV << "Fragment " << pk << " received \n";
-
-        totalLengthToReceive = B(par("messageLength"));
-        receivedMessageLength += B((pk->getByteLength() - IPv4_MIN_HEADER_LENGTH.get()));
-        EV_INFO << "Message length total = " << totalLengthToReceive <<  "\n";
-        if(receivedMessageLength >= totalLengthToReceive){
-            EV_INFO << "Packet received with message length = " << receivedMessageLength <<  "\n";
-            emit(packetReceivedSignal, pk);
-            simtime_t latencia = simTime() - pk->getCreationTime();
-            latencyPackets.push_back(latencia);
-            delete pk;
-            statsLatencyVector.record(latencia);
-            statsLatency.collect(latencia);
-            numReceived++;
-            receivedMessageLength = B(0);
+        pk = fragbufIpv4.addFragment(pk, simTime());
+        if (!pk/*udpHeader->getMoreFragments()*/) {
+            EV_DETAIL << "No complete datagram yet.\n";
+            return;
         }
+
+        EV_DETAIL << "This fragment completes the ip datagram.\n";
+        decapsulate(pk);
+    }else{
+        decapsulate(pk);
+    }
+
+    auto rdmaHeader = pk->peekAtFront<RdmaHeader>();
+    if (rdmaHeader->getFragmentOffset() != 0 || rdmaHeader->getMoreFragments()) {
+            EV_DETAIL << "Datagram fragment: offset=" << rdmaHeader->getFragmentOffset()
+                              << ", MORE=" << (rdmaHeader->getMoreFragments() ? "true" : "false") << ".\n";
+
+        pk = fragbufRdma.addFragment(pk, simTime());
+        if (!pk) {
+            EV_DETAIL << "No complete datagram yet.\n";
+            return;
+        }
+
+        EV_DETAIL << "This fragment completes the transport datagram.\n";
+        }
+    /*
+    EV << "Fragment " << pk << " received \n";
+    totalLengthToReceive = B(par("messageLength"));
+    receivedMessageLength += B((pk->getByteLength() - IPv4_MIN_HEADER_LENGTH.get()));
+    EV_INFO << "Message length total = " << totalLengthToReceive <<  "\n";
+    if(receivedMessageLength >= totalLengthToReceive){
+        EV_INFO << "Packet received with message length = " << receivedMessageLength <<  "\n";
+        emit(packetReceivedSignal, pk);
+        simtime_t latencia = simTime() - pk->getCreationTime();
+        latencyPackets.push_back(latencia);
+        delete pk;
+        statsLatencyVector.record(latencia);
+        statsLatency.collect(latencia);
+        numReceived++;
+        receivedMessageLength = B(0);
+    }*/
+    emit(packetReceivedSignal, pk);
+    EV_INFO << "Packet " << pk <<  "received\n";
+    //delete pk;
+    numReceived++;
+    simtime_t latency = simTime() - pk->getCreationTime();
+    EV_INFO << "simTime = " << simTime() << "\n";
+    //EV_INFO << "first 2 = " << creationTime_firstFragment << "\n";
+    EV_INFO << "Latencia = " << latency << "\n";
+    latencyPackets.push_back(latency);
+
+    //numReceived++;
+    //totalreceivedMessagesLength = B(0);
+    //creationTime_firstFragment = 0;
+    //receivedMessageLength = B(0);
+    //delete p;
+    statsLatencyVector.record(latency);
+    statsLatency.collect(latency);
+    delete pk;
 
 
 }
@@ -299,6 +350,27 @@ void RdmaBasicApp::handleCrashOperation(LifecycleOperation *operation)
 {
     cancelClockEvent(selfMsg);
     //socket.destroy(); // TODO  in real operating systems, program crash detected by OS and OS closes sockets of crashed programs.
+}
+
+void RdmaBasicApp::decapsulate(Packet *packet)
+{
+    // decapsulate transport packet
+    const auto& ipv4Header = packet->popAtFront<Ipv4Header>();
+
+    // create and fill in control info
+    packet->addTagIfAbsent<DscpInd>()->setDifferentiatedServicesCodePoint(ipv4Header->getDscp());
+    packet->addTagIfAbsent<EcnInd>()->setExplicitCongestionNotification(ipv4Header->getEcn());
+    packet->addTagIfAbsent<TosInd>()->setTos(ipv4Header->getTypeOfService());
+
+    // original Ipv4 datagram might be needed in upper layers to send back ICMP error message
+
+    auto transportProtocol = ProtocolGroup::ipprotocol.getProtocol(ipv4Header->getProtocolId());
+    packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(transportProtocol);
+    packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(transportProtocol);
+    auto l3AddressInd = packet->addTagIfAbsent<L3AddressInd>();
+    l3AddressInd->setSrcAddress(ipv4Header->getSrcAddress());
+    l3AddressInd->setDestAddress(ipv4Header->getDestAddress());
+    packet->addTagIfAbsent<HopLimitInd>()->setHopLimit(ipv4Header->getTimeToLive());
 }
 
 } // namespace inet

@@ -157,9 +157,23 @@ void TcpAppBase::socketEstablished(TcpSocket *)
 void TcpAppBase::socketDataArrived(TcpSocket *, Packet *msg, bool)
 {
     // *redefine* to perform or schedule next sending
-    packetsRcvd++;
-    bytesRcvd += msg->getByteLength();
-    emit(packetReceivedSignal, msg);
+
+    EV_INFO << "Tiempo de recepción de fragmento con = " << msg->getByteLength() << ", es " << simTime() << "\n";
+    totalreceivedMessagesLength = B(par("requestLength"));
+    receivedMessageLength += B(msg->getByteLength());
+    if(totalreceivedMessagesLength == receivedMessageLength){
+        EV_INFO << "Tiempo de envío de paquete es = " << creationTime << "\n";
+        EV_INFO << "Tiempo de recepción de paquete entero es = " << simTime() << "\n";
+        packetsRcvd++;
+        bytesRcvd += receivedMessageLength.get();//msg->getByteLength();
+        emit(packetReceivedSignal, msg);
+        receivedMessageLength = B(0);
+        latency = simTime() - creationTime;
+        EV_INFO << "Latencia = " << latency << "\n";
+        latencyPackets.push_back(latency);
+        statsLatencyVector.record(latency);
+        statsLatency.collect(latency);
+    }
     delete msg;
 }
 
@@ -193,6 +207,27 @@ void TcpAppBase::finish()
     EV_INFO << modulePath << ": opened " << numSessions << " sessions\n";
     EV_INFO << modulePath << ": sent " << bytesSent << " bytes in " << packetsSent << " packets\n";
     EV_INFO << modulePath << ": received " << bytesRcvd << " bytes in " << packetsRcvd << " packets\n";
+
+    EV << "Media: " << statsLatency.getMean() << endl;
+    EV << "Desviación típica: " << statsLatency.getStddev() << endl;
+    //Calculo del intervalo de confianza
+    auto confidenceIntervalMax = statsLatency.getMean() + 1.96 * statsLatency.getStddev()/sqrt(packetsRcvd);
+    auto confidenceIntervalMin = statsLatency.getMean() - 1.96 * statsLatency.getStddev()/sqrt(packetsRcvd);
+    EV_INFO << "Invervalo de confianza: (" << confidenceIntervalMin << "," << confidenceIntervalMax << ")\n";
+    for (int i = 0; i < packetsRcvd; i++) {
+        if(latencyPackets[i] >= confidenceIntervalMin){
+            latency += latencyPackets[i];
+            valoresValidos++;
+        }
+    }
+
+    recordScalar("meanLatency", latency.dbl()/valoresValidos, "s");
+    EV_INFO << "Media de confianza = " << latency.dbl()/valoresValidos << "\n";
+    EV_INFO << "Latency = " << latency.dbl() << "\n";
+    EV_INFO << "Valores validos = " << valoresValidos << "\n";
+    statsLatency.collect(latency);
+    statsLatency.recordAs("statsLatency");
+    recordScalar("valoresValidos", valoresValidos);
 }
 
 } // namespace inet

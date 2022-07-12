@@ -294,6 +294,28 @@ void ApplicationPacket::setFirstFragment(bool firstFragment)
     this->firstFragment = firstFragment;
 }
 
+int ApplicationPacket::getId() const
+{
+    return this->id;
+}
+
+void ApplicationPacket::setId(int id)
+{
+    handleChange();
+    this->id = id;
+}
+
+B ApplicationPacket::getTotalLengthField() const
+{
+    return this->totalLengthField;
+}
+
+void ApplicationPacket::setTotalLengthField(B totalLengthField)
+{
+    handleChange();
+    this->totalLengthField = totalLengthField;
+}
+
 class ApplicationPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:

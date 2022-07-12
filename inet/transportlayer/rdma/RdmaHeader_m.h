@@ -83,7 +83,8 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     clocktime_t generationTime;
     clocktime_t receptionTime;
     bool moreFragments = false;
-    uint16_t fragmentOffset = 0;
+    int fragmentOffset = 0;
+    uint16_t identification = 0;
 
   private:
     void copy(const RdmaHeader& other);
@@ -115,8 +116,10 @@ class INET_API RdmaHeader : public ::inet::TransportHeaderBase
     virtual void setGenerationTime(clocktime_t generationtime);
     virtual bool getMoreFragments() const;
     virtual void setMoreFragments(bool moreFragments);
-    virtual uint16_t getFragmentOffset() const;
-    virtual void setFragmentOffset(uint16_t fragmentOffset);
+    virtual int getFragmentOffset() const;
+    virtual void setFragmentOffset(int fragmentOffset);
+    virtual uint16_t getIdentification() const;
+    virtual void setIdentification(uint16_t identification);
 
   public:
     virtual unsigned int getSourcePort() const override { return getSrcPort(); }

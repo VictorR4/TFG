@@ -24,6 +24,7 @@
 #include "inet/applications/base/ApplicationBase.h"
 #include "inet/common/clock/ClockUserModuleMixin.h"
 #include "inet/transportlayer/contract/udp/UdpSocket.h"
+#include "inet/applications/udpapp/fragBuff/UdpFragBuf.h"
 
 namespace inet {
 
@@ -74,6 +75,7 @@ class INET_API MyUdpBasicApp : public ClockUserModuleMixin<ApplicationBase>, pub
     B totalreceivedMessagesLength;
 
     bool isGlobalArp;
+    UdpAppFragBuf fragbuf; // fragmentation reassembly buffer
   protected:
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
     virtual void initialize(int stage) override;
