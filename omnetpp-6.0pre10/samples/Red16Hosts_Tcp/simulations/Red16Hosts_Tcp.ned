@@ -25,13 +25,6 @@ import ned.DatarateChannel;
 //
 network Red16Hosts_Tcp
 {
-    @display("bgb=1807.9113,973.93005");
-    types:
-        channel cable extends DatarateChannel{
-            datarate = 40Gbps;
-            double length @unit(m) = default(10m);
-    		delay = replaceUnit(4*length / 2e8, "s");
-        }
     submodules:
         configurator: Ipv4NetworkConfigurator {
             @display("p=1682.2428,294.17828;is=s");
@@ -126,38 +119,38 @@ network Red16Hosts_Tcp
         }
 
     connections:
-        H_0.ethg++ <--> cable <--> SW_1_1.ethg[0];
-        H_1.ethg++ <--> cable <--> SW_1_1.ethg[1];
-        H_2.ethg++ <--> cable <--> SW_1_1.ethg[2];
-        H_3.ethg++ <--> cable <--> SW_1_1.ethg[3];
-        H_4.ethg++ <--> cable <--> SW_1_2.ethg[0];
-        H_5.ethg++ <--> cable <--> SW_1_2.ethg[1];
-        H_6.ethg++ <--> cable <--> SW_1_2.ethg[2];
-        H_7.ethg++ <--> cable <--> SW_1_2.ethg[3];
-        H_8.ethg++ <--> cable <--> SW_2_1.ethg[0];
-        H_9.ethg++ <--> cable <--> SW_2_1.ethg[1];
-        H_10.ethg++ <--> cable <--> SW_2_1.ethg[2];
-        H_11.ethg++ <--> cable <--> SW_2_1.ethg[3];
-        H_12.ethg++ <--> cable <--> SW_2_2.ethg[0];
-        H_13.ethg++ <--> cable <--> SW_2_2.ethg[1];
-        H_14.ethg++ <--> cable <--> SW_2_2.ethg[2];
-        H_15.ethg++ <--> cable <--> SW_2_2.ethg[3];
-        SW_3_1.ethg[0] <--> cable <--> SW_1_1.ethg[4];
-        SW_3_1.ethg[1] <--> cable <--> SW_1_2.ethg[4];
-        SW_3_1.ethg[2] <--> cable <--> SW_2_1.ethg[4];
-        SW_3_1.ethg[3] <--> cable <--> SW_2_2.ethg[4];
-        SW_3_2.ethg[0] <--> cable <--> SW_1_1.ethg[5];
-        SW_3_2.ethg[1] <--> cable <--> SW_1_2.ethg[5];
-        SW_3_2.ethg[2] <--> cable <--> SW_2_1.ethg[5];
-        SW_3_2.ethg[3] <--> cable <--> SW_2_2.ethg[5];
-        SW_3_3.ethg[0] <--> cable <--> SW_1_1.ethg[6];
-        SW_3_3.ethg[1] <--> cable <--> SW_1_2.ethg[6];
-        SW_3_3.ethg[2] <--> cable <--> SW_2_1.ethg[6];
-        SW_3_3.ethg[3] <--> cable <--> SW_2_2.ethg[6];
-        SW_3_4.ethg[0] <--> cable <--> SW_1_1.ethg[7];
-        SW_3_4.ethg[1] <--> cable <--> SW_1_2.ethg[7];
-        SW_3_4.ethg[2] <--> cable <--> SW_2_1.ethg[7];
-        SW_3_4.ethg[3] <--> cable <--> SW_2_2.ethg[7];
+        H_0.ethg++ <--> Eth40G <--> SW_1_1.ethg[0];
+        H_1.ethg++ <--> Eth40G <--> SW_1_1.ethg[1];
+        H_2.ethg++ <--> Eth40G <--> SW_1_1.ethg[2];
+        H_3.ethg++ <--> Eth40G <--> SW_1_1.ethg[3];
+        H_4.ethg++ <--> Eth40G <--> SW_1_2.ethg[0];
+        H_5.ethg++ <--> Eth40G <--> SW_1_2.ethg[1];
+        H_6.ethg++ <--> Eth40G <--> SW_1_2.ethg[2];
+        H_7.ethg++ <--> Eth40G <--> SW_1_2.ethg[3];
+        H_8.ethg++ <--> Eth40G <--> SW_2_1.ethg[0];
+        H_9.ethg++ <--> Eth40G <--> SW_2_1.ethg[1];
+        H_10.ethg++ <--> Eth40G <--> SW_2_1.ethg[2];
+        H_11.ethg++ <--> Eth40G <--> SW_2_1.ethg[3];
+        H_12.ethg++ <--> Eth40G <--> SW_2_2.ethg[0];
+        H_13.ethg++ <--> Eth40G <--> SW_2_2.ethg[1];
+        H_14.ethg++ <--> Eth40G <--> SW_2_2.ethg[2];
+        H_15.ethg++ <--> Eth40G <--> SW_2_2.ethg[3];
+        SW_3_1.ethg[0] <--> Eth40G <--> SW_1_1.ethg[4];
+        SW_3_1.ethg[1] <--> Eth40G <--> SW_1_2.ethg[4];
+        SW_3_1.ethg[2] <--> Eth40G <--> SW_2_1.ethg[4];
+        SW_3_1.ethg[3] <--> Eth40G <--> SW_2_2.ethg[4];
+        SW_3_2.ethg[0] <--> Eth40G <--> SW_1_1.ethg[5];
+        SW_3_2.ethg[1] <--> Eth40G <--> SW_1_2.ethg[5];
+        SW_3_2.ethg[2] <--> Eth40G <--> SW_2_1.ethg[5];
+        SW_3_2.ethg[3] <--> Eth40G <--> SW_2_2.ethg[5];
+        SW_3_3.ethg[0] <--> Eth40G <--> SW_1_1.ethg[6];
+        SW_3_3.ethg[1] <--> Eth40G <--> SW_1_2.ethg[6];
+        SW_3_3.ethg[2] <--> Eth40G <--> SW_2_1.ethg[6];
+        SW_3_3.ethg[3] <--> Eth40G <--> SW_2_2.ethg[6];
+        SW_3_4.ethg[0] <--> Eth40G <--> SW_1_1.ethg[7];
+        SW_3_4.ethg[1] <--> Eth40G <--> SW_1_2.ethg[7];
+        SW_3_4.ethg[2] <--> Eth40G <--> SW_2_1.ethg[7];
+        SW_3_4.ethg[3] <--> Eth40G <--> SW_2_2.ethg[7];
 
 }
 

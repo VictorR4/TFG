@@ -32,12 +32,6 @@ import inet.node.ethernet.*;
 network Red4Hosts
 {
     @display("bgb=526,307");
-   	types:
-        channel cable extends DatarateChannel{
-            datarate = 40Gbps;
-            double length @unit(m) = default(10m);
-    		delay = replaceUnit(4*length / 2e8, "s");
-        }
     submodules:
         H_0: StandardHost {
             @display("p=108,38");
@@ -66,11 +60,11 @@ network Red4Hosts
             @display("p=395,178");
         }
     connections:
-        H_0.ethg++ <--> cable <--> SW_1_1.ethg[0];
-        H_1.ethg++ <--> cable <--> SW_1_1.ethg[1];
-        H_2.ethg++ <--> cable <--> SW_2_1.ethg[0];
-        H_3.ethg++ <--> cable <--> SW_2_1.ethg[1];
-        SW_1_1.ethg[2] <--> cable <--> SW_2_1.ethg[2];
+        H_0.ethg++ <--> Eth40G <--> SW_1_1.ethg[0];
+        H_1.ethg++ <--> Eth40G <--> SW_1_1.ethg[1];
+        H_2.ethg++ <--> Eth40G <--> SW_2_1.ethg[0];
+        H_3.ethg++ <--> Eth40G <--> SW_2_1.ethg[1];
+        SW_1_1.ethg[2] <--> Eth40G <--> SW_2_1.ethg[2];
 
 }
 
