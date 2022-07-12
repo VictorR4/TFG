@@ -25,14 +25,6 @@ import ned.DatarateChannel;
 //
 network Red128Hosts_Rdma
 {
-    @display("bgb=2731.9736,1134.2999");
-    types:
-        channel cable extends DatarateChannel
-        {
-            double retardoRed @unit(us);
-            datarate = 40Gbps;
-            delay = retardoRed;
-        }
     submodules:
         configurator: Ipv4NetworkConfigurator {
             @display("p=2666.625,382.9;is=s");

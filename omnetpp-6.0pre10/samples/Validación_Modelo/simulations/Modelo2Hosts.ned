@@ -26,6 +26,12 @@ import ned.DatarateChannel;
 network Modelo2Hosts
 {
     @display("bgb=551,225");
+    types:
+        channel cable extends DatarateChannel{
+            datarate = 40Gbps;
+            double length @unit(m) = default(10m);
+    		delay = replaceUnit(4*length / 2e8, "s");
+        }
     submodules:
         H_0: StandardHost {
             @display("p=104,114");
