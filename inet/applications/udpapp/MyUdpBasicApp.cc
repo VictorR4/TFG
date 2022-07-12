@@ -291,17 +291,6 @@ void MyUdpBasicApp::processStart()
     bool excludeLocalDestAddresses = par("excludeLocalDestAddresses");
     IInterfaceTable *ift = getModuleFromPar<IInterfaceTable>(par("interfaceTableModule"), this);
 
- /*   while ((token = tokenizer.nextToken()) != nullptr) {
-        destAddressStr.push_back(token);
-        L3Address result;
-        L3AddressResolver().tryResolve(token, result);
-        if (result.isUnspecified())
-            EV_ERROR << "cannot resolve destination address: " << token << endl;
-        else if (excludeLocalDestAddresses && ift && ift->isLocalAddress(result))
-            continue;
-        destAddresses.push_back(result);
-    }
-*/
     while ((token = tokenizer.nextToken()) != nullptr) {
         if (strstr(token, "Broadcast") != nullptr)
             destAddresses.push_back(Ipv4Address::ALLONES_ADDRESS);
@@ -400,32 +389,17 @@ void MyUdpBasicApp::refreshDisplay() const
     sprintf(buf, "rcvd: %d pks\nsent: %d pks\n latency: %f s", numReceived, numSent, latency.dbl());
     getDisplayString().setTagArg("t", 0, buf);
 }
-/*
-void MyUdpBasicApp::processPacket(Packet *pk)
-{
-    emit(packetReceivedSignal, pk);
-    EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
-    simtime_t latency = simTime() - pk->getCreationTime();
-    EV_INFO << "simTime = " << simTime() << "\n";
-    EV_INFO << "Latencia = " << latency << "\n";
-    latencyPackets.push_back(latency);
 
-    statsLatencyVector.record(latency);
-    statsLatency.collect(latency);
-    delete pk;
-    numReceived++;
-}*/
 
 void MyUdpBasicApp::processPacket(Packet *pk)
 {
     if(numReceived == 0 && isGlobalArp){
-        //delete pk;
+
         numReceived++;
     }
     else{
-        //pakemit(packetReceivedSignal, pk);
         EV_INFO << "Received fragment: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
-        //delete pk;
+
 
         auto payload = pk->peekAtFront<ApplicationPacket>();
 
@@ -434,7 +408,7 @@ void MyUdpBasicApp::processPacket(Packet *pk)
                               << ", MORE=" << (payload->getMoreFragments() ? "true" : "false") << ".\n";
 
         pk = fragbuf.addFragment(pk, simTime());
-        if (!pk/*udpHeader->getMoreFragments()*/) {
+        if (!pk) {
             EV_DETAIL << "No complete datagram yet.\n";
             return;
         }
@@ -444,26 +418,7 @@ void MyUdpBasicApp::processPacket(Packet *pk)
 
         EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(pk) << endl;
         numReceived++;
-    /*EV_INFO << "Packet " << pk->getName() << " length = " << pk->getByteLength() << " creationTime = " << payload->getTag<CreationTimeTag>()->getCreationTime() << "\n";
 
-    if(payload->getFirstFragment())
-        creationTime_firstFragment = payload->getTag<CreationTimeTag>()->getCreationTime();
-    */
-/*
-    totalreceivedMessagesLength = B(par("messageLength"));
-    receivedMessageLength += B(pk->getByteLength());
-    if(receivedMessageLength >= totalreceivedMessagesLength){
-        auto payload2 = makeShared<ApplicationPacket>();
-        payload2->setChunkLength(receivedMessageLength);
-        Packet *p = pk;
-        std::string pkName(pk->getName());
-        std::size_t found = pkName.find("-frag-");
-        if (found != std::string::npos)
-        pkName.resize(found);
-        p->setName(pkName.c_str());
-        p->insertAtBack(payload2);
-
-        EV_INFO << "Received packet: " << UdpSocket::getReceivedPacketInfo(p) << endl;*/
         emit(packetReceivedSignal, pk);
         simtime_t latency = simTime() - pk->getCreationTime();
         EV_INFO << "simTime = " << simTime() << "\n";
@@ -471,11 +426,6 @@ void MyUdpBasicApp::processPacket(Packet *pk)
         EV_INFO << "Latencia = " << latency << "\n";
         latencyPackets.push_back(latency);
 
-        //numReceived++;
-        //totalreceivedMessagesLength = B(0);
-        //creationTime_firstFragment = 0;
-        //receivedMessageLength = B(0);
-        //delete p;
         statsLatencyVector.record(latency);
         statsLatency.collect(latency);
 

@@ -53,16 +53,9 @@ void UdpBasicApp::initialize(int stage)
         stopTime = par("stopTime");
         packetName = par("packetName");
         dontFragment = par("dontFragment");
-        packetsToSend = par("packetsToSend");
-        if(packetsToSend == -1)
-            packetsToSend = INT_MAX;
         if (stopTime >= CLOCKTIME_ZERO && stopTime < startTime)
             throw cRuntimeError("Invalid startTime/stopTime parameters");
         selfMsg = new ClockEvent("sendTimer");
-        lowerLayerOut = gate("socketOut");
-        transmissionChannel = lowerLayerOut->findTransmissionChannel();
-        endTxTimer = new cMessage("EndTransmission", 103);
-        queue = new cPacketQueue("receiveQueue");
     }
 }
 
@@ -70,8 +63,6 @@ void UdpBasicApp::finish()
 {
     recordScalar("packets sent", numSent);
     recordScalar("packets received", numReceived);
-    recordScalar("latency", latency.dbl());
-    recordScalar("meanLatency", latency.dbl()/numReceived);
     ApplicationBase::finish();
 }
 
@@ -121,28 +112,20 @@ L3Address UdpBasicApp::chooseDestAddr()
 
 void UdpBasicApp::sendPacket()
 {
-    if(packetsToSend > numSent){
-        std::ostringstream str;
-        str << packetName << "_" << getParentModule()->getName() << "-" << numSent;
-        Packet *packet = new Packet(str.str().c_str());
-        if (dontFragment)
-            packet->addTag<FragmentationReq>()->setDontFragment(true);
-        const auto& payload = makeShared<ApplicationPacket>();
-        payload->setChunkLength(B(par("messageLength")));
-        payload->setSequenceNumber(numSent);
-        payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
-        packet->insertAtBack(payload);
-        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Mio
-        destAddr = chooseDestAddr();
-        emit(packetSentSignal, packet);
-        queue->insert(packet);
-        if(!transmissionChannel->isBusy()){
-            socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
-            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-            numSent++;
-        }
-    }
-
+    std::ostringstream str;
+    str << packetName << "-" << numSent;
+    Packet *packet = new Packet(str.str().c_str());
+    if (dontFragment)
+        packet->addTag<FragmentationReq>()->setDontFragment(true);
+    const auto& payload = makeShared<ApplicationPacket>();
+    payload->setChunkLength(B(par("messageLength")));
+    payload->setSequenceNumber(numSent);
+    payload->addTag<CreationTimeTag>()->setCreationTime(simTime());
+    packet->insertAtBack(payload);
+    L3Address destAddr = chooseDestAddr();
+    emit(packetSentSignal, packet);
+    socket.sendTo(packet, destAddr, destPort);
+    numSent++;
 }
 
 void UdpBasicApp::processStart()
@@ -198,33 +181,29 @@ void UdpBasicApp::processStop()
 
 void UdpBasicApp::handleMessageWhenUp(cMessage *msg)
 {
-        if (msg->isSelfMessage()) {
-            if(msg == endTxTimer){
-                handleEndTxPeriod();
-            }
-            else{
-                ASSERT(msg == selfMsg);
-                switch (selfMsg->getKind()) {
-                    case START:
-                        processStart();
-                        break;
+    if (msg->isSelfMessage()) {
+        ASSERT(msg == selfMsg);
+        switch (selfMsg->getKind()) {
+            case START:
+                processStart();
+                break;
 
-                    case SEND:
-                        processSend();
-                        break;
+            case SEND:
+                processSend();
+                break;
 
-                    case STOP:
-                        processStop();
-                        break;
+            case STOP:
+                processStop();
+                break;
 
-                    default:
-                        throw cRuntimeError("Invalid kind %d in self message", (int)selfMsg->getKind());
-                }
-            }
+            default:
+                throw cRuntimeError("Invalid kind %d in self message", (int)selfMsg->getKind());
         }
-        else
-            socket.processMessage(msg);
+    }
+    else
+        socket.processMessage(msg);
 }
+
 void UdpBasicApp::socketDataArrived(UdpSocket *socket, Packet *packet)
 {
     // process incoming packet
@@ -248,7 +227,7 @@ void UdpBasicApp::refreshDisplay() const
     ApplicationBase::refreshDisplay();
 
     char buf[100];
-    sprintf(buf, "rcvd: %d pks\nsent: %d pks\n latency: %f s", numReceived, numSent, latency.dbl());
+    sprintf(buf, "rcvd: %d pks\nsent: %d pks", numReceived, numSent);
     getDisplayString().setTagArg("t", 0, buf);
 }
 
@@ -282,14 +261,4 @@ void UdpBasicApp::handleCrashOperation(LifecycleOperation *operation)
     socket.destroy(); // TODO  in real operating systems, program crash detected by OS and OS closes sockets of crashed programs.
 }
 
-void UdpBasicApp::handleEndTxPeriod(){
-    if(packetsToSend > numSent){
-        if(!queue->isEmpty()){
-            socket.sendTo(check_and_cast<Packet *>(queue->pop()), destAddr, destPort);
-            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-            numSent++;
-        }
-    }
-}
 } // namespace inet
-

@@ -198,7 +198,7 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
         const auto& protocolTag = packet->findTag<PacketProtocolTag>();
         if (protocolTag) {
             const Protocol *protocol = protocolTag->getProtocol();
-            if (protocol == &Protocol::rdma){//Ultimocambio
+            if (protocol == &Protocol::rdma){
                 protocol = &Protocol::ipv4;
 
             }
@@ -217,8 +217,8 @@ void EthernetEncapsulation::processPacketFromHigherLayer(Packet *packet)
     const auto& ethHeader = makeShared<EthernetMacHeader>();
     if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma){
         ethHeader->setIsRdma(1);
-        clocktime_t generationTime = simTime();// - time->getCreationTime();
-        // set generation time of the packet
+        clocktime_t generationTime = simTime();
+
         ethHeader->setGenerationTime(generationTime);
     }else if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::ipv4){
         ethHeader->setIsRdma(0);
@@ -273,7 +273,7 @@ void EthernetEncapsulation::processPacketFromMac(Packet *p)
     //packet = p;
     const Protocol *payloadProtocol = nullptr;
     auto ethHeader = decapsulateMacHeader(p);
-    //isRdma = ethHeader->getIsRdma();
+
     // remove llc header if possible
     if (isIeee8023Header(*ethHeader)) {
         Ieee8022Llc::processPacketFromMac(p);
@@ -370,29 +370,21 @@ void EthernetEncapsulation::handleSendPause(cMessage *msg)
 }
 
 void EthernetEncapsulation::sendPacket(Packet *packet){
-    //auto ethHeader = decapsulateMacHeader(packet);
     EV_DETAIL << "Decapsulating frame `" << packet->getName() << "', passing up contained packet `"
                           << packet->getName() << "' to higher layer\n";
 
-    //auto ethHeader = decapsulateMacHeader(packet);
-    //auto isRdma = ethHeader->getIsRdma();
+
     totalFromMAC++;
     emit(decapPkSignal, packet);
 
     // pass up to higher layers.
     EV_INFO << "Sending " << packet << " to upper layer.\n";
     auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
-    //auto isRdma = ethHeader->getIsRdma();
+
     if(isRdma && protocol != &Protocol::arp){
-        //auto generationTime = ethHeader->getGenerationTime();
-        //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
         send(packet, "appLayerOut");
      }else{
-        //clocktime_t actualLatency = simTime() - ethHeader->getGenerationTime();
-        //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
-        //latencyReception += actualLatency;
         send(packet, "upperLayerOut");
-        //delete packet;
         if(transmissionChannel)
             scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
     }

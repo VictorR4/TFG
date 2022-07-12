@@ -73,16 +73,9 @@ void TcpEchoApp::sendDown(Packet *msg)
 
     msg->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::tcp);
     msg->getTag<SocketReq>();
-    /*if(transmissionChannel){
-        if(!transmissionChannel->isBusy()){
-            send(msg, "socketOut");
-            //scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-        }else{
-            queue->insert(msg);
-        }
-    }else{*/
-        send(msg, "socketOut");
-    //}
+
+    send(msg, "socketOut");
+
 
 }
 
@@ -134,8 +127,6 @@ void TcpEchoAppThread::dataArrived(Packet *rcvdPkt, bool urgent)
         ASSERT(outPkt->getByteLength() == outByteLen);
 
         if (echoAppModule->delay == 0){
-            //echoAppModule->queue->insert(outPkt);
-            //echoAppModule->sendDown(check_and_cast<Packet *>(echoAppModule->queue->pop()));
             echoAppModule->sendDown(outPkt);
         }else
             scheduleAfter(echoAppModule->delay, outPkt); // send after a delay

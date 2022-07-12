@@ -52,23 +52,22 @@
 #include "inet/common/TimeTag_m.h"
 namespace inet {
 
-Define_Module(Rdma);//Cambiado
+Define_Module(Rdma);
 
-Rdma::Rdma()//Cambiado
+Rdma::Rdma()
 {
 }
 
-Rdma::~Rdma()//Cambiado
+Rdma::~Rdma()
 {
     //clearAllSockets();
 }
 
-void Rdma::initialize(int stage)//Cambiado
+void Rdma::initialize(int stage)
 {
     OperationalBase::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL) {
-        //CRC (Comprobación de Redundancia Ciclica) está presente en el protocolo tcp/ip
         const char *crcModeString = par("crcMode");
         crcMode = parseCrcMode(crcModeString, true);
         lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
@@ -102,8 +101,8 @@ void Rdma::initialize(int stage)//Cambiado
                 ipv6->registerHook(0, &crcInsertion);
 #endif
         }
-        registerService(Protocol::rdma, gate("appIn"), gate("appOut")); //Cambiado
-        registerProtocol(Protocol::rdma, gate("lowerLayerOut"), gate("lowerLayerIn")); //Cambiado
+        registerService(Protocol::rdma, gate("appIn"), gate("appOut"));
+        registerProtocol(Protocol::rdma, gate("lowerLayerOut"), gate("lowerLayerIn"));
     }
 
 }
@@ -118,12 +117,11 @@ void Rdma::handleMessageWhenUp(cMessage *msg)
         throw cRuntimeError("Message received from unknown gate!");
 }
 
-void Rdma::handleLowerPacket(Packet *packet)//Cambiado
+void Rdma::handleLowerPacket(Packet *packet)
 {
-    // received from linklayer
     ASSERT(packet->getControlInfo() == nullptr);
     auto protocol = packet->getTag<PacketProtocolTag>()->getProtocol();
-    if (protocol == &Protocol::rdma) {//Cambiado
+    if (protocol == &Protocol::rdma) {
         processRdmaPacket(packet);
     }
     else
@@ -135,7 +133,7 @@ void Rdma::handleSelfMessage(cMessage *msg){
             handleEndTxPeriod();
 }
 
-ushort Rdma::getEphemeralPort()//Cambiado
+ushort Rdma::getEphemeralPort()
 {
     // start at the last allocated port number + 1, and search for an unused one
     //ushort searchUntil = lastEphemeralPort++;
@@ -151,7 +149,7 @@ ushort Rdma::getEphemeralPort()//Cambiado
 // ####################### set options end #######################
 // ###############################################################
 //Handle a msg from application-layer and send it to the next layer
-void Rdma::handleUpperPacket(Packet *p)//Cambiado
+void Rdma::handleUpperPacket(Packet *p)
 {
     EV_INFO << "Receive packet " << p << " from upper layer\n";
     packet = p;
@@ -161,8 +159,7 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
     auto addressReq = packet->addTagIfAbsent<L3AddressReq>();
     destAddr = addressReq->getDestAddress();
     auto time = packet->addTagIfAbsent<CreationTimeTag>();
-    //clocktime_t generationTime = simTime() - time->getCreationTime();
-    //packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());//Cambiado
+
 
 
     int srcPort = -1, destPort = -1;
@@ -180,15 +177,6 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
     const auto& interfaceReq = packet->findTag<InterfaceReq>();
     ASSERT(interfaceReq == nullptr || interfaceReq->getInterfaceId() != -1);
 
-/*
-   if (interfaceReq == nullptr) {
-       auto membership = ift->findFirstMulticastInterface();
-        //auto membership = sd->findFirstMulticastMembership(destAddr);
-        int interfaceId =  membership->getInterfaceId() ;// sd->multicastMembershipTable.end() && (*membership)->interfaceId != -1) ? (*membership)->interfaceId : sd->multicastOutputInterfaceId;
-        if (interfaceId != -1)
-            packet->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceId);
-    }
-*/
     if (destAddr.isUnspecified())
         throw cRuntimeError("send: unspecified destination address");
     if (destPort <= 0 || destPort > 65535)
@@ -203,31 +191,26 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
     else
         l3Protocol = &Protocol::nextHopForwarding;
 
-    rdmaHeader = makeShared<RdmaHeader>();//Cambiado
+    rdmaHeader = makeShared<RdmaHeader>();
 
     // set source and destination port
     rdmaHeader->setSourcePort(srcPort);
     rdmaHeader->setDestinationPort(destPort);
     rdmaHeader->setIdentification(getParentModule()->getId() *10 + numSent);
 
-    // set generation time of the packet
-    //rdmaHeader->setGenerationTime(generationTime);
-
-    B totalLength = rdmaHeader->getChunkLength() + packet->getTotalLength();//Cambiado
-//    if (totalLength.get() > RDMA_MAX_MESSAGE_SIZE)
-//        throw cRuntimeError("send: total RDMA message size exceeds %u", RDMA_MAX_MESSAGE_SIZE);
+    B totalLength = rdmaHeader->getChunkLength() + packet->getTotalLength();
 
     if (totalLength.get() <= RDMA_MAX_MESSAGE_SIZE) {
-        rdmaHeader->setTotalLengthField(totalLength);    //Cambiado
+        rdmaHeader->setTotalLengthField(totalLength);
         if (crcMode == CRC_COMPUTED) {
-            rdmaHeader->setCrcMode(CRC_COMPUTED);    //Cambiado
-            rdmaHeader->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook -- //Cambiado
+            rdmaHeader->setCrcMode(CRC_COMPUTED);
+            rdmaHeader->setCrc(0x0000);
         } else {
-            rdmaHeader->setCrcMode(crcMode); //Cambiado
+            rdmaHeader->setCrcMode(crcMode);
             insertCrc(l3Protocol, srcAddr, destAddr, rdmaHeader, packet);
         }
 
-        insertTransportProtocolHeader(packet, Protocol::rdma, rdmaHeader); //Cambiado
+        insertTransportProtocolHeader(packet, Protocol::rdma, rdmaHeader);
         packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(l3Protocol);
         packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::rdma);
         packet->setKind(0);
@@ -298,7 +281,6 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
             fragment->setKind(0);
 
             fragment->insertAtFront(fraghdr);
-            //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
             EV_INFO << "Sending fragment " << fragment << " over " << l3Protocol->getName() << ".\n";
             send(fragment, "lowerLayerOut");
             offset += thisFragmentLength;
@@ -309,31 +291,31 @@ void Rdma::handleUpperPacket(Packet *p)//Cambiado
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Rdma::insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<RdmaHeader>& rdmaHeader, Packet *packet)//Cambiado
+void Rdma::insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<RdmaHeader>& rdmaHeader, Packet *packet)
 {
-    CrcMode crcMode = rdmaHeader->getCrcMode();//Cambiado
+    CrcMode crcMode = rdmaHeader->getCrcMode();
     switch (crcMode) {
         case CRC_DISABLED:
             // if the CRC mode is disabled, then the CRC is 0
-            rdmaHeader->setCrc(0x0000);//Cambiado
+            rdmaHeader->setCrc(0x0000);
             break;
         case CRC_DECLARED_CORRECT:
             // if the CRC mode is declared to be correct, then set the CRC to an easily recognizable value
-            rdmaHeader->setCrc(0xC00D);//Cambiado
+            rdmaHeader->setCrc(0xC00D);
             break;
         case CRC_DECLARED_INCORRECT:
             // if the CRC mode is declared to be incorrect, then set the CRC to an easily recognizable value
-            rdmaHeader->setCrc(0xBAAD);//Cambiado
+            rdmaHeader->setCrc(0xBAAD);
             break;
         case CRC_COMPUTED: {
             // if the CRC mode is computed, then compute the CRC and set it
             // this computation is delayed after the routing decision, see INetfilter hook
-            rdmaHeader->setCrc(0x0000); // make sure that the CRC is 0 in the Udp header before computing the CRC -- //Cambiado
-            rdmaHeader->setCrcMode(CRC_DISABLED); // for serializer/deserializer checks only: deserializer sets the crcMode to disabled when crc is 0 -- //Cambiado
-            auto rdmaData = packet->peekData(Chunk::PF_ALLOW_EMPTY);//Cambiado
-            auto crc = computeCrc(networkProtocol, srcAddress, destAddress, rdmaHeader, rdmaData);//Cambiado
-            rdmaHeader->setCrc(crc);//Cambiado
-            rdmaHeader->setCrcMode(CRC_COMPUTED);//Cambiado
+            rdmaHeader->setCrc(0x0000); // make sure that the CRC is 0 in the Udp header before computing the CRC --
+            rdmaHeader->setCrcMode(CRC_DISABLED); // for serializer/deserializer checks only: deserializer sets the crcMode to disabled when crc is 0 --
+            auto rdmaData = packet->peekData(Chunk::PF_ALLOW_EMPTY);
+            auto crc = computeCrc(networkProtocol, srcAddress, destAddress, rdmaHeader, rdmaData);
+            rdmaHeader->setCrc(crc);
+            rdmaHeader->setCrcMode(CRC_COMPUTED);
             break;
         }
         default:
@@ -341,14 +323,14 @@ void Rdma::insertCrc(const Protocol *networkProtocol, const L3Address& srcAddres
     }
 }
 
-uint16_t Rdma::computeCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<const RdmaHeader>& rdmaHeader, const Ptr<const Chunk>& rdmaData)//Cambiado
+uint16_t Rdma::computeCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<const RdmaHeader>& rdmaHeader, const Ptr<const Chunk>& rdmaData)
 {
     auto pseudoHeader = makeShared<TransportPseudoHeader>();
     pseudoHeader->setSrcAddress(srcAddress);
     pseudoHeader->setDestAddress(destAddress);
     pseudoHeader->setNetworkProtocolId(networkProtocol->getId());
     pseudoHeader->setProtocolId(IP_PROT_RDMA);
-    pseudoHeader->setPacketLength(rdmaHeader->getChunkLength() + rdmaData->getChunkLength());//Cambiado
+    pseudoHeader->setPacketLength(rdmaHeader->getChunkLength() + rdmaData->getChunkLength());
     // pseudoHeader length: ipv4: 12 bytes, ipv6: 40 bytes, other: ???
     if (networkProtocol == &Protocol::ipv4)
         pseudoHeader->setChunkLength(B(12));
@@ -359,8 +341,8 @@ uint16_t Rdma::computeCrc(const Protocol *networkProtocol, const L3Address& srcA
 
     MemoryOutputStream stream;
     Chunk::serialize(stream, pseudoHeader);
-    Chunk::serialize(stream, rdmaHeader);//Cambiado
-    Chunk::serialize(stream, rdmaData);//Cambiado
+    Chunk::serialize(stream, rdmaHeader);
+    Chunk::serialize(stream, rdmaData);
     uint16_t crc = TcpIpChecksum::checksum(stream.getData());
 
     // Excerpt from RFC 768:
@@ -372,40 +354,39 @@ uint16_t Rdma::computeCrc(const Protocol *networkProtocol, const L3Address& srcA
 }
 
 
-void Rdma::processRdmaPacket(Packet *rdmaPacket)//Cambiado
+void Rdma::processRdmaPacket(Packet *rdmaPacket)
 {
-    ASSERT(rdmaPacket->getControlInfo() == nullptr);//Cambiado
-    emit(packetReceivedFromLowerSignal, rdmaPacket);//Cambiado
-    emit(packetReceivedSignal, rdmaPacket);//Cambiado
+    ASSERT(rdmaPacket->getControlInfo() == nullptr);
+    emit(packetReceivedFromLowerSignal, rdmaPacket);
+    emit(packetReceivedSignal, rdmaPacket);
 
-    rdmaPacket->removeTag<PacketProtocolTag>();//Cambiado
-    b rdmaHeaderPopPosition = rdmaPacket->getFrontOffset();//Cambiado
-    auto rdmaHeader = rdmaPacket->popAtFront<RdmaHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT);//Cambiado
+    rdmaPacket->removeTag<PacketProtocolTag>();
+    b rdmaHeaderPopPosition = rdmaPacket->getFrontOffset();
+    auto rdmaHeader = rdmaPacket->popAtFront<RdmaHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT);
 
     // simulate checksum: discard packet if it has bit error
-    EV_INFO << "Packet " << rdmaPacket->getName() << " received from network, dest port " << rdmaHeader->getDestinationPort() << "\n";//Cambiado
+    EV_INFO << "Packet " << rdmaPacket->getName() << " received from network, dest port " << rdmaHeader->getDestinationPort() << "\n";
 
-    auto srcPort = rdmaHeader->getSourcePort();//Cambiado
-    auto destPort = rdmaHeader->getDestinationPort();//Cambiado
-    auto l3AddressInd = rdmaPacket->getTag<L3AddressInd>();//Cambiado
-    //auto generationTime = rdmaHeader->getGenerationTime();
-    auto totalLength = B(rdmaHeader->getTotalLengthField());//Cambiado
-    auto hasIncorrectLength = totalLength<rdmaHeader->getChunkLength() || totalLength> rdmaHeader->getChunkLength() + rdmaPacket->getDataLength();//Cambiado
-    auto networkProtocol = rdmaPacket->getTag<NetworkProtocolInd>()->getProtocol();//Cambiado
+    auto srcPort = rdmaHeader->getSourcePort();
+    auto destPort = rdmaHeader->getDestinationPort();
+    auto l3AddressInd = rdmaPacket->getTag<L3AddressInd>();
+    auto totalLength = B(rdmaHeader->getTotalLengthField());
+    auto hasIncorrectLength = totalLength<rdmaHeader->getChunkLength() || totalLength> rdmaHeader->getChunkLength() + rdmaPacket->getDataLength();
+    auto networkProtocol = rdmaPacket->getTag<NetworkProtocolInd>()->getProtocol();
 
-    if (hasIncorrectLength || !verifyCrc(networkProtocol, rdmaHeader, rdmaPacket)) {//Cambiado
+    if (hasIncorrectLength || !verifyCrc(networkProtocol, rdmaHeader, rdmaPacket)) {
         EV_WARN << "Packet has bit error, discarding\n";
         PacketDropDetails details;
         details.setReason(INCORRECTLY_RECEIVED);
-        emit(packetDroppedSignal, rdmaPacket, &details);//Cambiado
+        emit(packetDroppedSignal, rdmaPacket, &details);
         numDroppedBadChecksum++;
-        delete rdmaPacket;//Cambiado
+        delete rdmaPacket;
         return;
     }
 
     // remove lower layer paddings:
-    if (totalLength < rdmaPacket->getDataLength()) {//Cambiado
-        rdmaPacket->setBackOffset(rdmaHeaderPopPosition + totalLength);//Cambiado
+    if (totalLength < rdmaPacket->getDataLength()) {
+        rdmaPacket->setBackOffset(rdmaHeaderPopPosition + totalLength);
     }
 
 
@@ -416,36 +397,32 @@ void Rdma::sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort
 {
     EV_INFO << "Sending payload up to app layer\n";
 
-
-    //payload->removeTagIfPresent<PacketProtocolTag>();
-    //payload->removeTagIfPresent<DispatchProtocolReq>();
     payload->addTagIfAbsent<TransportProtocolInd>()->setProtocol(&Protocol::rdma);
     payload->addTagIfAbsent<TransportProtocolInd>()->setTransportProtocolHeader(header);
     payload->addTagIfAbsent<L4PortInd>()->setSrcPort(srcPort);
     payload->addTagIfAbsent<L4PortInd>()->setDestPort(destPort);
-    //payload->addTagIfAbsent<CreationTimeTag>()->setCreationTime(generationTime);
 
     emit(packetSentToUpperSignal, payload);
     send(payload, "appOut");
     numPassedUp++;
 }
-bool Rdma::verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader>& rdmaHeader, Packet *packet)//Cambiado
+bool Rdma::verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader>& rdmaHeader, Packet *packet)
 {
-    switch (rdmaHeader->getCrcMode()) {//Cambiado
+    switch (rdmaHeader->getCrcMode()) {
         case CRC_DISABLED:
             // if the CRC mode is disabled, then the check passes if the CRC is 0
-            return rdmaHeader->getCrc() == 0x0000;//Cambiado
+            return rdmaHeader->getCrc() == 0x0000;
         case CRC_DECLARED_CORRECT: {
             // if the CRC mode is declared to be correct, then the check passes if and only if the chunks are correct
-            auto totalLength = rdmaHeader->getTotalLengthField();//Cambiado
-            auto rdmaDataBytes = packet->peekDataAt(B(0), totalLength - rdmaHeader->getChunkLength(), Chunk::PF_ALLOW_INCORRECT);//Cambiado
-            return rdmaHeader->isCorrect() && rdmaDataBytes->isCorrect();//Cambiado
+            auto totalLength = rdmaHeader->getTotalLengthField();
+            auto rdmaDataBytes = packet->peekDataAt(B(0), totalLength - rdmaHeader->getChunkLength(), Chunk::PF_ALLOW_INCORRECT);
+            return rdmaHeader->isCorrect() && rdmaDataBytes->isCorrect();
         }
         case CRC_DECLARED_INCORRECT:
             // if the CRC mode is declared to be incorrect, then the check fails
             return false;
         case CRC_COMPUTED: {
-            if (rdmaHeader->getCrc() == 0x0000)//Cambiado
+            if (rdmaHeader->getCrc() == 0x0000)
                 // if the CRC mode is computed and the CRC is 0 (disabled), then the check passes
                 return true;
             else {
@@ -453,11 +430,11 @@ bool Rdma::verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader
                 auto l3AddressInd = packet->getTag<L3AddressInd>();
                 auto srcAddress = l3AddressInd->getSrcAddress();
                 auto destAddress = l3AddressInd->getDestAddress();
-                auto totalLength = rdmaHeader->getTotalLengthField();//Cambiado
-                auto rdmaData = packet->peekDataAt<BytesChunk>(B(0), totalLength - rdmaHeader->getChunkLength(), Chunk::PF_ALLOW_INCORRECT);//Cambiado
-                auto computedCrc = computeCrc(networkProtocol, srcAddress, destAddress, rdmaHeader, rdmaData);//Cambiado
+                auto totalLength = rdmaHeader->getTotalLengthField();
+                auto rdmaData = packet->peekDataAt<BytesChunk>(B(0), totalLength - rdmaHeader->getChunkLength(), Chunk::PF_ALLOW_INCORRECT);
+                auto computedCrc = computeCrc(networkProtocol, srcAddress, destAddress, rdmaHeader, rdmaData);
                 // TODO delete these isCorrect calls, rely on CRC only
-                return computedCrc == 0xFFFF && rdmaHeader->isCorrect() && rdmaData->isCorrect();//Cambiado
+                return computedCrc == 0xFFFF && rdmaHeader->isCorrect() && rdmaData->isCorrect();
             }
         }
         default:
@@ -466,9 +443,9 @@ bool Rdma::verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader
 }
 
 
-void Rdma::processUndeliverablePacket(Packet *rdmaPacket)//Cambiado
+void Rdma::processUndeliverablePacket(Packet *rdmaPacket)
 {
-    const auto& rdmaHeader = rdmaPacket->peekAtFront<RdmaHeader>();//Cambiado
+    const auto& rdmaHeader = rdmaPacket->peekAtFront<RdmaHeader>();
     PacketDropDetails details;
     details.setReason(NO_PORT_FOUND);
     emit(packetDroppedSignal, rdmaPacket, &details);
@@ -476,18 +453,18 @@ void Rdma::processUndeliverablePacket(Packet *rdmaPacket)//Cambiado
 
     // send back ICMP PORT_UNREACHABLE
     char buff[80];
-    snprintf(buff, sizeof(buff), "Port %d unreachable", rdmaHeader->getDestinationPort());//Cambiado
-    rdmaPacket->setName(buff);//Cambiado
-    const Protocol *protocol = rdmaPacket->getTag<NetworkProtocolInd>()->getProtocol();//Cambiado
+    snprintf(buff, sizeof(buff), "Port %d unreachable", rdmaHeader->getDestinationPort());
+    rdmaPacket->setName(buff);
+    const Protocol *protocol = rdmaPacket->getTag<NetworkProtocolInd>()->getProtocol();
 
     if (protocol == nullptr) {
         throw cRuntimeError("(%s)%s arrived from lower layer without NetworkProtocolInd",
-                rdmaPacket->getClassName(), rdmaPacket->getName());//Cambiado
+                rdmaPacket->getClassName(), rdmaPacket->getName());
     }
 
     // push back network protocol header
-    rdmaPacket->trim();//Cambiado
-    rdmaPacket->insertAtFront(rdmaPacket->getTag<NetworkProtocolInd>()->getNetworkProtocolHeader());//Cambiado
+    rdmaPacket->trim();
+    rdmaPacket->insertAtFront(rdmaPacket->getTag<NetworkProtocolInd>()->getNetworkProtocolHeader());
     auto inIe = rdmaPacket->getTag<InterfaceInd>()->getInterfaceId();
 
     if (protocol->getId() == Protocol::ipv4.getId()) {
@@ -509,12 +486,12 @@ void Rdma::processUndeliverablePacket(Packet *rdmaPacket)//Cambiado
         delete rdmaPacket;
     }
     else if (protocol->getId() == Protocol::nextHopForwarding.getId()) {
-        delete rdmaPacket;//Cambiado
+        delete rdmaPacket;
     }
     else {
         throw cRuntimeError("(%s)%s arrived from lower layer with unrecognized NetworkProtocolInd %s",
-                rdmaPacket->getClassName(), rdmaPacket->getName(), protocol->getName());//Cambiado
-        delete rdmaPacket;//Cambiado
+                rdmaPacket->getClassName(), rdmaPacket->getName(), protocol->getName());
+        delete rdmaPacket;
     }
 }
 
@@ -540,7 +517,7 @@ void Rdma::handleCrashOperation(LifecycleOperation *operation)
     icmpv6 = nullptr;
 }
 
-void Rdma::refreshDisplay() const//Cambiado
+void Rdma::refreshDisplay() const
 {
     OperationalBase::refreshDisplay();
 
@@ -554,21 +531,21 @@ void Rdma::refreshDisplay() const//Cambiado
 }
 
 // used in UdpProtocolDissector
-bool Rdma::isCorrectPacket(Packet *packet, const Ptr<const RdmaHeader>& rdmaHeader)//Cambiado
+bool Rdma::isCorrectPacket(Packet *packet, const Ptr<const RdmaHeader>& rdmaHeader)
 {
     auto trailerPopOffset = packet->getBackOffset();
-    auto rdmaHeaderOffset = packet->getFrontOffset() - rdmaHeader->getChunkLength();//Cambiado
-    if (rdmaHeader->getTotalLengthField() < RDMA_HEADER_LENGTH)//Cambiado
+    auto rdmaHeaderOffset = packet->getFrontOffset() - rdmaHeader->getChunkLength();
+    if (rdmaHeader->getTotalLengthField() < RDMA_HEADER_LENGTH)
         return false;
-    else if (B(rdmaHeader->getTotalLengthField()) > trailerPopOffset - rdmaHeaderOffset)//Cambiado
+    else if (B(rdmaHeader->getTotalLengthField()) > trailerPopOffset - rdmaHeaderOffset)
         return false;
     else {
         const auto& l3AddressInd = packet->findTag<L3AddressInd>();
         const auto& networkProtocolInd = packet->findTag<NetworkProtocolInd>();
         if (l3AddressInd != nullptr && networkProtocolInd != nullptr)
-            return verifyCrc(networkProtocolInd->getProtocol(), rdmaHeader, packet);//Cambiado
+            return verifyCrc(networkProtocolInd->getProtocol(), rdmaHeader, packet);
         else
-            return rdmaHeader->getCrcMode() != CrcMode::CRC_DECLARED_INCORRECT;//Cambiado
+            return rdmaHeader->getCrcMode() != CrcMode::CRC_DECLARED_INCORRECT;
     }
 }
 
@@ -577,22 +554,22 @@ bool Rdma::isCorrectPacket(Packet *packet, const Ptr<const RdmaHeader>& rdmaHead
 // other methods
 // ######################
 
-INetfilter::IHook::Result Rdma::CrcInsertion::datagramPostRoutingHook(Packet *packet)//Cambiado
+INetfilter::IHook::Result Rdma::CrcInsertion::datagramPostRoutingHook(Packet *packet)
 {
     if (packet->findTag<InterfaceInd>())
         return ACCEPT; // FORWARD
 
     auto networkProtocol = packet->getTag<PacketProtocolTag>()->getProtocol();
     const auto& networkHeader = getNetworkProtocolHeader(packet);
-    if (networkHeader->getProtocol() == &Protocol::rdma) {//Cambiado
+    if (networkHeader->getProtocol() == &Protocol::rdma) {
         ASSERT(!networkHeader->isFragment());
         packet->eraseAtFront(networkHeader->getChunkLength());
-        auto rdmaHeader = packet->removeAtFront<RdmaHeader>();//Cambiado
-        ASSERT(rdmaHeader->getCrcMode() == CRC_COMPUTED);//Cambiado
+        auto rdmaHeader = packet->removeAtFront<RdmaHeader>();
+        ASSERT(rdmaHeader->getCrcMode() == CRC_COMPUTED);
         const L3Address& srcAddress = networkHeader->getSourceAddress();
         const L3Address& destAddress = networkHeader->getDestinationAddress();
-        Rdma::insertCrc(networkProtocol, srcAddress, destAddress, rdmaHeader, packet);//Cambiado
-        packet->insertAtFront(rdmaHeader);//Cambiado
+        Rdma::insertCrc(networkProtocol, srcAddress, destAddress, rdmaHeader, packet);
+        packet->insertAtFront(rdmaHeader);
         packet->insertAtFront(networkHeader);
     }
 
@@ -628,7 +605,7 @@ void Rdma::handleEndTxPeriod(){
 
         if (crcMode == CRC_COMPUTED) {
             fraghdr->setCrcMode(CRC_COMPUTED);
-            fraghdr->setCrc(0x0000); // crcMode == CRC_COMPUTED is done in an INetfilter hook
+            fraghdr->setCrc(0x0000);
         } else {
             fraghdr->setCrcMode(crcMode);
             insertCrc(l3Protocol, srcAddr, destAddr, fraghdr, fragment);
@@ -640,7 +617,6 @@ void Rdma::handleEndTxPeriod(){
         fragment->setKind(0);
 
         fragment->insertAtFront(fraghdr);
-        //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
 
         EV_INFO << "Sending app packet " << fragment->getName() << " over " << l3Protocol->getName() << ".\n";
         emit(packetSentSignal, fragment);
@@ -657,7 +633,7 @@ void Rdma::handleEndTxPeriod(){
 }
 // unused functions!
 
-RdmaHeader *Rdma::createRdmaPacket()//Cambiado
+RdmaHeader *Rdma::createRdmaPacket()
 {
     return new RdmaHeader();
 }

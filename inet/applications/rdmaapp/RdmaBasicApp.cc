@@ -275,22 +275,7 @@ void RdmaBasicApp::processPacket(Packet *pk)
 
         EV_DETAIL << "This fragment completes the transport datagram.\n";
         }
-    /*
-    EV << "Fragment " << pk << " received \n";
-    totalLengthToReceive = B(par("messageLength"));
-    receivedMessageLength += B((pk->getByteLength() - IPv4_MIN_HEADER_LENGTH.get()));
-    EV_INFO << "Message length total = " << totalLengthToReceive <<  "\n";
-    if(receivedMessageLength >= totalLengthToReceive){
-        EV_INFO << "Packet received with message length = " << receivedMessageLength <<  "\n";
-        emit(packetReceivedSignal, pk);
-        simtime_t latencia = simTime() - pk->getCreationTime();
-        latencyPackets.push_back(latencia);
-        delete pk;
-        statsLatencyVector.record(latencia);
-        statsLatency.collect(latencia);
-        numReceived++;
-        receivedMessageLength = B(0);
-    }*/
+
     emit(packetReceivedSignal, pk);
     EV_INFO << "Packet " << pk <<  "received\n";
     //delete pk;
@@ -301,11 +286,6 @@ void RdmaBasicApp::processPacket(Packet *pk)
     EV_INFO << "Latencia = " << latency << "\n";
     latencyPackets.push_back(latency);
 
-    //numReceived++;
-    //totalreceivedMessagesLength = B(0);
-    //creationTime_firstFragment = 0;
-    //receivedMessageLength = B(0);
-    //delete p;
     statsLatencyVector.record(latency);
     statsLatency.collect(latency);
     delete pk;

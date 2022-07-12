@@ -21,8 +21,6 @@
 #include <string.h>
 
 #include "inet/networklayer/ipv4/Icmp.h"
-//#include "inet/networklayer/ipv4/Ipv4Header_m.h"
-//#include "inet/transportlayer/udp/UdpHeader_m.h"
 #include "inet/applications/base/ApplicationPacket_m.h"
 
 namespace inet {
@@ -46,7 +44,6 @@ void UdpAppFragBuf::flush()
 Packet *UdpAppFragBuf::addFragment(Packet *packet, simtime_t now)
 {
     const auto& udpHeader = packet->peekAtFront<ApplicationPacket>();
-    //auto udpHeader = packet->popAtFront<UdpHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT);
     // find datagram buffer
     Key key;
     key.id = udpHeader->getId();

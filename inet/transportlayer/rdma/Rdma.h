@@ -81,6 +81,7 @@ class INET_API Rdma: public TransportProtocolBase
     IInterfaceTable *ift = nullptr;
     Icmp *icmp = nullptr;
     Icmpv6 *icmpv6 = nullptr;
+
     // statistics
     int numSent = 0;
     int numPassedUp = 0;
@@ -114,12 +115,10 @@ class INET_API Rdma: public TransportProtocolBase
 
 
     virtual void sendUp(Ptr<const RdmaHeader>& header, Packet *payload, ushort srcPort, ushort destPort);//, clocktime_t generationTime);
-    virtual void processUndeliverablePacket(Packet *rdmaPacket);//Cambiado
-    //virtual void sendUpErrorIndication(SockDesc *sd, const L3Address& localAddr, ushort localPort, const L3Address& remoteAddr, ushort remotePort);
-
+    virtual void processUndeliverablePacket(Packet *rdmaPacket);
 
     // process Rdma packets coming from Ethernet
-    virtual void processRdmaPacket(Packet *rdmaPacket);//Cambiado
+    virtual void processRdmaPacket(Packet *rdmaPacket);
 
     // process packets from application
     virtual void handleUpperPacket(Packet *appData) override;
@@ -128,15 +127,13 @@ class INET_API Rdma: public TransportProtocolBase
     virtual void handleLowerPacket(Packet *appData) override;
 
     virtual void handleMessageWhenUp(cMessage *msg) override;
+
     //Process an own message
     virtual void handleSelfMessage(cMessage *msg) override;
     virtual void handleEndTxPeriod();
 
-    // process commands from application
-    //virtual void handleUpperCommand(cMessage *msg) override;
-
     // create a blank Rdma packet; override to subclass RdmaHeader
-    virtual RdmaHeader *createRdmaPacket();//Cambiado
+    virtual RdmaHeader *createRdmaPacket();
 
     // ILifeCycle:
     virtual void handleStartOperation(LifecycleOperation *operation) override;
@@ -145,9 +142,9 @@ class INET_API Rdma: public TransportProtocolBase
 
   public:
     // crc
-    static void insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<RdmaHeader>& rdmaHeader, Packet *rdmaPayload);//Cambiado
-    static bool verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader>& rdmaHeader, Packet *packet);//Cambiado
-    static uint16_t computeCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<const RdmaHeader>& rdmaHeader, const Ptr<const Chunk>& rdmaData);//Cambiado
+    static void insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<RdmaHeader>& rdmaHeader, Packet *rdmaPayload);
+    static bool verifyCrc(const Protocol *networkProtocol, const Ptr<const RdmaHeader>& rdmaHeader, Packet *packet);
+    static uint16_t computeCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<const RdmaHeader>& rdmaHeader, const Ptr<const Chunk>& rdmaData);
 
   public:
     Rdma();

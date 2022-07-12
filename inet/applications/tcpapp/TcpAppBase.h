@@ -50,7 +50,6 @@ class INET_API TcpAppBase : public ApplicationBase, public TcpSocket::ICallback
     B receivedMessageLength = B(0);
     B totalreceivedMessagesLength;
     std::vector<simtime_t> creationTimesQueue;
-    //std::vector<B> packetsSizeList;
     int id = 0;
 
     // statistics:

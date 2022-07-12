@@ -218,8 +218,6 @@ void Ipv4::handleRequest(Request *request)
 
 void Ipv4::handleMessageWhenUp(cMessage *msg)
 {
-    /*if(check_and_cast<Packet *>(msg)->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::rdma)
-        isRdma = true;*/
     if(msg->isSelfMessage()){
         handleSelfMessage(msg);
     }
@@ -434,13 +432,6 @@ void Ipv4::preroutingFinish(Packet *packet)
 
 void Ipv4::handlePacketFromHL(Packet *packet)
 {
-/*
-    if(packet->getTag<PacketProtocolTag>()->getProtocol() == &Protocol::udp){
-        clocktime_t actualLatency = simTime() - packet->removeTagIfPresent<CreationTimeTag>()->getCreationTime();
-        packet->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
-        latencySending += actualLatency;
-    }
-*/
     EV_INFO << "Received " << packet << " from upper layer.\n";
     emit(packetReceivedFromUpperSignal, packet);
 
@@ -949,7 +940,6 @@ void Ipv4::fragmentAndSend(Packet *p)
         currentFragment->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHopAddr);
     }
 
-    //const auto& ipv4Header = packet->peekAtFront<Ipv4Header>();
     ipv4Header = currentFragment->peekAtFront<Ipv4Header>();
 
     // hop counter check
@@ -973,8 +963,7 @@ void Ipv4::fragmentAndSend(Packet *p)
             setComputedCrc(ipv4Header);
             insertNetworkProtocolHeader(currentFragment, Protocol::ipv4, ipv4Header);
         }
-        //headerLength = B(ipv4Header->getHeaderLength()).get();
-        //payloadLength = B(currentFragment->getDataLength()).get() - headerLength;
+
         sendDatagramToOutput(currentFragment);
         //offset += payloadLength;
         if(isRdma){
@@ -1015,7 +1004,6 @@ void Ipv4::fragmentAndSend(Packet *p)
     fragMsgName = currentFragment->getName();
     fragMsgName += "-frag2-";
 
-    //offset = 0;
     if(isRdma){
         while (offset < payloadLength) {
             bool lastFragment = (offset + fragmentLength >= payloadLength);
@@ -1085,18 +1073,12 @@ void Ipv4::fragmentAndSend(Packet *p)
             setComputedCrc(fraghdr);
 
         fragment->insertAtFront(fraghdr);
-        //ASSERT(fragment->getByteLength() == headerLength + thisFragmentLength);
+
 
         sendDatagramToOutput(fragment);
         offset += thisFragmentLength;
-        /*if(lastFragment && queue->isEmpty()){
-            offset = 0;
-        }*/
-
-
     }
 
-    //delete packet;
 }
 
 void Ipv4::encapsulate(Packet *transportPacket)
@@ -1235,16 +1217,9 @@ void Ipv4::arpResolutionCompleted(IArp::Notification *entry)
             EV << "Sending out queued packet " << packet << "\n";
             packet->addTagIfAbsent<InterfaceReq>()->setInterfaceId(entry->ie->getInterfaceId());
             packet->addTagIfAbsent<MacAddressReq>()->setDestAddress(entry->macAddress);
-            //if(!transmissionChannel->isBusy())
-                sendPacketToNIC(packet);
-           // else{
-            //    pendingPacket->insert(packet);
-           // }
-            //queue->insert(packet);
+            sendPacketToNIC(packet);
         }
         pendingPackets.erase(it);
-        //fragmentAndSend(check_and_cast<Packet *>(queue->pop()));
-
     }
 }
 
@@ -1302,60 +1277,6 @@ void Ipv4::sendPacketToNIC(Packet *p)
     if(transmissionChannel){
         scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
     }
-
-  /*  if(transmissionChannel){
-        if(!transmissionChannel->isBusy()){
-            send(p, "queueOut");
-            if(p->peekAtFront<Ipv4Header>()->getMoreFragments() || !queue->isEmpty()){
-                scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-            }else{
-                offset = 0;
-                packet = nullptr;
-                currentFragment = nullptr;
-                ASSERT(packet == nullptr);
-                ASSERT(currentFragment == nullptr);
-            }
-        }
-        else{
-            pendingPacket->insert(p);
-        }
-    }else{
-        send(p, "queueOut");
-    }*/
-/*
-    if(!transmissionChannel->isBusy()){
-        send(p, "queueOut");
-        if(!isRdma){
-                if(p->peekAtFront<Ipv4Header>()->getMoreFragments() || !queue->isEmpty()){
-                    scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-                }
-                else{
-                    offset = 0;
-                    packet = nullptr;
-                    currentFragment = nullptr;
-                    ASSERT(packet == nullptr);
-                    ASSERT(currentFragment == nullptr);
-                }
-            }else
-                packet = nullptr;
-    }else{
-        pendingPacket->insert(p);
-    }
-*/
-
-
-//    if(!isRdma && packet->peekAtFront<Ipv4Header>()->getMoreFragments()/*packet->getByteLength() == ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId())->getMtu()*/)
-//        scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-//    else{
-//        if(!isRdma)
-//            scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxTimer);
-//        else
-//            packet = nullptr;
-//    }
-
-
-
-
 }
 
 // NetFilter:

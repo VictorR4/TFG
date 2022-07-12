@@ -45,7 +45,6 @@ void UdpFragBuf::flush()
 Packet *UdpFragBuf::addFragment(Packet *packet, simtime_t now)
 {
     const auto& udpHeader = packet->peekAtFront<UdpHeader>();
-    //auto udpHeader = packet->popAtFront<UdpHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT);
     // find datagram buffer
     Key key;
     key.id = udpHeader->getIdentification();

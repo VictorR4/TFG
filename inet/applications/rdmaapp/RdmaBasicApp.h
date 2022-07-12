@@ -49,7 +49,6 @@ class INET_API RdmaBasicApp : public ClockUserModuleMixin<ApplicationBase>//, pu
     clocktime_t latency;
     cStdDev statsLatency;
     cOutVector statsLatencyVector;
-    //double *latencyPackets;
     std::vector<simtime_t> latencyPackets;
     simtime_t meanLatency;
     int valoresValidos = 0;

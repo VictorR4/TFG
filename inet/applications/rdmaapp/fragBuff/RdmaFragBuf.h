@@ -29,7 +29,6 @@ namespace inet {
 class Icmp;
 class Ipv4Header;
 class RdmaHeader;
-//class ApplicationPacket;
 /**
  * Reassembly buffer for fragmented Ipv4 datagrams.
  */

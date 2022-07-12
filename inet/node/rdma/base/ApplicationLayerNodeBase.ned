@@ -49,7 +49,6 @@ module ApplicationLayerNodeBase extends TransportLayerNodeBase
         for i=0..numApps-1 {
             app[i].socketOut--> at.in++;
            	eth[0].appLayerOut --> app[i].socketIn;
-           	//lo[0].appLayerOut --> app[i].socketIn;
         }
 		
 		

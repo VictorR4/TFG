@@ -28,7 +28,6 @@ namespace inet {
 
 class Icmp;
 class Ipv4Header;
-//class UdpHeader;
 class ApplicationPacket;
 /**
  * Reassembly buffer for fragmented Ipv4 datagrams.
@@ -40,7 +39,6 @@ class INET_API UdpAppFragBuf
     // Key for finding the reassembly buffer for a datagram.
     //
     struct Key {
-        //ushort id = static_cast<ushort>(-1);
         uint16_t id = -1;
         int localPort = -1;
         int remotePort = -1;
